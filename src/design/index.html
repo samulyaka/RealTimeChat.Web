@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery.ui.theme.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="wrapper" class="">
+    <a href="#left-menu-toggle" class="btn btn-default" id="left-menu-toggle"></a>
+    <a href="#right-menu-toggle" class="btn btn-default pull-right" id="right-menu-toggle"></a>
+    <!-- Sidebar left -->
+    <div id="sidebar-wrapper-left" class="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand"><a href="#">MESSAGES</a></li>
+            <li class="online"><a href="#">username 1</a></li>
+            <li class="online"><a href="#">username 2 (17)</a></li>
+            <li class="online"><a href="#">username 3</a></li>
+            <li class="offline"><a href="#">username 4 (2)</a></li>
+            <li class="offline"><a href="#">username 5</a></li>
+            <li class="online"><a href="#">username 6</a></li>
+            <li class="offline"><a href="#">username 7</a></li>
+        </ul>
+    </div>
+    <!-- Sidebar left -->
+
+    <!-- Sidebar right -->
+    <div id="sidebar-wrapper-right" class="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand"><a href="#">Shared Files</a></li>
+            <li>
+                <select name="files-list" id="files-list">
+                    <option value="1111111111" selected="selected">username 3 Jan 19th, 2016 at 12:40 AM | sample_mp3audio.mp3</option>
+                    <option value="2222222222" >username 1 Feb 19th, 2016 at 13:12 AM | helloworld.pdf</option>
+                </select>
+            </li>
+            <li class="sidebar-brand"><a href="#">Comments</a></li>
+            <li>
+                <ul id="file-comment-list">
+                    <li class="list-unstyled">
+                        <span class="chat-name">username 3</span><span class="chat-time text-muted">3 Jan 19th, 2016 at 12:40 AM</span>
+                        <p>Sharing a private file here will not make it public, but it will allow danielavnon to see and share it</p>
+                    </li>
+                    <li class="list-unstyled">
+                        <span class="chat-name">username 1</span><span class="chat-time text-muted">3 Jan 19th, 2016 at 12:40 AM</span>
+                        <p>Sharing a private file here will not make it public, but it will allow danielavnon to see and share it</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div class="chat-form">
+                    <textarea class="form-control"></textarea>
+                    <button class="btn btn-primary pull-right">Add  Comment</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- Sidebar right -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <!-- header -->
+        <h4>@danielavnon <span class="online"></span></h4>
+        <!-- header -->
+
+        <!-- Contact info -->
+        <div class="first-message container-fluid">
+            <div class="chat-avatar">
+                <img src="images/uploads/user_icon.png" class="img-thumbnail"/>
+            </div>
+            <div class="chat-info">
+                <span class="chat-name">Daniel Avnon <span class="online"></span> @danielavnon</span><br/>
+                <span>Director, Avnon Consulting</span>
+            </div>
+            <div class="message-body">
+                <p>This is the very begining of your direct message history with danielavnon.
+
+                <p> Direct messages are private between the two of you. Sharing a private file here will not make it
+                    public, but it will allow danielavnon to see and share it</p>
+            </div>
+        </div>
+        <!-- Contact info -->
+
+        <div class="messages-list">
+            <!-- Date -->
+            <div class="chat-date text-center">January 19, 2016</div>
+            <!-- Date -->
+
+            <!-- Messages -->
+            <div class="message container-fluid">
+                <div class="chat-avatar">
+                    <img src="images/uploads/user_icon.png" class="img-thumbnail"/>
+                </div>
+                <div class="message-body">
+                    <span class="chat-name">username 3</span><span class="chat-time text-muted">12:40 AM</span>
+
+                    <div>This template has a responsive menu toggling system. The menu will appear collapsed on smaller
+                        screens, and will appear non-collapsed on larger screens. When toggled using the button below, the
+                        menu will appear/disappear. On small screens, the page content will be pushed off canvas.
+                    </div>
+                </div>
+            </div>
+            <div class="message container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="chat-avatar">
+                            <img src="images/uploads/user_icon.png" class="img-thumbnail"/>
+                        </div>
+                        <div class="message-body">
+                            <span class="chat-name">username 3</span><span class="chat-time text-muted">12:40 AM</span>
+
+                            <div><span class="text-muted">uploaded a file: </span><a href="#" class="file-name">helloworld.pdf</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message container-fluid">
+                <div class="chat-avatar">
+                    <img src="images/uploads/user_icon.png" class="img-thumbnail"/>
+                </div>
+                <div class="message-body">
+                    <span class="chat-name">username 3</span><span class="chat-time text-muted">12:40 AM</span>
+
+                    <div><span class="text-muted">uploaded an image: </span><a href="#" class="file-name">someimage.png</a>
+                    </div>
+                    <div class="image-preview">
+                        <img src="images/uploads/111222333444555666777.jpg">
+                    </div>
+                </div>
+            </div>
+            <!-- Messages -->
+        </div>
+        <!-- Chat form -->
+        <div class="chat-form">
+            <textarea class="form-control"></textarea>
+            <button class="btn btn-primary pull-right">Send Message</button>
+            <button class="btn btn-primary pull-right">Add Attachment</button>
+        </div>
+        <!-- Chat form -->
+    </div>
+    <!-- Page Content -->
+
+
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/jquery.ui.core.js"></script>
+    <script src="js/libs/jquery.ui.widget.js"></script>
+    <script src="js/libs/jquery.ui.position.js"></script>
+    <script src="js/libs/jquery.ui.selectmenu.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script>
+        $("#left-menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("left-toggled");
+        });
+        $("#right-menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("right-toggled");
+        });
+
+
+
+        //a custom format option callback
+        var addressFormatting = function(text){
+            var newText = text;
+            //array of find replaces
+            var findreps = [
+                {find:/^([^\|]+) \| /g, rep: '<div class="text-muted">$1</div>'},
+                {find:/([^\|><\(\)]+)$/g, rep: '<div class="text-primary">$1</div>'}
+            ];
+
+            for(var i in findreps){
+                newText = newText.replace(findreps[i].find, findreps[i].rep);
+            }
+            return newText;
+        };
+
+        $('select#files-list').selectmenu({
+            style:'popup',
+            width: 450,
+            height: 50,
+            format: addressFormatting
+        });
+    </script>
+</div>
+</body>
+</html>
