@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RealTimeChat.Core.DbProviders;
+using RealTimeChat.Core.Models;
+using RealTimeChat.UI.API.Models;
 
 namespace RealTimeChat.UI
 {
@@ -35,8 +36,17 @@ namespace RealTimeChat.UI
         {
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
+            services.AddTransient((d) => new Core.DbWrapper(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<UserProvider>();
+            var defaultPolicy = new AuthorizationPolicyBuilder()
+                              .RequireAuthenticatedUser()
+                              .Build();
+            services.AddMvc(setup =>
+            {
+                setup.Filters.Add(new AuthorizeFilter(defaultPolicy)); 
+            }).AddMvcOptions(o => { o.Filters.Add(new API.ErrorHandlerProvider()); });
 
-            services.AddMvc();
+            services.Configure<PubNubSettingsModel>(Configuration.GetSection("PubNubSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +54,13 @@ namespace RealTimeChat.UI
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "CookieAuth",
+                AccessDeniedPath = string.Empty,
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = false
+            });
             app.UseApplicationInsightsRequestTelemetry();
 
             if (env.IsDevelopment())

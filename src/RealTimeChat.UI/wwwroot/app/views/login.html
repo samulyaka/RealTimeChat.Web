@@ -1,7 +1,10 @@
-﻿<div ng-controller="loginController">
-    <div>login:</div>
-    <input type="text" ng-model="UserName" />
-    <div>Password:</div>
-    <input type="password" ng-model="Password" />
-    <input type="button" value="login" ng-click="UserLogin()"/>
+﻿<div ng-controller="loginController as lc">
+    <form>
+        <div>login:</div>
+        <input type="email" ng-model="UserName" required />
+        <div>Password:</div>
+        <input type="password" ng-model="Password" required />
+        <input type="submit" value="login" ng-click="lc.UserLogin()" />
+        <div ng-if="loginFailed">Email or password is incorrect</div>
+    </form>
 </div>

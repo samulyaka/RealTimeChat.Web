@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model RealTimeChat.UI.API.Models.MainModel
+<!DOCTYPE html>
 <html ng-app="app">
 <head>
     <meta charset="utf-8" />
@@ -17,27 +18,36 @@
     </environment>
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
-<body>
-     <ng-view></ng-view>
+<body ng-controller="rootController">
+    <ng-view></ng-view>
+
     <script type="text/javascript">
         GlobalConfig = {
             baseUrl: "@Url.Content("~/")",
-            baseApiUlr: "@Url.Content("~/api/")"
+            baseApiUlr: "@Url.Content("~/api/")",
+            PubNubSettings: JSON.parse('@Json.Serialize(Model.PubNubSettings)')
         };
     </script>
     <environment names="Development">
         <script type="text/javascript" src="~/lib/angular/angular.js"></script>
+        <script type="text/javascript" src="~/lib/ngstorage/ngStorage.js"></script>
         <script type="text/javascript" src="~/js/pubnub-angular.js"></script>
+        <script type="text/javascript" src="~/app/app.js"></script>
+        <script type="text/javascript" src="~/app/services/BaseHttpInterceptor.js"></script>
+        <script type="text/javascript" src="~/app/rootController.js"></script>
+        <script src="~/app/controllers/homeController.js"></script>
+        <script src="~/app/directives/menu-contacts.js"></script>
         <script type="text/javascript" src="~/js/angular-route/angular-route.js"></script>
         <script type="text/javascript" src="~/app/controllers/loginController.js"></script>
-        <script type="text/javascript" src="~/app/app.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script type="text/javascript" src="~/lib/angular/angular.min.js"></script>
-        <script type="text/javascript" src="~/js/pubnub-angular.min.js"></script>
+        <script type="text/javascript" src="~/lib/ngstorage/ngStorage.min.js"></script>
+        <script type="text/javascript" src="~/app/app.min.js"></script>
+        <script type="text/javascript" src="~/app/mainController.min.js"></script>
+        @*<script type="text/javascript" src="~/js/pubnub-angular.min.js"></script>*@
         <script type="text/javascript" src="~/js/angular-route/angular-route.min.js"></script>
         <script type="text/javascript" src="~/app/controllers/loginController.min.js"></script>
-        <script type="text/javascript" src="~/app/app.min.js"></script>
     </environment>
 </body>
 </html>

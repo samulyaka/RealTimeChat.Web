@@ -1,28 +1,21 @@
 ﻿(function () {
     'use strict';
-
-    angular.module('app', [
-        // Angular modules 
-        'ngRoute'//,
-        // Custom modules 
-    //    "pubnub.angular.service"
-
-        // 3rd Party Modules
-        
-    ]).config(function ($routeProvider) {
+    //,"pubnub.angular.service"
+    angular.module('app', ["ngRoute"]).config(function ($routeProvider, $httpProvider) {
 
         $routeProvider.when('/login',
         {
             templateUrl: 'app/views/login.html',
             controller: 'loginController'
         });
-        $routeProvider.when('/chat/:id',
+        $routeProvider.when('/home/:id',
         {
-            templateUrl: 'views/question.html',
-            controller: 'QuestionController'
+            templateUrl: 'app/views/main-layout.html',
+            controller: 'homeController'
         });
        
-        $routeProvider.otherwise({redirectTo: '/login'});
+        $routeProvider.otherwise({ redirectTo: '/home' });
+        console.log($httpProvider);
+        $httpProvider.interceptors.push('baseHttpInterceptor');
     });
 })();
-console.log('aaa!');
