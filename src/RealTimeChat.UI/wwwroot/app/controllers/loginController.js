@@ -8,10 +8,13 @@
     loginController.$inject = ['$scope'];
 
     function loginController($scope) {
-        $scope.title = 'login';
-
+        $scope.title = 'loginController';
+        $scope.UserName = 'qwe';
+        $scope.UserName = 'Password';
         activate();
-
+     /*   this.UserLogin = function () {
+            alert('aaa!');
+        }*/
         function activate() { }
     }
 })();

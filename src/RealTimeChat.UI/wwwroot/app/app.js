@@ -3,9 +3,9 @@
 
     angular.module('app', [
         // Angular modules 
-        'ngRoute'
-
+        'ngRoute'//,
         // Custom modules 
+    //    "pubnub.angular.service"
 
         // 3rd Party Modules
         
@@ -13,7 +13,7 @@
 
         $routeProvider.when('/login',
         {
-            templateUrl: 'App/views/login.html',
+            templateUrl: 'app/views/login.html',
             controller: 'loginController'
         });
         $routeProvider.when('/chat/:id',
