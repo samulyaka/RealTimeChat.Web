@@ -29,16 +29,21 @@
         };
     </script>
     <environment names="Development">
+        <script type="text/javascript" src="~/js/pubnub-3.15.2.js"></script>
         <script type="text/javascript" src="~/lib/angular/angular.js"></script>
         <script type="text/javascript" src="~/lib/ngstorage/ngStorage.js"></script>
         <script type="text/javascript" src="~/js/pubnub-angular.js"></script>
         <script type="text/javascript" src="~/app/app.js"></script>
-        <script type="text/javascript" src="~/app/services/BaseHttpInterceptor.js"></script>
-        <script type="text/javascript" src="~/app/rootController.js"></script>
-        <script src="~/app/controllers/homeController.js"></script>
-        <script src="~/app/directives/menu-contacts.js"></script>
+        <script type="text/javascript" src="~/app/controllers/base.js"></script>
+        <script type="text/javascript" src="~/app/services/http-interceptor.js"></script>
+        <script type="text/javascript" src="~/app/services/pubnub-service.js"></script>
+        <script type="text/javascript" src="~/app/root.js"></script>
+        <script type="text/javascript" src="~/app/controllers/home.js"></script>
+        <script type="text/javascript" src="~/app/directives/contact-list.js"></script>
+        <script type="text/javascript" src="~/app/directives/chat.js"></script>
+        <script type="text/javascript" src="~/app/directives/files-views.js"></script>
         <script type="text/javascript" src="~/js/angular-route/angular-route.js"></script>
-        <script type="text/javascript" src="~/app/controllers/loginController.js"></script>
+        <script type="text/javascript" src="~/app/controllers/login.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script type="text/javascript" src="~/lib/angular/angular.min.js"></script>

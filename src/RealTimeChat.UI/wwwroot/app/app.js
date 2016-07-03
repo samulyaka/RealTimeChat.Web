@@ -1,14 +1,14 @@
 ﻿(function () {
     'use strict';
     //,"pubnub.angular.service"
-    angular.module('app', ["ngRoute"]).config(function ($routeProvider, $httpProvider) {
+    angular.module('app', ["ngRoute", "pubnub.angular.service"]).config(function ($routeProvider, $httpProvider) {
 
         $routeProvider.when('/login',
         {
             templateUrl: 'app/views/login.html',
             controller: 'loginController'
         });
-        $routeProvider.when('/home/:id',
+        $routeProvider.when('/home',
         {
             templateUrl: 'app/views/main-layout.html',
             controller: 'homeController'
