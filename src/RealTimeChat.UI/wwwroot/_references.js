@@ -1,6 +1,7 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="app/app.js" />
 /// <reference path="app/controllers/base.js" />
+/// <reference path="app/controllers/chat.js" />
 /// <reference path="app/controllers/contacts.js" />
 /// <reference path="app/controllers/home.js" />
 /// <reference path="app/controllers/login.js" />
