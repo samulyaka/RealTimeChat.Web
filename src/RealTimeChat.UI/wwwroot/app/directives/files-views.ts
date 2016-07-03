@@ -1,10 +1,13 @@
 ﻿class FileViews implements ng.IDirective {
 
     restrict: string = 'EA';
-
-    public link(scope, element, attrs) {
+    templateUrl: string = 'app/views/file-views.html';
+    replace: boolean = true;
+    constructor() {
+    }
+    public link = () => {
     }
 }
 angular
     .module('app')
-    .directive('fileViews', [FileViews]);
+    .directive('fileViews', [function () { return new FileViews(); }]);

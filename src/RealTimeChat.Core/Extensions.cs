@@ -21,6 +21,27 @@ namespace RealTimeChat.Core
             return reader.GetFieldValue<T>(index);
 
         }
+        public static T FirstOfDefault<T>(this SqlDataReader reader, Func<SqlDataReader, T> convertor)
+        {
+            if (reader.HasRows && reader.Read())
+            {
+                return convertor(reader);
+            }
+            return default(T);
+        }
+        public static List<T> ToListOrEmpty<T>(this SqlDataReader reader, Func<SqlDataReader, T> convertor)
+        {
+            var result = new List<T>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    var item = convertor(reader);
+                    result.Add(item);
+                }
+            }
+            return result;
+        }
         /// <summary>
         /// Compute hash for string encoded as UTF8
         /// </summary>

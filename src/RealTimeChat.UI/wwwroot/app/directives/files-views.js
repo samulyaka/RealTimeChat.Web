@@ -1,11 +1,13 @@
 var FileViews = (function () {
     function FileViews() {
         this.restrict = 'EA';
+        this.templateUrl = 'app/views/file-views.html';
+        this.replace = true;
+        this.link = function () {
+        };
     }
-    FileViews.prototype.link = function (scope, element, attrs) {
-    };
     return FileViews;
 }());
 angular
     .module('app')
-    .directive('fileViews', [FileViews]);
+    .directive('fileViews', [function () { return new FileViews(); }]);

@@ -1,11 +1,13 @@
 var Chat = (function () {
     function Chat() {
         this.restrict = 'EA';
+        this.templateUrl = 'app/views/chat.html';
+        this.replace = true;
+        this.link = function () {
+        };
     }
-    Chat.prototype.link = function (scope, element, attrs) {
-    };
     return Chat;
 }());
 angular
     .module('app')
-    .directive('chat', [Chat]);
+    .directive('chat', [function () { return new Chat(); }]);

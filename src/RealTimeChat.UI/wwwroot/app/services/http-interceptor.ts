@@ -1,30 +1,22 @@
-﻿class httpInterceptor {
-    protected q: any;
-    protected location: ng.ILocationService;
-    static $inject = ['$q','$location'];
-    constructor($q:any, $location: ng.ILocationService) {
-        this.q = $q;
-        this.location = $location;
-    }
+﻿function httpInterceptor($q: any, $location: ng.ILocationService) {
+    return {
+        request: function (config) {
 
-    public request(config) {
+            return config;
+        },
 
-        return config;
-    }
-
-    public responseError(rejection) {
-        if (rejection.status === 401) {
-            console.log('redirect');
-            this.location.path('/login');
-            return;
+     responseError: function (rejection) {
+            if (rejection.status === 401) {
+                $location.path('/login');
+                return;
+            }
+            return $q.reject(rejection);
+        },
+     response: function (rejection) {
+            return rejection;
         }
-        return this.q.reject(rejection);
-    }
-    public response(rejection) {
-        return rejection;
-    }
-}
-
+    };
+};
 angular
     .module('app')
     .service('baseHttpInterceptor', httpInterceptor);

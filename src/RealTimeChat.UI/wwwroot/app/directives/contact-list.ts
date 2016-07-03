@@ -1,11 +1,13 @@
 ﻿class ContactList implements ng.IDirective {
 
     restrict: string = 'EA';
-    controller: ''
-
-    public link(scope, element, attrs) {
+    templateUrl:string = 'app/views/contacts.html';
+    replace: boolean = true;
+    constructor() {
+    }
+    public link = () => {
     }
 }
 angular
     .module('app')
-    .directive('contactList', [ContactList]);
+    .directive('contacts', [function () { return new ContactList(); }]);

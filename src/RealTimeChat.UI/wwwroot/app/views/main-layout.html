@@ -1,11 +1,47 @@
-﻿<div ng-controller="homeController">
-    hellow!@
-    <div>
-    <ContactList></ContactList>
-    </div>
-    <div>
-        <div>search</div>
-        <div>chat</div>
-        <div>Files</div>
-    </div>
+﻿<div ng-controller="homeController" id="wrapper">
+
+    <a href="#left-menu-toggle" class="btn btn-default" id="left-menu-toggle"></a>
+    <a href="#right-menu-toggle" class="btn btn-default pull-right" id="right-menu-toggle"></a>
+
+    <contacts></contacts>
+    <file-views></file-views>
+    <chat></chat>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#left-menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("left-toggled");
+            });
+            $("#right-menu-toggle").click(function (e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("right-toggled");
+            });
+
+
+
+            //a custom format option callback
+            var addressFormatting = function (text) {
+                var newText = text;
+                //array of find replaces
+                var findreps = [
+                    { find: /^([^\|]+) \| /g, rep: '<div class="text-muted">$1</div>' },
+                    { find: /([^\|><\(\)]+)$/g, rep: '<div class="text-primary">$1</div>' }
+                ];
+
+                for (var i in findreps) {
+                    newText = newText.replace(findreps[i].find, findreps[i].rep);
+                }
+                return newText;
+            };
+
+            $('select#files-list').selectmenu({
+                style: 'popup',
+                width: 450,
+                height: 50,
+                format: addressFormatting
+            });
+        });
+    </script>
 </div>

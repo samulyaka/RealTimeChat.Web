@@ -8,6 +8,8 @@ namespace RealTimeChat.Core.Models
         public string UserName { get; set; }
         public string Mail { get; set; }
         public string ChatUID { get; set; }
-        DateTime LastMessageDate { get; set; }
+        public string Info { get; set; }
+        public string ImageUrl { get; set; }
+        public DateTime LastMessageDate { get; set; }
     }
 }

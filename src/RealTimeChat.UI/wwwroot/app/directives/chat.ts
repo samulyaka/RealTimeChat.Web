@@ -1,10 +1,13 @@
 ﻿class Chat implements ng.IDirective {
 
     restrict: string = 'EA';
-    
-    public link(scope, element, attrs) {
+    templateUrl: string = 'app/views/chat.html';
+    replace: boolean = true;
+    constructor() {
+    }
+    public link = () => {
     }
 }
 angular
     .module('app')
-    .directive('chat', [Chat]);
+    .directive('chat', [function () { return new Chat(); }]);

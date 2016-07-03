@@ -8,7 +8,6 @@ var homeController = (function (_super) {
     function homeController($scope, $rootScope, $http, $location, pubnubService) {
         _super.call(this, $scope, $rootScope, $http, $location);
         this.pubnubService = pubnubService;
-        this.pubnubService.hello();
     }
     return homeController;
 }(baseController));

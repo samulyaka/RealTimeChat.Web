@@ -1,0 +1,400 @@
+/* General */
+
+.text-muted {
+    color: #ccc;
+}
+
+* {
+    color: #2E3D54;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* ---------------- */
+
+/* Toggles */
+
+#left-menu-toggle, #right-menu-toggle {
+    position: fixed;
+    bottom: 0;
+    z-index: 1003;
+}
+
+#left-menu-toggle {
+    left: 0;
+}
+
+#right-menu-toggle {
+    right: 0;
+}
+
+#right-menu-toggle:before {
+    content: ">";
+}
+
+#wrapper.right-toggled #right-menu-toggle:before {
+    content: "<";
+}
+
+#left-menu-toggle:before {
+    content: "<";
+}
+
+#wrapper.left-toggled #left-menu-toggle:before {
+    content: ">";
+}
+/* --------------- */
+
+/* Container */
+#wrapper {
+    padding-left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+/* --------------- */
+
+/* Sidebar Styles */
+
+.sidebar-wrapper {
+    top: 0;
+    z-index: 1000;
+    position: fixed;
+    width: 0;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#sidebar-wrapper-left {
+    left: 250px;
+    margin-left: -250px;
+    background: #2E3D54;
+    border-right: 6px solid #A9B9C9;
+}
+
+#sidebar-wrapper-right {
+    right: 500px;
+    margin-right: -500px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+    margin-left: -250px;
+}
+
+
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#sidebar-wrapper-left .sidebar-nav {
+    width: 244px;
+}
+
+.sidebar-nav li {
+    padding-left: 20px;
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #A9B9C9;
+}
+
+#sidebar-wrapper-left .sidebar-nav li:hover {
+    text-decoration: none;
+    color: #fff;
+    background-color: rgba(169, 185, 201, 0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 45px;
+    font-size: 18px;
+    line-height: 60px;
+    padding-left: 0;
+}
+
+#sidebar-wrapper-left .sidebar-nav > .sidebar-brand li:hover {
+    color: #fff;
+    background: none;
+}
+
+@media (min-width: 768px) {
+    #wrapper {
+        margin-left: 250px;
+        margin-right: 500px;
+    }
+
+    #wrapper.left-toggled {
+        margin-left: 0;
+    }
+
+    #wrapper.right-toggled {
+        margin-right: 0;
+    }
+
+    #sidebar-wrapper-left {
+        width: 250px;
+    }
+
+    #sidebar-wrapper-right {
+        width: 500px;
+    }
+
+    #wrapper.left-toggled #sidebar-wrapper-left {
+        width: 0;
+    }
+
+    #wrapper.right-toggled #sidebar-wrapper-right {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 0 20px;
+        position: relative;
+    }
+
+    #wrapper.left-toggled #page-content-wrapper {
+        position: relative;
+    }
+
+    #wrapper.right-toggled #page-content-wrapper {
+        position: relative;
+    }
+}
+
+/* Chats */
+
+#sidebar-wrapper-right .chat-form {
+    width: 460px;
+}
+
+.message {
+    margin-bottom: 20px;
+}
+
+.chat-avatar {
+    float: left;
+}
+
+.chat-avatar img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.chat-name {
+    font-weight: bold;
+    margin-right: 20px;
+    font-size: 16px;
+}
+
+.message .message-body {
+    margin-left: 70px;
+}
+
+.file-name {
+    font-weight: bold;
+}
+
+.image-preview {
+    width: 600px;
+    height: 200px;
+}
+
+.image-preview img {
+    max-height: 100%;
+    max-width: 100%;
+    display: block;
+}
+
+.chat-date {
+    line-height: 60px;
+}
+
+.first-message {
+    margin-bottom: 20px;
+}
+
+.first-message .chat-avatar img {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.first-message .chat-info {
+    margin-top: 18px;
+    height: 80px;
+    margin-left: 100px;
+}
+
+.chat-form textarea {
+    margin-bottom: 10px;
+    height: 100px;
+}
+
+.chat-form button {
+    margin: 0 10px 10px 0;
+}
+
+#file-comment-list {
+    margin: 0;
+    padding: 0;
+}
+
+#file-comment-list li {
+    margin: 0;
+    padding: 0;
+    line-height: 16px;
+    text-indent: 0;
+}
+
+/* --------------- */
+
+/* online/offline */
+
+span.online {
+    background: url("../images/sidebar-online.png") no-repeat 0 0;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+}
+
+span.offline {
+    background: url("../images/sidebar-offline.png") no-repeat 0 0;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+}
+
+li.online {
+    padding-left: 20px;
+    background: url("../images/sidebar-online.png") no-repeat 20px 14px;
+}
+
+li.offline {
+    background: url("../images/sidebar-offline.png") no-repeat 20px 14px;
+}
+
+/* ------------------------- */
+
+/* Selectmenu
+----------------------------------*/
+.ui-selectmenu {
+    height: 50px;
+    font-size: 12px;
+    display: block;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    text-decoration: none;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.ui-selectmenu-icon {
+    position: absolute;
+    right: 6px;
+    margin-top: -8px;
+    top: 50%;
+}
+
+.ui-selectmenu-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    display: none;
+    z-index: 1005;
+}
+
+/* z-index: 1005 to make selectmenu work with dialog */
+.ui-selectmenu-menu ul {
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ui-selectmenu-open {
+    display: block;
+}
+
+ul.ui-selectmenu-menu-popup {
+    margin-top: -1px;
+}
+
+.ui-selectmenu-menu li {
+    padding: 0;
+    margin: 0;
+    display: block;
+    border-top: 1px dotted transparent;
+    border-bottom: 1px dotted transparent;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+}
+
+.ui-selectmenu-menu li a, .ui-selectmenu-status {
+    line-height: 1.4em;
+    display: block;
+    padding: .405em 2.1em .405em 1em;
+    outline: none;
+    text-decoration: none;
+}
+
+.ui-selectmenu-menu li.ui-state-disabled a, .ui-state-disabled {
+    cursor: default;
+}
+
+.ui-selectmenu-menu li.ui-selectmenu-hasIcon a,
+.ui-selectmenu-hasIcon .ui-selectmenu-status {
+    padding-left: 20px;
+    position: relative;
+    margin-left: 5px;
+}
+
+.ui-selectmenu-menu li .ui-icon, .ui-selectmenu-status .ui-icon {
+    position: absolute;
+    top: 1em;
+    margin-top: -8px;
+    left: 0;
+}
+
+.ui-state-default {
+    background-color: #fff;
+}

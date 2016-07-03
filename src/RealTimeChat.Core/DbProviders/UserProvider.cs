@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace RealTimeChat.Core.DbProviders
 {
-    public class UserProvider : BaseProvider, IUserStore<LoginnedUser>
+    public class UserProvider : BaseProvider
     {
         public UserProvider(DbWrapper connection) : base(connection)
         {
@@ -51,42 +51,31 @@ namespace RealTimeChat.Core.DbProviders
 
                 var reader = this.Connection.ExecuteReader( System.Data.CommandType.Text,Queries.GetUser,
                     new SqlParameter("@p", userId));
-                if (reader.HasRows && reader.Read())
+                return reader.FirstOfDefault(r=> new LoginnedUser()
                 {
-                    return new LoginnedUser()
-                    {
-                        Id = reader.GetValueOrDefault<int>("Id"),
-                        Name = reader.GetValueOrDefault<string>("Name"),
-                        Mail = reader.GetValueOrDefault<string>("Email"),
-                        Password = reader.GetValueOrDefault<string>("Password"),
-                        Info = reader.GetValueOrDefault<string>("Info"),
-                        ImageUrl = reader.GetValueOrDefault<string>("Avatar")
-                    };
-                }
-                return null;
+                    Id = r.GetValueOrDefault<int>("Id"),
+                    Name = r.GetValueOrDefault<string>("Name"),
+                    Mail = r.GetValueOrDefault<string>("Email"),
+                    Password = r.GetValueOrDefault<string>("Password"),
+                    Info = r.GetValueOrDefault<string>("Info"),
+                    ImageUrl = r.GetValueOrDefault<string>("Avatar")
+                });
             }, cancellationToken);
         }
 
-        public Task<LoginnedUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public LoginnedUser FindByName(string normalizedUserName)
         {
-            return Task<LoginnedUser>.Factory.StartNew(() => {
-
                 var reader = this.Connection.ExecuteReader(System.Data.CommandType.Text, Queries.GetUserByName,
                     new SqlParameter("@p", normalizedUserName));
-                if (reader.HasRows && reader.Read())
+                return reader.FirstOfDefault(r => new LoginnedUser()
                 {
-                    return new LoginnedUser()
-                    {
-                        Id = reader.GetValueOrDefault<int>("Id"),
-                        Name = reader.GetValueOrDefault<string>("Name"),
-                        Mail = reader.GetValueOrDefault<string>("Email"),
-                        Password = reader.GetValueOrDefault<string>("Password"),
-                        Info = reader.GetValueOrDefault<string>("Info"),
-                        ImageUrl = reader.GetValueOrDefault<string>("Avatar")
-                    };
-                }
-                return null;
-            }, cancellationToken);
+                    Id = r.GetValueOrDefault<int>("Id"),
+                    Name = r.GetValueOrDefault<string>("Name"),
+                    Mail = r.GetValueOrDefault<string>("Email"),
+                    Password = r.GetValueOrDefault<string>("Password"),
+                    Info = r.GetValueOrDefault<string>("Info"),
+                    ImageUrl = r.GetValueOrDefault<string>("Avatar")
+                });
         }
 
         public LoginnedUser FindUserByNameAndPassword(string name, string password)

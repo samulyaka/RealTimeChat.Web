@@ -8,8 +8,14 @@ var contactsController = (function (_super) {
     function contactsController($scope, $rootScope, $http, $location, pubnubService) {
         _super.call(this, $scope, $rootScope, $http, $location);
         this.pubnubService = pubnubService;
-        console.log('contacts');
+        this.LoadContacts();
     }
+    contactsController.prototype.LoadContacts = function () {
+        this.Send("Users", "LoadContacts", null, function (res) {
+            this.Contacts = res.data;
+            console.log(this.Contacts);
+        });
+    };
     return contactsController;
 }(baseController));
 angular.module("app").controller('contactsController', contactsController);

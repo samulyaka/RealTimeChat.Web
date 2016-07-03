@@ -3,7 +3,6 @@
     constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, pubnubService: pubnubService) {
         super($scope, $rootScope, $http, $location);
         this.pubnubService = pubnubService;
-        this.pubnubService.hello();
     }
     
 }
