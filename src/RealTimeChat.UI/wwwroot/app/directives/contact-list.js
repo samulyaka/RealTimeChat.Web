@@ -1,8 +1,10 @@
 var ContactList = (function () {
+    // controller: any = contactsController; 
     function ContactList() {
-        this.restrict = 'EA';
+        this.restrict = 'E';
         this.templateUrl = 'app/views/contacts.html';
-        this.replace = true;
+        //   replace: boolean = true;
+        this.scope = {};
         this.link = function () {
         };
     }

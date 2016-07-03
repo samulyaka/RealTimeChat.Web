@@ -11,9 +11,6 @@ var chatController = (function (_super) {
         this.scope.SendMessage = this.SendMessage.bind(this);
         this.scope.ChangeMessage = this.ChangeMessage.bind(this);
         this.scope.message = "";
-        if (this.scope.channel) {
-            this.pubnubService.InitChannel(this.scope.channel, this.NewMessage.bind(this));
-        }
     }
     chatController.prototype.SendMessage = function () {
         if (this.scope.channel) {

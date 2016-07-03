@@ -5,9 +5,21 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var rootController = (function (_super) {
     __extends(rootController, _super);
-    function rootController($scope, $rootScope, $http, $location) {
-        _super.call(this, $scope, $rootScope, $http, $location);
+    function rootController($scope, $rootScope, $http, $location, ngNotify) {
+        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
         $rootScope.currentUser = new LoginUserModel();
+        $rootScope.Contacts = [];
+        $rootScope.activeChannelUUID = "";
+        $rootScope.RefreshUserStatus = function (event) {
+            if (event['uuid'] === $rootScope.currentUser.uuid)
+                return;
+            var user = _.find($rootScope.Contacts, { uuid: event['uuid'] });
+            if (user == null) {
+                return;
+            }
+            user.online = event['action'] !== 'timeout' && event['action'] !== 'leave';
+            $rootScope.$digest();
+        };
     }
     return rootController;
 }(baseController));

@@ -24,6 +24,7 @@
 /// <reference path="js/jquery.ui.position.js" />
 /// <reference path="js/jquery.ui.selectmenu.js" />
 /// <reference path="js/jquery.ui.widget.js" />
+/// <reference path="js/lodash.js" />
 /// <reference path="js/ng-notify.min.js" />
 /// <reference path="js/pubnub-3.15.2.js" />
 /// <reference path="js/pubnub-angular.js" />

@@ -8,9 +8,6 @@
         this.scope.ChangeMessage = this.ChangeMessage.bind(this);
         this.scope.message = "";
         
-        if (this.scope.channel) {
-            this.pubnubService.InitChannel(this.scope.channel, this.NewMessage.bind(this));
-        }
     }
     SendMessage(): void {
         if (this.scope.channel) {

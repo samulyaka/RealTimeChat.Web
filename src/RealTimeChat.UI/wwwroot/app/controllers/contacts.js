@@ -8,18 +8,22 @@ var contactsController = (function (_super) {
     function contactsController($scope, $rootScope, $http, $location, pubnubService, ngNotify) {
         _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
         this.pubnubService = pubnubService;
+        this.scope.Contacts = [];
+        this.scope.SelectContact = this.SelectContact.bind(this);
         this.LoadContacts();
     }
     contactsController.prototype.LoadContacts = function () {
         this.Send("Users", "LoadContacts", null, function (res) {
-            this.Contacts = res.data;
-            if (this.Contacts.length > 0) {
-                this.GetCurrentUser().activeChannelUUID = this.Contacts[0].chatUID;
+            this.scope.Contacts = res.data;
+            if (this.scope.Contacts.length > 0) {
+                this.GetCurrentUser().activeChannelUUID = this.scope.Contacts[0].chatUID;
             }
         });
     };
     contactsController.prototype.SelectContact = function (item) {
-        this.GetCurrentUser().activeChannelUUID = item.chatUID;
+        console.log(item.chatUID);
+        console.log(this.scope);
+        this.rootScope.activeChannelUUID = item.chatUID;
     };
     return contactsController;
 }(baseController));
