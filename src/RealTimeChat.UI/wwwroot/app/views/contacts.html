@@ -4,7 +4,7 @@
         <ul class="sidebar-nav">
             <li class="sidebar-brand"><a href="#">MESSAGES</a></li>
             <li class="online" ng-repeat="item in cc.Contacts">
-                <a href="#"> {{item.userName}}</a>
+                <a href="#" ng-click="cc.SelectContact(item)"> {{item.userName}}</a>
             </li>
         </ul>
     </div>

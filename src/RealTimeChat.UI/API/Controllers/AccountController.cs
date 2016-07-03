@@ -46,5 +46,20 @@ namespace RealTimeChat.UI.API.Controllers
             await HttpContext.Authentication.SignOutAsync("CookieAuth");
             return new JsonResultModel<object>() { Success = true, Data = null };
         }
+        // GET: api/Users/LogOut
+        [HttpPost("LoadUserInfo")]
+        public JsonResultModel<LoginnedUser> LoadUserInfo()
+        {
+            var user = this.userProvider.FindByName(User.Identity.Name);
+
+            return new JsonResultModel<LoginnedUser>() { Success = true, Data = new LoginnedUser() {
+                Id = user.Id,
+                ImageUrl = user.ImageUrl,
+                Info = user.Info,
+                Mail = user.Mail,
+                Name = user.Name,
+                Password = user.Password
+            } };
+        }
     }
 }

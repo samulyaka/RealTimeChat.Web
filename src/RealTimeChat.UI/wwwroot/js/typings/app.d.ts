@@ -3,8 +3,9 @@ interface GlobalConfigModel {
     baseUrl: string;
     baseApiUlr: string;
     PubNubSettings: PubNubSettingsModel;
+    NoAvatarUrl: string;
 }
 interface PubNubSettingsModel {
-    PublishKey: string;
-    SubscribeKey: string;
+    publishKey: string;
+    subscribeKey: string;
 }

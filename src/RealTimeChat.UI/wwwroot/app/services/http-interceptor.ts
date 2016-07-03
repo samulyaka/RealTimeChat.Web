@@ -1,7 +1,6 @@
 ﻿function httpInterceptor($q: any, $location: ng.ILocationService) {
     return {
         request: function (config) {
-
             return config;
         },
 
