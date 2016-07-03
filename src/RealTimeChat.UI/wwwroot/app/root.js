@@ -7,14 +7,7 @@ var rootController = (function (_super) {
     __extends(rootController, _super);
     function rootController($scope, $rootScope, $http, $location) {
         _super.call(this, $scope, $rootScope, $http, $location);
-        $rootScope.currentUser = {
-            id: 0,
-            name: "",
-            mail: "",
-            imageUrl: "",
-            info: "",
-            loginned: false
-        };
+        $rootScope.currentUser = new LoginUserModel();
     }
     return rootController;
 }(baseController));

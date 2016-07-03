@@ -2,12 +2,38 @@
 
     <a href="#left-menu-toggle" class="btn btn-default" id="left-menu-toggle"></a>
     <a href="#right-menu-toggle" class="btn btn-default pull-right" id="right-menu-toggle"></a>
-    <logout class="logout-form"></logout>
 
     <contacts></contacts>
     <file-views></file-views>
-    <chat></chat>
+    <div id="page-content-wrapper">
+        <!-- header -->
+        <h4>@danielavnon <span class="online"></span></h4>
+        <!-- header -->
+        <!-- Contact info -->
+        <div class="first-message container-fluid">
+            <div class="chat-avatar">
+                <img src="images/uploads/user_icon.png" class="img-thumbnail" />
+            </div>
+            <div class="chat-info">
+                <span class="chat-name">Daniel Avnon <span class="online"></span> @danielavnon</span><br />
+                <span>Director, Avnon Consulting</span>
+            </div>
+            <div class="message-body">
+                <p>This is the very begining of your direct message history with danielavnon.
+
+                <p>
+                    Direct messages are private between the two of you. Sharing a private file here will not make it
+                    public, but it will allow danielavnon to see and share it
+                </p>
+            </div>
+        </div>
+        <!-- Contact info -->
+        <channel-chat channel="{{$root.currentUser.activeChannelUUID}}"></channel-chat>
+        <!-- Chat form -->
+    </div>
+
     <div id="loader"></div>
+    <logout class="logout-form"></logout>
 
     <script type="text/javascript">
         $(function () {

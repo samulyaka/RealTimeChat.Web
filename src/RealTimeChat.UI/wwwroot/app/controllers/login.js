@@ -5,8 +5,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var loginController = (function (_super) {
     __extends(loginController, _super);
-    function loginController($scope, $rootScope, $http, $location) {
-        _super.call(this, $scope, $rootScope, $http, $location);
+    function loginController($scope, $rootScope, $http, $location, ngNotify) {
+        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
         $scope.loginFailed = false;
         //testing
         $scope.UserName = 'samulyak.a@gmail.com';
@@ -16,7 +16,7 @@ var loginController = (function (_super) {
         this.Send("Account", "login", { Email: this.scope.UserName, Password: this.scope.Password }, function (res) {
             if (res.success) {
                 res.data.loginned = true;
-                this.rootScope.currentUser = res.data;
+                this.SetCurrentUser(res.data);
                 this.location.path("/home");
                 return false;
             }
