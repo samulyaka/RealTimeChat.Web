@@ -48,6 +48,8 @@
             reconnect: function () { console.log('rec') }.bind(this),
             message: function (channelUUID, message, envelope, channelOrGroup, time, channel) {
                 var chennal = this.GetChennal(channelUUID);
+                var user: any = _.find(this.rootScope.Contacts, { uuid: message.sender_uuid });
+                message.user = user;
                 chennal.messages.push(message);
                 chennal.newMessages();
             }.bind(this, channelUUID)
@@ -57,6 +59,7 @@
         });
         // We listen to Presence events :
         this.rootScope.$on(this.Pubnub.getPresenceEventNameFor(channelUUID), function (ngEvent, presenceEvent) {
+            console.log("AAA!!!");
             console.log(presenceEvent);
             this.rootScope.RefreshUserStatus(presenceEvent);
         });
@@ -111,12 +114,17 @@
             return [];
         }
         var chennal = this.GetChennal(channelUUID);
-        var defaultMessagesNumber = 20;
+        var defaultMessagesNumber = 10;
 
         this.Pubnub.history({
             channel: channelUUID,
             callback: function (m) {
-                chennal.timeTokenFirstMessage = m[1]
+                chennal.timeTokenFirstMessage = m[1];
+                for (var i = 0; i < m[0].length; i++) {
+                    
+                    var user: any = _.find(this.rootScope.Contacts, { uuid: m[0].sender_uuid });
+                    m[0][i].user = user;
+                }
                 angular.extend(chennal.messages, m[0]);
 
                 if (m[0].length < defaultMessagesNumber) {
@@ -153,8 +161,13 @@
         channel: channelUUID,
         callback: function (m) {
             // Update the timetoken of the first message
-            chennal.timeTokenFirstMessage = m[1]
-            Array.prototype.unshift.apply(chennal.messages, m[0])
+            chennal.timeTokenFirstMessage = m[1];
+            for (var i = 0; i < m[0].length; i++) {
+
+                var user: any = _.find(this.rootScope.Contacts, { uuid: m[0].sender_uuid });
+                m[0][i].user = user;
+            }
+            Array.prototype.unshift.apply(chennal.messages, m[0]);
 
             if (m[0].length < defaultMessagesNumber) {
                 chennal.messagesAllFetched = true;

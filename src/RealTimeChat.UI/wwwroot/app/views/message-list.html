@@ -1,11 +1,11 @@
-<div>
+<div class="chat-container">
     <div class="messages-list">
-        <div class="message container-fluid" ng-repeat="message in messages track by $index">
+        <div class="message container-fluid" ng-repeat="message in messages track by message.uuid">
             <div class="chat-avatar" id="msg{{message.uuid}}">
-                <user-image imageUrl="{{message.imageUrl}}" />
+                <user-image imageUrl="{{message.user.imageUrl}}" />
             </div>
             <div class="message-body">
-                <span class="chat-name">{{message.sender_uuid}}</span><span class="chat-time text-muted">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+                <span class="chat-name">{{message.user.userName}}</span><span class="chat-time text-muted">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
 
                 <div>
                     {{message.content.text}}

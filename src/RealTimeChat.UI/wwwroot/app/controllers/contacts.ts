@@ -7,19 +7,24 @@
         this.scope.Contacts = [];
         this.scope.SelectContact = this.SelectContact.bind(this);
         this.LoadContacts();
+        this.scope.$root.$watch("Contacts", function (newValue, oldValue) {
+            this.scope.Contacts = newValue;
+        }.bind(this));
     }
     LoadContacts(): void {
         this.Send("Users", "LoadContacts", null, function (res) {
-            this.scope.Contacts = res.data;
-            if (this.scope.Contacts.length > 0) {
-                this.GetCurrentUser().activeChannelUUID = this.scope.Contacts[0].chatUID;
+            this.scope.$root.Contacts = res.data;
+            if (this.scope.$root.Contacts.length > 0) {
+                this.GetCurrentUser().activeChannelUUID = this.scope.$root.Contacts[0].chatUID;
+                this.scope.$root.ActiveContact = this.scope.$root.Contacts[0];
             }
         });
     }
     SelectContact(item: any): void {
         console.log(item.chatUID);
         console.log(this.scope);
-        this.rootScope.activeChannelUUID = item.chatUID;
+        this.scope.$root.ActiveContact = item;
+        this.scope.$root.activeChannelUUID = item.chatUID;
     }
 
 }

@@ -9,6 +9,7 @@
     ngNotify: any;
     element: any;
     link: any;
+    $scope: any;
     scope: any = {
         channel: "@"
     };
@@ -16,21 +17,38 @@
         this.$rootScope = $rootScope;
         this.$anchorScroll = $anchorScroll;
         this.pubnubService = pubnubService;
+        console.log(this.pubnubService);
         this.ngNotify = ngNotify;
         this.link = this.LinkInit.bind(this);
     }
     public controller = ($scope, pubnubService: pubnubService, $rootScope: any) => {
         console.log($scope.channel);
+        this.$scope = $scope;
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
         $scope.autoScrollDown = true;
+        this.pubnubService = pubnubService;
+        console.log(this.pubnubService);
+        if ($scope.channel) {
+            this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
+            $scope.messages = this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this));
+        }
+        $scope.$watch("channel", function (newValue, oldValue, scope) {
+            console.log(newValue);
+            if (newValue) {
+                this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
+                scope.messages = this.pubnubService.GetMessages(newValue, this.unregister.bind(this));
+            }
+            scope.message = "";
+        }.bind(this));
     };
     SendMessage(): void {
-        if (this.scope.channel) {
-            this.pubnubService.SendMessage(this.scope.channel, this.scope.message);
+        console.log("send!");
+        if (this.$scope.channel) {
+            this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
         }
-        this.scope.message = "";
-        this.scope.messageInputFocus = true;
+        this.$scope.message = "";
+        this.$scope.messageInputFocus = true;
     }
 
     ChangeMessage(event): void {
@@ -40,15 +58,16 @@
         }
     }
     public NewMessage() {
-        if (this.scope.autoScrollDown) {
+        if (this.$scope.autoScrollDown) {
             this.scrollToBottom();
         }
     }
         // Scroll down when the list is populated
-    public unregister () {
+    public unregister() {
+        this.$scope.messages = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this));
         // Defer the call of scrollToBottom is useful to ensure the DOM elements have been loaded
-        _.defer(this.scrollToBottom);
-        this.unregister();
+        _.defer(this.scrollToBottom.bind(this));
+      //  this.unregister();
     }
     public scrollToBottom () {
         this.element.scrollTop(this.element.prop('scrollHeight'));
@@ -63,9 +82,9 @@
 
         this.ngNotify.set('Loading previous messages...', 'success');
 
-        var currentMessage = this.pubnubService.GetMessages(this.scope.channel, this.unregister.bind(this))[0].uuid;
+        var currentMessage = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this))[0].uuid;
 
-        this.pubnubService.FetchPreviousMessages(this.scope.channel).then(function (m) {
+        this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
 
             // Scroll to the previous message 
             this.$anchorScroll(currentMessage);
@@ -84,19 +103,13 @@
             }
         }
         // Update the autoScrollDown value 
-        this.scope.autoScrollDown = this.hasScrollReachedBottom();
+        this.$scope.autoScrollDown = this.hasScrollReachedBottom();
     }
 
     public LinkInit(scope: any, element: any, attrs: any, ctrl: any,$rootScope: any)  {
         this.element = angular.element(element);
         // Watch the scroll and trigger actions
-        element.bind("scroll", _.debounce(this.watchScroll, 250));
-        scope.messages = [];
-        if (scope.channel) {
-            this.pubnubService.InitChannel(scope.$root.activeChannelUUID, this.NewMessage.bind(this));
-            scope.messages = this.pubnubService.GetMessages(scope.$root.activeChannelUUID, this.unregister.bind(this));
-        }
-        scope.message = "";
+        this.element.bind("scroll", _.debounce(this.watchScroll, 250));
     }
 }
 angular
@@ -104,4 +117,3 @@ angular
     .directive('messageList', [function ($scope, $rootScope: any, $anchorScroll: ng.IAnchorScrollProvider, pubnubService: pubnubService, ngNotify: any) {
         return new MessageList($scope, $rootScope, $anchorScroll, pubnubService, ngNotify);
     }]);
-    

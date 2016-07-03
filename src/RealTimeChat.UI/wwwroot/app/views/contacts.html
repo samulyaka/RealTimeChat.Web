@@ -1,7 +1,7 @@
 ﻿<div ng-controller="contactsController" id="sidebar-wrapper-left" class="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand"><a>MESSAGES</a></li>
-        <li class="{{item.online ? 'online' : 'offline'}}" ng-repeat="item in Contacts">
+        <li class="{{item.online ? 'online' : 'offline'}}" ng-repeat="item in $root.Contacts">
             <a ng-click="SelectContact(item)"> {{item.userName}}</a>
         </li>
     </ul>

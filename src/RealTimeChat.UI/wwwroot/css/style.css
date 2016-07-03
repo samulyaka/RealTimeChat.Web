@@ -134,12 +134,14 @@ body {
     left: 250px;
     margin-left: -250px;
     background: #2E3D54;
-    border-right: 6px solid #A9B9C9;
+    border-right: 6px solid #A9B9C9;    
+    overflow: hidden;
 }
 
 #sidebar-wrapper-right {
     right: 500px;
-    margin-right: -500px;
+    margin-right: -500px;  
+    overflow: hidden;
 }
 
 #page-content-wrapper {
@@ -298,6 +300,9 @@ body {
 
 .first-message {
     margin-bottom: 20px;
+    max-height: 160px;
+    overflow: auto;
+}
 }
 
 .first-message .chat-avatar img {
@@ -313,6 +318,7 @@ body {
 }
 
 .chat-form textarea {
+    margin-top:5px;
     margin-bottom: 10px;
     height: 100px;
 }
@@ -451,4 +457,15 @@ ul.ui-selectmenu-menu-popup {
 
 .ui-state-default {
     background-color: #fff;
+}
+#page-content-wrapper {
+    height: 95%;
+}
+.messages-list{
+    height: calc(100% - 140px);
+    overflow-y:scroll;
+}
+.chat-container{
+    
+    height: calc(100% - 200px);
 }
