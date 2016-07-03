@@ -13,6 +13,60 @@ body {
     overflow-x: hidden;
 }
 
+#loader {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/ajax-loader.gif);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: rgba(169, 185, 201, 0.2);
+    z-index: 2000;
+    display: none;
+}
+
+/* ---------------- */
+
+/* login form */
+
+.login-form {
+    background-color: #2E3D54;
+    height: 270px;
+    position: fixed;
+    width: 100%;
+}
+.login-form h1,
+.login-form label {
+    color: #fff;
+}
+
+.login-form > div {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.login-form button {
+    width: 100px;
+}
+
+/* ---------------- */
+
+
+/* logout form */
+
+.logout-form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1004;
+}
+
+.logout-form button {
+    font-weight: bold;
+}
+
 /* ---------------- */
 
 /* Toggles */
