@@ -39,6 +39,7 @@ namespace RealTimeChat.UI
             services.AddTransient((d) => new Core.DbWrapper(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<UserProvider>();
             services.AddTransient<ContactProvider>();
+            services.AddTransient<FileProvider>();
             var defaultPolicy = new AuthorizationPolicyBuilder()
                               .RequireAuthenticatedUser()
                               .Build();

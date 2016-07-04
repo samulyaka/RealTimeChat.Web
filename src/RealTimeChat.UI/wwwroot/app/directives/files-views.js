@@ -1,8 +1,9 @@
 var FileViews = (function () {
     function FileViews() {
-        this.restrict = 'EA';
+        this.restrict = 'E';
         this.templateUrl = 'app/views/file-views.html';
         this.replace = true;
+        this.controller = fileViewsController;
         this.link = function () {
         };
     }

@@ -57,7 +57,9 @@
         <form ng-submit="SendMessage()">
             <textarea class="form-control" ng-model="message" ng-keypress="ChangeMessage($event)" input-focus="messageInputFocus" />
             <button type="submit" class="btn btn-primary pull-right">Send Message</button>
-            <button class="btn btn-primary pull-right">Add Attachment</button>
         </form>
+        <div>
+            <button class="btn btn-primary pull-right" type="file" ngf-select="UploadFiles($file, $invalidFiles)">Add Attachment</button>
+        </div>
     </div>
 </div>

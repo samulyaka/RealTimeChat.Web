@@ -1,0 +1,4 @@
+ALTER TABLE [File] ADD IsImage bit NOT NULL DEFAULT 0
+GO
+ALTER TABLE [File] ADD ContentType nvarchar(16) NULL
+GO

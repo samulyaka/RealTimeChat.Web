@@ -43,30 +43,6 @@
                 e.preventDefault();
                 $("#wrapper").toggleClass("right-toggled");
             });
-
-
-
-            //a custom format option callback
-            var addressFormatting = function (text) {
-                var newText = text;
-                //array of find replaces
-                var findreps = [
-                    { find: /^([^\|]+) \| /g, rep: '<div class="text-muted">$1</div>' },
-                    { find: /([^\|><\(\)]+)$/g, rep: '<div class="text-primary">$1</div>' }
-                ];
-
-                for (var i in findreps) {
-                    newText = newText.replace(findreps[i].find, findreps[i].rep);
-                }
-                return newText;
-            };
-
-            $('select#files-list').selectmenu({
-                style: 'popup',
-                width: 450,
-                height: 50,
-                format: addressFormatting
-            });
         });
     </script>
 </div>
