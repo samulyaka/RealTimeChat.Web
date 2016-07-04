@@ -192,11 +192,10 @@
             if (m[0].length < defaultMessagesNumber) {
                 chennal.messagesAllFetched = true;
             }
+            
+            deferred.resolve(m);
 
-            this.rootScope.$digest()
-            deferred.resolve(m)
-
-        },
+        }.bind(this),
         error: function (m) {
             deferred.reject(m)
         },

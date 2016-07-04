@@ -167,9 +167,8 @@ var pubnubService = (function () {
                 if (m[0].length < defaultMessagesNumber) {
                     chennal.messagesAllFetched = true;
                 }
-                this.rootScope.$digest();
                 deferred.resolve(m);
-            },
+            }.bind(this),
             error: function (m) {
                 deferred.reject(m);
             },

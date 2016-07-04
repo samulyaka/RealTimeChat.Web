@@ -13,27 +13,28 @@
     scope: any = {
         channel: "@"
     };
-    constructor($scope, $rootScope: any, $anchorScroll: ng.IAnchorScrollProvider, pubnubService: pubnubService, ngNotify: any) {
+    constructor($scope, $rootScope: any) {
         this.$rootScope = $rootScope;
-        this.$anchorScroll = $anchorScroll;
-        this.pubnubService = pubnubService;
         console.log(this.pubnubService);
-        this.ngNotify = ngNotify;
         this.link = this.LinkInit.bind(this);
     }
-    public controller = ($scope, pubnubService: pubnubService, $rootScope: any) => {
+    public controller = ($scope, pubnubService: pubnubService, $anchorScroll: ng.IAnchorScrollProvider, $rootScope: any, ngNotify: any) => {
         console.log($scope.channel);
         this.$scope = $scope;
+        this.ngNotify = ngNotify;
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
         $scope.autoScrollDown = true;
         this.pubnubService = pubnubService;
+        this.$anchorScroll = $anchorScroll;
         console.log(this.pubnubService);
         if ($scope.channel) {
             this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
             this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this), function (msgs) {
-            $scope.messages = msgs;
-            this.$scope.$apply();
+                $scope.messages = msgs;
+                if (this.$scope.$root.$$phase != '$apply' && this.$scope.$root.$$phase != '$digest') {
+                    this.$scope.$apply();
+                }
             }.bind(this));
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
@@ -42,8 +43,10 @@
             if (newValue) {
                 this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
                 this.pubnubService.GetMessages(newValue, this.unregister.bind(this), function (msgs) {
-                $scope.messages = msgs;
-                this.$scope.$apply();
+                    $scope.messages = msgs;
+                    if (this.$scope.$root.$$phase != '$apply' && this.$scope.$root.$$phase != '$digest') {
+                        this.$scope.$apply();
+                    }
                 }.bind(this));
             }
             scope.message = "";
@@ -108,7 +111,7 @@
         if (this.hasScrollReachedTop()) {
 
             if (this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
-                this.ngNotify.set('All the messages have been loaded', 'grimace');
+              //  this.ngNotify.set('All the messages have been loaded', 'grimace');
             }
             else {
                 this.fetchPreviousMessages();
@@ -121,11 +124,11 @@
     public LinkInit(scope: any, element: any, attrs: any, ctrl: any,$rootScope: any)  {
         this.element = $('.messages-list',element);//angular.element(element);
         // Watch the scroll and trigger actions
-        this.element.on("scroll", _.debounce(this.watchScroll, 250));
+        this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
     }
 }
 angular
     .module('app')
-    .directive('messageList', [function ($scope, $rootScope: any, $anchorScroll: ng.IAnchorScrollProvider, pubnubService: pubnubService, ngNotify: any) {
-        return new MessageList($scope, $rootScope, $anchorScroll, pubnubService, ngNotify);
+    .directive('messageList', [function ($scope, $rootScope: any) {
+        return new MessageList($scope, $rootScope);
     }]);
