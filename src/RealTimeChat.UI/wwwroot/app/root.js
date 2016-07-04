@@ -18,7 +18,9 @@ var rootController = (function (_super) {
                 return;
             }
             user.online = event['action'] !== 'timeout' && event['action'] !== 'leave';
-            $rootScope.$digest();
+            if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                $scope.$apply();
+            }
         };
     }
     return rootController;

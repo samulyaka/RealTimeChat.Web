@@ -1,10 +1,11 @@
 ﻿class loginController extends baseController {
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any) {
+    pubnubService: any;
+    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any, pubnubService: pubnubService) {
         super($scope, $rootScope, $http, $location, ngNotify);
         $scope.loginFailed = false;
+        this.pubnubService = pubnubService;
         //testing
-        $scope.UserName = 'samulyak.a@gmail.com';
-        $scope.Password = '123';
+        this.pubnubService.CloseAllChannels();
     }
 
     public UserLogin() {

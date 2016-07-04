@@ -48,7 +48,6 @@ var MessageListController = (function (_super) {
         this.pubnubService = pubnubService;
         this.$anchorScroll = $anchorScroll;
         if ($scope.channel) {
-            console.log($scope.channel);
             this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
             this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this), function (msgs) {
                 $scope.messages = msgs;
@@ -58,7 +57,6 @@ var MessageListController = (function (_super) {
             }.bind(this));
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
-            console.log("change chat: " + newValue);
             $scope.messages = [];
             if (newValue) {
                 this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
@@ -73,7 +71,6 @@ var MessageListController = (function (_super) {
         }.bind(this));
     }
     MessageListController.prototype.SendMessage = function () {
-        console.log("send!", this.$scope.channel, '-');
         if (this.$scope.channel) {
             this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
         }
@@ -97,7 +94,6 @@ var MessageListController = (function (_super) {
         _.defer(this.scrollToBottom.bind(this));
     };
     MessageListController.prototype.scrollToBottom = function () {
-        console.log("aaa " + this.$scope.channel);
         this.element.scrollTop($(this.element).prop('scrollHeight'));
     };
     MessageListController.prototype.UploadFiles = function (file, errFiles) {
@@ -131,7 +127,7 @@ var MessageListController = (function (_super) {
     MessageListController.prototype.fetchPreviousMessages = function () {
         this.ngNotify.set('Loading previous messages...', 'success');
         var currentMessage = null;
-        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0].uuid; }.bind(this));
+        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0] ? msgs[0].uuid : null; }.bind(this));
         this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
             // Scroll to the previous message 
             this.$anchorScroll(currentMessage);
