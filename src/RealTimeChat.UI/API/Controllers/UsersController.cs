@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using RealTimeChat.UI.API.Models;
 using RealTimeChat.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using RealTimeChat.Core.DbProviders;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using System.Threading;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 

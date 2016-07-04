@@ -5,6 +5,7 @@
 /// <reference path="app/controllers/contacts.js" />
 /// <reference path="app/controllers/home.js" />
 /// <reference path="app/controllers/login.js" />
+/// <reference path="app/controllers/logout.js" />
 /// <reference path="app/directives/.js" />
 /// <reference path="app/directives/chat.js" />
 /// <reference path="app/directives/contact-list.js" />

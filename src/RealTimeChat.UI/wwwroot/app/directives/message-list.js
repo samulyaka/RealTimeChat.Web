@@ -8,7 +8,6 @@ var MessageList = (function () {
             channel: "@"
         };
         this.controller = function ($scope, pubnubService, $anchorScroll, $rootScope, ngNotify) {
-            console.log($scope.channel);
             _this.$scope = $scope;
             _this.ngNotify = ngNotify;
             $scope.SendMessage = _this.SendMessage.bind(_this);
@@ -16,7 +15,6 @@ var MessageList = (function () {
             $scope.autoScrollDown = true;
             _this.pubnubService = pubnubService;
             _this.$anchorScroll = $anchorScroll;
-            console.log(_this.pubnubService);
             if ($scope.channel) {
                 _this.pubnubService.InitChannel($scope.channel, _this.NewMessage.bind(_this));
                 _this.pubnubService.GetMessages($scope.channel, _this.unregister.bind(_this), function (msgs) {
@@ -27,7 +25,6 @@ var MessageList = (function () {
                 }.bind(_this));
             }
             $scope.$watch("channel", function (newValue, oldValue, scope) {
-                console.log(newValue);
                 $scope.messages = [];
                 if (newValue) {
                     this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
@@ -46,7 +43,6 @@ var MessageList = (function () {
         this.link = this.LinkInit.bind(this);
     }
     MessageList.prototype.SendMessage = function () {
-        console.log("send!");
         if (this.$scope.channel) {
             this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
         }
@@ -60,22 +56,16 @@ var MessageList = (function () {
         }
     };
     MessageList.prototype.NewMessage = function (msgs) {
-        console.log("new!!!");
         this.$scope.messages = msgs;
         this.$scope.$apply();
         if (this.$scope.autoScrollDown) {
             this.scrollToBottom();
         }
     };
-    // Scroll down when the list is populated
     MessageList.prototype.unregister = function () {
-        //    this.$scope.messages = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this));
-        // Defer the call of scrollToBottom is useful to ensure the DOM elements have been loaded
         _.defer(this.scrollToBottom.bind(this));
-        //  this.unregister();
     };
     MessageList.prototype.scrollToBottom = function () {
-        //  this.element.scrollTop($(this.element).prop('scrollHeight'));
         $(this.element).scrollTop($(this.element)[0].scrollHeight);
     };
     MessageList.prototype.hasScrollReachedBottom = function () {
@@ -101,12 +91,10 @@ var MessageList = (function () {
                 this.fetchPreviousMessages();
             }
         }
-        // Update the autoScrollDown value 
         this.$scope.autoScrollDown = this.hasScrollReachedBottom();
     };
     MessageList.prototype.LinkInit = function (scope, element, attrs, ctrl, $rootScope) {
-        this.element = $('.messages-list', element); //angular.element(element);
-        // Watch the scroll and trigger actions
+        this.element = $('.messages-list', element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
     };
     return MessageList;

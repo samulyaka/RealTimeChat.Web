@@ -24,13 +24,10 @@ var contactsController = (function (_super) {
             if (this.scope.$root.Contacts.length > 0) {
                 this.scope.$root.activeChannelUUID = this.scope.$root.Contacts[0].chatUID;
                 this.scope.$root.ActiveContact = this.scope.$root.Contacts[0];
-                console.log("change");
             }
         });
     };
     contactsController.prototype.SelectContact = function (item) {
-        console.log(item.chatUID);
-        console.log(this.scope);
         this.scope.$root.ActiveContact = item;
         this.scope.$root.activeChannelUUID = item.chatUID;
     };
