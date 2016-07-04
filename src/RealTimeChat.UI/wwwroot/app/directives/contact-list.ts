@@ -1,8 +1,10 @@
 ﻿class ContactList implements ng.IDirective {
 
-    restrict: string = 'EA';
+    restrict: string = 'E';
     templateUrl:string = 'app/views/contacts.html';
-    replace: boolean = true;
+ //   replace: boolean = true;
+    scope: any = {};
+   // controller: any = contactsController; 
     constructor() {
     }
     public link = () => {

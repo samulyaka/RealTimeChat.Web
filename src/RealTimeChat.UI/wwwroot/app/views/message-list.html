@@ -1,5 +1,24 @@
-<ul class="message-list collection">
-  <li class="collection-item message-item avatar" ng-repeat="message in messages track by message.uuid">
-    <message-item id="{{message.uuid}}" content="{{message.content}}" sender-uuid="{{message.sender_uuid}}" date="{{message.date}}"></message-item>
-  </li>
-</ul> 
+<div class="chat-container">
+    <div class="messages-list">
+        <div class="message container-fluid" ng-repeat="message in messages track by message.uuid">
+            <div class="chat-avatar" id="msg{{message.uuid}}">
+                <user-image imageUrl="{{message.user.imageUrl}}" />
+            </div>
+            <div class="message-body">
+                <span class="chat-name">{{message.user.userName}}</span><span class="chat-time text-muted">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
+
+                <div ng-bind-html="trust(message.content.text)">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-form">
+        <form ng-submit="SendMessage()">
+            <textarea class="form-control" ng-model="message" ng-keypress="ChangeMessage($event)" input-focus="messageInputFocus" />
+            <button type="submit" class="btn btn-primary pull-right">Send Message</button>
+            <button class="btn btn-primary pull-right attach-button" type="file" ngf-select="UploadFiles($file, $invalidFiles)">Add Attachment</button>
+        </form>
+    </div>
+</div>

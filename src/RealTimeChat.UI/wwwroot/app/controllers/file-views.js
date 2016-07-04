@@ -12,7 +12,8 @@ var fileViewsController = (function (_super) {
         this.timeout = $timeout;
         this.scope.moment = $window.moment;
         this.scope.isBlockVisible = false;
-        this.rootScope.$watch('currentUser.activeChannelUUID', this.UpdateFiles.bind(this));
+        this.scope.SelectFile = this.SelectFile.bind(this);
+        this.rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
         this.rootScope.$on("FileUploaded", function () {
             _this.LoadFiles();
         });
@@ -29,12 +30,20 @@ var fileViewsController = (function (_super) {
         }
         return newText;
     };
+    fileViewsController.prototype.SelectFile = function () {
+        var _this = this;
+        this.scope.Files.map(function (file) {
+            _this.scope.filesChatSelected = $('select#files-list').val();
+            if (file.id == _this.scope.filesChatSelected)
+                _this.scope.activeFileChannelUUID = file.filesChatUID;
+        });
+    };
     fileViewsController.prototype.UpdateFiles = function () {
-        if (!this.rootScope.currentUser.activeChannelUUID) {
+        if (!this.rootScope.activeChannelUUID) {
             this.scope.isBlockVisible = false;
             return;
         }
-        this.activeChannelUUID = this.rootScope.currentUser.activeChannelUUID;
+        this.activeChannelUUID = this.rootScope.activeChannelUUID;
         this.LoadFiles();
     };
     fileViewsController.prototype.LoadFiles = function () {
@@ -50,7 +59,7 @@ var fileViewsController = (function (_super) {
                         height: 50,
                         format: _this.AddressFormatting
                     });
-                }, 1000);
+                }, 0);
             }
         });
     };

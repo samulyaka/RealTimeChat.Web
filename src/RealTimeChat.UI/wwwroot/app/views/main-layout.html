@@ -7,16 +7,16 @@
     <file-views></file-views>
     <div id="page-content-wrapper">
         <!-- header -->
-        <h4>@danielavnon <span class="online"></span></h4>
+        <h4>{{$root.currentUser.mail}} <span class="online"></span></h4>
         <!-- header -->
         <!-- Contact info -->
         <div class="first-message container-fluid">
             <div class="chat-avatar">
-                <img src="images/uploads/user_icon.png" class="img-thumbnail" />
+                <user-image imageUrl="{{$root.ActiveContact.imageUrl}}" />
             </div>
             <div class="chat-info">
-                <span class="chat-name">Daniel Avnon <span class="online"></span> @danielavnon</span><br />
-                <span>Director, Avnon Consulting</span>
+                <span class="chat-name">{{$root.ActiveContact.userName}} <span class="{{$root.ActiveContact.online ? 'online' : 'offline'}}"></span></span><br />
+                <span>{{$root.ActiveContact.info}}</span>
             </div>
             <div class="message-body">
                 <p>This is the very begining of your direct message history with danielavnon.
@@ -28,10 +28,12 @@
             </div>
         </div>
         <!-- Contact info -->
-        <channel-chat channel="{{$root.currentUser.activeChannelUUID}}"></channel-chat>
+        <message-list channel="{{$root.activeChannelUUID}}"></message-list>
         <!-- Chat form -->
     </div>
 
+    <div id="loader"></div>
+    <logout class="logout-form"></logout>
 
     <script type="text/javascript">
         $(function () {

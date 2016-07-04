@@ -80,15 +80,6 @@ namespace RealTimeChat.Core.DbProviders
 
         public LoginnedUser FindUserByNameAndPassword(string name, string password)
         {
-            //return new LoginnedUser()
-            //{
-            //    Password = "dfsdf",
-            //    Name = "dfsdf",
-            //    ImageUrl = "fdasd",
-            //    Id = 4,
-            //    Info = "sdasd",
-            //    Mail = "sadas@asd.as"
-            //};
             var reader = this.Connection.ExecuteReader(System.Data.CommandType.Text, Queries.GetUserByNameAndPassword,
                     new SqlParameter("@p1", name),
                     new SqlParameter("@p2", password.SHA1Hash()));

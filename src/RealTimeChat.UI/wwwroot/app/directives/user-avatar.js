@@ -8,7 +8,7 @@ var UserImage = (function () {
         };
         this.controller = function ($scope) {
             var GlobalConfig = window['GlobalConfig'];
-            $scope = $scope.imageUrl || GlobalConfig.NoAvatarUrl;
+            $scope.imageUrl = $scope.imageUrl || GlobalConfig.NoAvatarUrl;
         };
         this.link = function () {
         };

@@ -44,9 +44,28 @@ namespace RealTimeChat.Core.DbProviders
                 CreatedByName = r.GetValueOrDefault<string>("CreatedByName"),
             });
         }
+        public FileModel GetFileById(string id)
+        {
+            var reader = this.Connection.ExecuteReader(System.Data.CommandType.Text, Queries.GetFileById,
+                new SqlParameter("@p", id));
+            return reader.FirstOfDefault(r => new FileModel()
+            {
+                Id = r.GetValueOrDefault<int>("Id"),
+                Name = r.GetValueOrDefault<string>("Name"),
+                Url = r.GetValueOrDefault<string>("Url"),
+                ChatUID = r.GetValueOrDefault<string>("ChatUID"),
+                FilesChatUID = r.GetValueOrDefault<string>("FilesChatUID"),
+                IsImage = r.GetValueOrDefault<bool>("IsImage"),
+                ContentType = r.GetValueOrDefault<string>("ContentType"),
+                CreatedAt = r.GetValueOrDefault<DateTime>("CreatedAt"),
+                CreatedBy = r.GetValueOrDefault<int>("CreatedBy"),
+                CreatedByName = r.GetValueOrDefault<string>("CreatedByName"),
+            });
+        }
         class Queries
         {
             public const string GetFilesByChatUId = "select f.Id,f.Name,f.Url,f.ChatUID,f.FilesChatUID,f.IsImage,f.ContentType,f.CreatedAt,f.CreatedBy,u.Name CreatedByName from [File] f inner join [User] u on (f.CreatedBy = u.Id) where ChatUID = @p";
+            public const string GetFileById = "select f.Id,f.Name,f.Url,f.ChatUID,f.FilesChatUID,f.IsImage,f.ContentType,f.CreatedAt,f.CreatedBy,u.Name CreatedByName from [File] f inner join [User] u on (f.CreatedBy = u.Id) where f.Id = @p";
             public const string InsertFile = "insert into [File](Name,Url,IsImage,ContentType,ChatUID,FilesChatUID,CreatedAt,CreatedBy) values (@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8); SELECT SCOPE_IDENTITY();";
         }
     }

@@ -6,7 +6,6 @@
     info: string = "";
     loginned: boolean = false;
     uuid: string;
-    activeChannelUUID: string;
 }
 class baseController {
     protected scope: any;

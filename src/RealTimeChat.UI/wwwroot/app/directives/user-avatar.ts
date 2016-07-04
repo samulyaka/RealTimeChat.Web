@@ -10,7 +10,7 @@
     }
     public controller = function ($scope) {
         var GlobalConfig: GlobalConfigModel = window['GlobalConfig'];
-        $scope = $scope.imageUrl || GlobalConfig.NoAvatarUrl;
+        $scope.imageUrl = $scope.imageUrl || GlobalConfig.NoAvatarUrl;
     }
     public link = () => {
     }

@@ -73,12 +73,20 @@ namespace RealTimeChat.UI.API.Controllers
             return new JsonResultModel<object>() { Success = true, Data = new { fileId = fileId } };
         }
 
+        [HttpGet("GetFile/{id}")]
+        public FileStreamResult GetFile(string id)
+        {
+            //var id = 35;
+            var file = this.fileProvider.GetFileById(id);
+            return File(new FileStream(hostingEnv.WebRootPath + $@"\images\uploads\{file.Url}", FileMode.Open), file.ContentType, file.Name);
+        }
+
         [Authorize]
         [HttpPost("LoadFiles")]
         public JsonResultModel<List<FileModel>> LoadFiles([FromBody]SearchModel search)
         {
-            if(String.IsNullOrEmpty(search.ChatUID))
-                return new JsonResultModel< List < FileModel >> () { Success = false, ErrorMessage = "ChatUID cannot be null" };
+            if (String.IsNullOrEmpty(search.ChatUID))
+                return new JsonResultModel<List<FileModel>>() { Success = false, ErrorMessage = "ChatUID cannot be null" };
 
             var files = this.fileProvider.GetFilesByChatUId(search.ChatUID);
             return new JsonResultModel<List<FileModel>>() { Success = true, Data = files };
