@@ -31,13 +31,20 @@
         console.log(this.pubnubService);
         if ($scope.channel) {
             this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
-            $scope.messages = this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this));
+            this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this), function (msgs) {
+            $scope.messages = msgs;
+            this.$scope.$apply();
+            }.bind(this));
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
             console.log(newValue);
+            $scope.messages = [];
             if (newValue) {
                 this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
-                scope.messages = this.pubnubService.GetMessages(newValue, this.unregister.bind(this));
+                this.pubnubService.GetMessages(newValue, this.unregister.bind(this), function (msgs) {
+                $scope.messages = msgs;
+                this.$scope.$apply();
+                }.bind(this));
             }
             scope.message = "";
         }.bind(this));
@@ -57,32 +64,37 @@
             this.SendMessage();
         }
     }
-    public NewMessage() {
+    public NewMessage(msgs) {
+        console.log("new!!!");
+        this.$scope.messages = msgs;
+        this.$scope.$apply();
         if (this.$scope.autoScrollDown) {
             this.scrollToBottom();
         }
     }
         // Scroll down when the list is populated
     public unregister() {
-        this.$scope.messages = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this));
+    //    this.$scope.messages = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this));
         // Defer the call of scrollToBottom is useful to ensure the DOM elements have been loaded
         _.defer(this.scrollToBottom.bind(this));
       //  this.unregister();
     }
     public scrollToBottom () {
-        this.element.scrollTop(this.element.prop('scrollHeight'));
+      //  this.element.scrollTop($(this.element).prop('scrollHeight'));
+        $(this.element).scrollTop($(this.element)[0].scrollHeight);
     }
     public hasScrollReachedBottom () {
-        return this.element.scrollTop() + this.element.innerHeight() >= this.element.prop('scrollHeight');
+        return $(this.element).scrollTop() + $(this.element).innerHeight() >= $(this.element).prop('scrollHeight');
     }
     public hasScrollReachedTop () {
-        return this.element.scrollTop() === 0;
+        return $(this.element).scrollTop() === 0;
     }
     public fetchPreviousMessages () {
 
         this.ngNotify.set('Loading previous messages...', 'success');
 
-        var currentMessage = this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this))[0].uuid;
+        var currentMessage = null;
+        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0].uuid; }.bind(this));
 
         this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
 
@@ -107,9 +119,9 @@
     }
 
     public LinkInit(scope: any, element: any, attrs: any, ctrl: any,$rootScope: any)  {
-        this.element = angular.element(element);
+        this.element = $('.messages-list',element);//angular.element(element);
         // Watch the scroll and trigger actions
-        this.element.bind("scroll", _.debounce(this.watchScroll, 250));
+        this.element.on("scroll", _.debounce(this.watchScroll, 250));
     }
 }
 angular

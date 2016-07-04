@@ -17,10 +17,14 @@ var contactsController = (function (_super) {
     }
     contactsController.prototype.LoadContacts = function () {
         this.Send("Users", "LoadContacts", null, function (res) {
+            for (var i = 0; i < res.data.length; i++) {
+                res.data[i].uuid = res.data[i].mail + res.data[i].id;
+            }
             this.scope.$root.Contacts = res.data;
             if (this.scope.$root.Contacts.length > 0) {
-                this.GetCurrentUser().activeChannelUUID = this.scope.$root.Contacts[0].chatUID;
+                this.scope.$root.activeChannelUUID = this.scope.$root.Contacts[0].chatUID;
                 this.scope.$root.ActiveContact = this.scope.$root.Contacts[0];
+                console.log("change");
             }
         });
     };

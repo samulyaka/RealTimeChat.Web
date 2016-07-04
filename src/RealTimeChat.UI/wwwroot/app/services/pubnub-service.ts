@@ -35,7 +35,7 @@
         chennal.messagesAllFetched = chennal.messagesAllFetched || false;
         return chennal;
     }
-    public InitChannel(channelUUID: string, callback: () => void): void {
+    public InitChannel(channelUUID: string, callback: (msg:any) => void): void {
         if (this.ChannelsData[channelUUID]) {
        //     this.rootScope.$digest();
             return;
@@ -43,17 +43,27 @@
         var chennal = this.GetChennal(channelUUID);
         chennal.newMessages = callback;
         this.Pubnub.subscribe({
-            channel: channelUUID,
+            channel: channelUUID, noheresync: true,
             disconnect: function () { console.log('dis') }.bind(this),
             reconnect: function () { console.log('rec') }.bind(this),
             message: function (channelUUID, message, envelope, channelOrGroup, time, channel) {
                 var chennal = this.GetChennal(channelUUID);
                 var user: any = _.find(this.rootScope.Contacts, { uuid: message.sender_uuid });
-                message.user = user;
+                message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl};
                 chennal.messages.push(message);
-                chennal.newMessages();
-            }.bind(this, channelUUID)
+                chennal.newMessages(chennal.messages);
+            }.bind(this, channelUUID),
+            presence: function (m) {
+                console.log("usState");
+                console.log(m);
+            },
+
+            state: {
+                name: 'presence-tutorial-user',
+                timestamp: new Date()
+            }
         });
+        
         this.Pubnub.time(function (time) {
             chennal.firstMessageTimeToken = time;
         });
@@ -86,18 +96,21 @@
             },
         });
     }
-    public GetMessages(channelUUID: string, callback: () => void) : any {
-        if (!channelUUID){
-            return [];
+    public GetMessages(channelUUID: string, callback: () => void, callbackResult: (msgs) => void) : void {
+        if (!channelUUID) {
+            callbackResult([]);
+            chennal.populatedCallbeck();
+            return;
         }
         var chennal = this.GetChennal(channelUUID);
         chennal.populatedCallbeck = callback;
+        chennal.populatedCallbeckResult = callbackResult;
         if (!chennal.messages || chennal.messages.length < 1) {
             this.Populate(channelUUID);
+            return;
         }
-
-        return chennal.messages;
-
+        callbackResult(chennal.messages);
+        chennal.populatedCallbeck();
     };
     
    MessagesAllFetched (channelUUID: string) {
@@ -115,21 +128,28 @@
         }
         var chennal = this.GetChennal(channelUUID);
         var defaultMessagesNumber = 10;
-
+        //this.Pubnub.here_now({
+        //    channel: channelUUID,
+        //    callback: function (m) {
+        //        console.log("user");
+        //        console.log(m);
+        //    }
+        //});
         this.Pubnub.history({
             channel: channelUUID,
             callback: function (m) {
                 chennal.timeTokenFirstMessage = m[1];
                 for (var i = 0; i < m[0].length; i++) {
                     
-                    var user: any = _.find(this.rootScope.Contacts, { uuid: m[0].sender_uuid });
-                    m[0][i].user = user;
+                    var user: any = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
+                    m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
                 }
                 angular.extend(chennal.messages, m[0]);
 
                 if (m[0].length < defaultMessagesNumber) {
                     chennal.messagesAllFetched = true;
                 }
+                chennal.populatedCallbeckResult(chennal.messages);
                 chennal.populatedCallbeck();
          //      this.rootScope.$digest()
            //    this.rootScope.$emit('factory:message:populated');
@@ -164,8 +184,8 @@
             chennal.timeTokenFirstMessage = m[1];
             for (var i = 0; i < m[0].length; i++) {
 
-                var user: any = _.find(this.rootScope.Contacts, { uuid: m[0].sender_uuid });
-                m[0][i].user = user;
+                var user: any = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
+                m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
             }
             Array.prototype.unshift.apply(chennal.messages, m[0]);
 

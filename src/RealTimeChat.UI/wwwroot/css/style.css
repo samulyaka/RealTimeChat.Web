@@ -187,6 +187,12 @@ body {
     color: #fff;
     background-color: rgba(169, 185, 201, 0.2);
 }
+#sidebar-wrapper-left .sidebar-nav li.title:hover {
+    text-decoration: none;
+    color: #A9B9C9;
+    background-color: transparent;
+    cursor:default;
+}
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
