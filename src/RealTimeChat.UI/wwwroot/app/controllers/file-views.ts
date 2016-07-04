@@ -11,11 +11,20 @@
         this.scope.moment = $window.moment;
         this.scope.isBlockVisible = false;
         this.scope.SelectFile = this.SelectFile.bind(this);
+        this.scope.filesChatSelected = "";
 
-        this.rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
+        $rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
+        $scope.$watch('filesChatSelected', this.SelectFile.bind(this));
 
-        this.rootScope.$on("FileUploaded", () => {
+        $rootScope.$on("FileUploaded", () => {
             this.LoadFiles();
+        });
+
+        $('select#files-list').selectmenu({
+            style: 'popup',
+            width: 450,
+            height: 50,
+            format: this.AddressFormatting
         });
     }
     AddressFormatting(text) {
@@ -32,11 +41,15 @@
     }
 
     SelectFile(): void {
-        this.scope.Files.map((file) => {
-            this.scope.filesChatSelected = $('select#files-list').val();
-            if (file.id == this.scope.filesChatSelected)
-                this.scope.activeFileChannelUUID = file.filesChatUID;
-        });
+        if (this.scope.filesChatSelected) {
+            this.scope.Files.map((file) => {
+                this.scope.filesChatSelected = $('select#files-list').val();
+                if (file.id == this.scope.filesChatSelected)
+                    this.scope.activeFileChannelUUID = file.filesChatUID;
+            });
+        } else {
+            this.scope.activeFileChannelUUID = ""
+        }
     }
 
     UpdateFiles(): void {
@@ -47,19 +60,20 @@
         this.activeChannelUUID = this.rootScope.activeChannelUUID
         this.LoadFiles();
     }
+
     LoadFiles(): void {
         this.Send("Files", "LoadFiles", { ChatUID: this.activeChannelUUID }, (res) => {
+            this.scope.filesChatSelected = "";
+            this.scope.activeFileChannelUUID = ""
             if (res.data.length) {
                 this.scope.isBlockVisible = true;
                 this.scope.Files = res.data;
                 this.timeout(() => {
-                    $('select#files-list').selectmenu({
-                        style: 'popup',
-                        width: 450,
-                        height: 50,
-                        format: this.AddressFormatting
-                    });
-                }, 0);
+                    $('select#files-list').selectmenu();
+                }, 1000);
+            } else {
+                this.scope.isBlockVisible = false;
+                this.scope.Files = [];
             }
         });
     }

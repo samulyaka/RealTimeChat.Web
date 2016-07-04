@@ -13,9 +13,17 @@ var fileViewsController = (function (_super) {
         this.scope.moment = $window.moment;
         this.scope.isBlockVisible = false;
         this.scope.SelectFile = this.SelectFile.bind(this);
-        this.rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
-        this.rootScope.$on("FileUploaded", function () {
+        this.scope.filesChatSelected = "";
+        $rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
+        $scope.$watch('filesChatSelected', this.SelectFile.bind(this));
+        $rootScope.$on("FileUploaded", function () {
             _this.LoadFiles();
+        });
+        $('select#files-list').selectmenu({
+            style: 'popup',
+            width: 450,
+            height: 50,
+            format: this.AddressFormatting
         });
     }
     fileViewsController.prototype.AddressFormatting = function (text) {
@@ -32,11 +40,16 @@ var fileViewsController = (function (_super) {
     };
     fileViewsController.prototype.SelectFile = function () {
         var _this = this;
-        this.scope.Files.map(function (file) {
-            _this.scope.filesChatSelected = $('select#files-list').val();
-            if (file.id == _this.scope.filesChatSelected)
-                _this.scope.activeFileChannelUUID = file.filesChatUID;
-        });
+        if (this.scope.filesChatSelected) {
+            this.scope.Files.map(function (file) {
+                _this.scope.filesChatSelected = $('select#files-list').val();
+                if (file.id == _this.scope.filesChatSelected)
+                    _this.scope.activeFileChannelUUID = file.filesChatUID;
+            });
+        }
+        else {
+            this.scope.activeFileChannelUUID = "";
+        }
     };
     fileViewsController.prototype.UpdateFiles = function () {
         if (!this.rootScope.activeChannelUUID) {
@@ -49,17 +62,18 @@ var fileViewsController = (function (_super) {
     fileViewsController.prototype.LoadFiles = function () {
         var _this = this;
         this.Send("Files", "LoadFiles", { ChatUID: this.activeChannelUUID }, function (res) {
+            _this.scope.filesChatSelected = "";
+            _this.scope.activeFileChannelUUID = "";
             if (res.data.length) {
                 _this.scope.isBlockVisible = true;
                 _this.scope.Files = res.data;
                 _this.timeout(function () {
-                    $('select#files-list').selectmenu({
-                        style: 'popup',
-                        width: 450,
-                        height: 50,
-                        format: _this.AddressFormatting
-                    });
-                }, 0);
+                    $('select#files-list').selectmenu();
+                }, 1000);
+            }
+            else {
+                _this.scope.isBlockVisible = false;
+                _this.scope.Files = [];
             }
         });
     };
