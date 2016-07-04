@@ -1,8 +1,9 @@
 ﻿class FileViews implements ng.IDirective {
 
-    restrict: string = 'EA';
+    restrict: string = 'E';
     templateUrl: string = 'app/views/file-views.html';
     replace: boolean = true;
+    controller: any = fileViewsController; 
     constructor() {
     }
     public link = () => {

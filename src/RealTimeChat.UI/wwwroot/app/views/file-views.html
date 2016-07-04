@@ -1,30 +1,14 @@
-﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper">
-    <ul class="sidebar-nav">
+﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper" ng-show="isBlockVisible" >
+    <ul class="sidebar-nav full-height" >
         <li class="sidebar-brand"><a href="#">Shared Files</a></li>
         <li>
-            <select name="files-list" id="files-list">
-                <option value="1111111111" selected="selected">username 3 Jan 19th, 2016 at 12:40 AM | sample_mp3audio.mp3</option>
-                <option value="2222222222">username 1 Feb 19th, 2016 at 13:12 AM | helloworld.pdf</option>
+            <select name="files-list" id="files-list" ng-change="SelectFile()" ng-model="filesChatSelected">
+                <option selected="{{$last}}" ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
             </select>
         </li>
         <li class="sidebar-brand"><a href="#">Comments</a></li>
-        <li>
-            <ul id="file-comment-list">
-                <li class="list-unstyled">
-                    <span class="chat-name">username 3</span><span class="chat-time text-muted">3 Jan 19th, 2016 at 12:40 AM</span>
-                    <p>Sharing a private file here will not make it public, but it will allow danielavnon to see and share it</p>
-                </li>
-                <li class="list-unstyled">
-                    <span class="chat-name">username 1</span><span class="chat-time text-muted">3 Jan 19th, 2016 at 12:40 AM</span>
-                    <p>Sharing a private file here will not make it public, but it will allow danielavnon to see and share it</p>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <div class="chat-form">
-                <textarea class="form-control"></textarea>
-                <button class="btn btn-primary pull-right">Add  Comment</button>
-            </div>
+        <li class="full-height">
+            <message-list channel="{{activeFileChannelUUID}}"></message-list>
         </li>
     </ul>
 </div>

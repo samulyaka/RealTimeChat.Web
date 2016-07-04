@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
     //,"pubnub.angular.service"
-    angular.module('app', ["ngRoute", "pubnub.angular.service", 'ngNotify']).config(function ($routeProvider, $httpProvider) {
+    angular.module('app', ["ngRoute", "pubnub.angular.service", 'ngFileUpload', 'ngNotify']).config(function ($routeProvider, $httpProvider) {
 
         $routeProvider.when('/login',
         {

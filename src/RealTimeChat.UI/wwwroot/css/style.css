@@ -69,6 +69,34 @@ body {
 
 /* ---------------- */
 
+/* file uploader */
+
+.thumb {
+    width: 24px;
+    height: 24px;
+    float: none;
+    position: relative;
+    top: 7px;
+}
+
+form .progress {
+    line-height: 15px;
+}
+
+.progress {
+    display: inline-block;
+    width: 100px;
+    border: 3px groove #CCC;
+}
+
+.progress div {
+    font-size: smaller;
+    background: orange;
+    width: 0;
+}
+
+/* ---------------- */
+
 /* Toggles */
 
 #left-menu-toggle, #right-menu-toggle {
@@ -345,6 +373,32 @@ body {
     text-indent: 0;
 }
 
+.uploaded-text {
+    color: #ccc;
+}
+
+.uploaded-link {
+    font-weight: bold;
+}
+
+/* --------------- */
+
+/* file chat */
+
+#sidebar-wrapper-right .chat-avatar {
+    display: none;
+}
+
+#sidebar-wrapper-right .message .message-body {
+    margin-left: 0;
+    text-indent: 0px;
+    line-height: 16px;
+}
+
+#sidebar-wrapper-right .attach-button {
+    display: none;
+}
+
 /* --------------- */
 
 /* online/offline */
@@ -474,4 +528,8 @@ ul.ui-selectmenu-menu-popup {
 .chat-container{
     
     height: calc(100% - 200px);
+}
+.full-height{
+    
+    height: 100%;
 }

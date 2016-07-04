@@ -1,0 +1,8 @@
+ALTER TABLE [File] ADD IsImage bit NOT NULL DEFAULT 0
+GO
+ALTER TABLE [File] ADD ContentType nvarchar(50) NULL
+GO
+ALTER TABLE [File] ADD CreatedAt Datetime NOT NULL
+GO
+ALTER TABLE [File] ADD CreatedBy int NOT NULL
+GO
