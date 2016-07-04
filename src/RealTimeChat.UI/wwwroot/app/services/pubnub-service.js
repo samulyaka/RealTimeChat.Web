@@ -51,14 +51,14 @@ var pubnubService = (function () {
         });
     };
     pubnubService.prototype.SendMessage = function (channelUUID, message) {
-        if (!message) {
+        if (!message.text && !message.file && !message.image) {
             return;
         }
         this.Pubnub.publish({
             channel: channelUUID,
             message: {
                 uuid: (this.CurrentUser.uuid + Date.now()),
-                content: { text: message, files: [], images: [] },
+                content: { text: message.text, file: message.file, image: message.image },
                 sender_uuid: this.CurrentUser.uuid,
                 date: Date.now()
             },

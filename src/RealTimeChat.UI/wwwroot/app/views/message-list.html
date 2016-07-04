@@ -6,9 +6,13 @@
             </div>
             <div class="message-body">
                 <span class="chat-name">{{message.user.userName}}</span><span class="chat-time text-muted">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
-
-                <div ng-bind-html="trust(message.content.text)">
-                    
+                <div ng-show="{{message.content.text != null }}">{{message.content.text}}</div>
+                <div ng-show="{{message.content.file != null }}">
+                    <span class="uploaded-text">uploaded a file</span> <a href="{{message.content.file.fileUrl}}">{{message.content.file.fileName}}</a>
+                </div>
+                <div ng-show="{{message.content.image != null }}">
+                    <span class="uploaded-text">uploaded an image</span> <a class="uploaded-link" href="{{message.content.image.fileUrl}}">{{message.content.image.fileName}}</a>
+                    <div class="image-preview"><img src="{{message.content.image.fileUrl}} "></div>
                 </div>
             </div>
         </div>

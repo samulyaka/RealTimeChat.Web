@@ -1,15 +1,21 @@
-﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper" ng-show="isBlockVisible" >
-    <ul class="sidebar-nav full-height" >
-        <li class="sidebar-brand"><a href="#">Shared Files</a></li>
+﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper">
+    <ul class="sidebar-nav full-height" ng-show="isBlockVisible">
+        <li class="sidebar-brand"><a>Shared Files</a></li>
         <li>
-            <select name="files-list" id="files-list" ng-model="filesChatSelected" >
+            <select name="files-list" id="files-list" ng-model="filesChatSelected">
                 <option value="">Select File</option>
                 <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
             </select>
         </li>
-        <li class="sidebar-brand"><a href="#">Comments</a></li>
+        <li class="sidebar-brand"><a>Comments</a></li>
         <li class="full-height">
             <message-list channel="{{activeFileChannelUUID}}"></message-list>
+        </li>
+    </ul>
+    <ul class="sidebar-nav full-height" ng-hide="isBlockVisible">
+        <li class="sidebar-brand"><a href="#">Shared Files</a></li>
+        <li>
+            <a>There are no files shared for this conversation.</a>
         </li>
     </ul>
 </div>
