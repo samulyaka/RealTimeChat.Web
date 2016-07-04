@@ -173,7 +173,6 @@ class MessageListController extends baseController {
                 this.fetchPreviousMessages();
             }
         }
-        // Update the autoScrollDown value 
         this.$scope.autoScrollDown = this.hasScrollReachedBottom();
     }
 }

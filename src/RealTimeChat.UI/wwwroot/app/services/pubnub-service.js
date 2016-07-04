@@ -26,7 +26,6 @@ var pubnubService = (function () {
     };
     pubnubService.prototype.InitChannel = function (channelUUID, callback) {
         if (this.ChannelsData[channelUUID]) {
-            //     this.rootScope.$digest();
             return;
         }
         var chennal = this.GetChennal(channelUUID);
@@ -43,29 +42,17 @@ var pubnubService = (function () {
                 chennal.newMessages(chennal.messages);
             }.bind(this, channelUUID),
             presence: function (m) {
-                console.log("usState");
-                console.log(m);
-            },
-            state: {
-                name: 'presence-tutorial-user',
-                timestamp: new Date()
-            }
+                console.log("AAA!!!");
+            }.bind(this)
         });
         this.Pubnub.time(function (time) {
             chennal.firstMessageTimeToken = time;
         });
-        // We listen to Presence events :
         this.rootScope.$on(this.Pubnub.getPresenceEventNameFor(channelUUID), function (ngEvent, presenceEvent) {
             console.log("AAA!!!");
             console.log(presenceEvent);
             this.rootScope.RefreshUserStatus(presenceEvent);
         });
-        //this.SubcribeNewMessage(channelUUID, function (chUUID, ngEvent, m) {
-        //    var chennal = this.GetChennal(chUUID);
-        //    chennal.messages.push(m);
-        //    chennal
-        //    this.rootScope.$digest();
-        //}.bind(this, channelUUID));
     };
     pubnubService.prototype.SendMessage = function (channelUUID, message) {
         if (!message) {
@@ -134,22 +121,12 @@ var pubnubService = (function () {
                 }
                 chennal.populatedCallbeckResult(chennal.messages);
                 chennal.populatedCallbeck();
-                //      this.rootScope.$digest()
-                //    this.rootScope.$emit('factory:message:populated');
             }.bind(this),
             count: defaultMessagesNumber,
             reverse: false
         });
     };
     ;
-    //SubcribeNewMessage(channelUUID, callback) {
-    //    var chennal = this.GetChennal(channelUUID);
-    //    chennal.newMessages = callback;
-    //    this.rootScope.$on(this.Pubnub.getMessageEventNameFor(channelUUID), function (chUUID) {
-    //        var chennal = this.GetChennal(chUUID);
-    //        chennal.newMessages();
-    //    }.bind(this, channelUUID));
-    //};
     pubnubService.prototype.FetchPreviousMessages = function (channelUUID) {
         var chennal = this.GetChennal(channelUUID);
         var defaultMessagesNumber = 10;
@@ -157,7 +134,6 @@ var pubnubService = (function () {
         this.Pubnub.history({
             channel: channelUUID,
             callback: function (m) {
-                // Update the timetoken of the first message
                 chennal.timeTokenFirstMessage = m[1];
                 for (var i = 0; i < m[0].length; i++) {
                     var user = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });

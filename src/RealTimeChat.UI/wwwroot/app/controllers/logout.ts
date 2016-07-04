@@ -1,8 +1,9 @@
 ﻿class logoutController extends baseController {
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService) {
-        super($scope, $rootScope, $http, $location);
-        console.log(this.rootScope.currentUser)
-        $scope.UserName = this.rootScope.currentUser.name;
+    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any) {
+        super($scope, $rootScope, $http, $location, ngNotify);
+        $rootScope.$watch("currentUser", function (newValue, oldValue) {
+            $scope.UserName = $rootScope.currentUser.name;
+        }.bind(this));
     }
 
     public UserLogout() {

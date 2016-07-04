@@ -5,10 +5,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var logoutController = (function (_super) {
     __extends(logoutController, _super);
-    function logoutController($scope, $rootScope, $http, $location) {
-        _super.call(this, $scope, $rootScope, $http, $location);
-        console.log(this.rootScope.currentUser);
-        $scope.UserName = this.rootScope.currentUser.name;
+    function logoutController($scope, $rootScope, $http, $location, ngNotify) {
+        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
+        $rootScope.$watch("currentUser", function (newValue, oldValue) {
+            $scope.UserName = $rootScope.currentUser.name;
+        }.bind(this));
     }
     logoutController.prototype.UserLogout = function () {
         this.Send("Account", "logout", {}, function (res) {

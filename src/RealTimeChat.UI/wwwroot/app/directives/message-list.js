@@ -145,7 +145,6 @@ var MessageListController = (function (_super) {
                 this.fetchPreviousMessages();
             }
         }
-        // Update the autoScrollDown value 
         this.$scope.autoScrollDown = this.hasScrollReachedBottom();
     };
     return MessageListController;

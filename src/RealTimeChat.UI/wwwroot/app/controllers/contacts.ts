@@ -24,8 +24,6 @@
         });
     }
     SelectContact(item: any): void {
-        console.log(item.chatUID);
-        console.log(this.scope);
         this.scope.$root.ActiveContact = item;
         this.scope.$root.activeChannelUUID = item.chatUID;
     }
