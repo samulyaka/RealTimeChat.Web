@@ -65,7 +65,6 @@ class MessageListController extends baseController {
         this.pubnubService = pubnubService;
         this.$anchorScroll = $anchorScroll;
         if ($scope.channel) {
-            console.log($scope.channel);
             this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
             this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this), function (msgs) {
                 $scope.messages = msgs;
@@ -75,7 +74,6 @@ class MessageListController extends baseController {
             }.bind(this));
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
-            console.log("change chat: "+newValue);
             $scope.messages = [];
             if (newValue) {
                 this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
@@ -90,7 +88,6 @@ class MessageListController extends baseController {
         }.bind(this));
     }
     SendMessage(): void {
-        console.log("send!", this.$scope.channel, '-');
         if (this.$scope.channel) {
             this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
         }
@@ -115,7 +112,6 @@ class MessageListController extends baseController {
         _.defer(this.scrollToBottom.bind(this));
     }
     public scrollToBottom() {
-        console.log("aaa " + this.$scope.channel);
         this.element.scrollTop($(this.element).prop('scrollHeight'));
     }
 
@@ -153,7 +149,7 @@ class MessageListController extends baseController {
         this.ngNotify.set('Loading previous messages...', 'success');
 
         var currentMessage = null;
-        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0].uuid; }.bind(this));
+        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0] ? msgs[0].uuid : null; }.bind(this));
 
         this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
 

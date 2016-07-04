@@ -6,7 +6,6 @@
     protected CurrentUser: LoginUserModel;
     protected ChannelsData: any;
     protected rootScope: any;
-    protected numMessage: number;
 
     constructor($rootScope : any, $q: any, $location: ng.ILocationService, Pubnub:any) {
         this.q = $q;
@@ -15,15 +14,17 @@
         this.Pubnub = Pubnub;
         this.GlobalConfig = window['GlobalConfig'];
         this.ChannelsData = {};
-        this.numMessage = 0;
     }
     public Init(currentUser: LoginUserModel): void {
         this.CurrentUser = currentUser;
+        console.log("init: -"+currentUser.uuid);
         this.Pubnub.init({
             publish_key: this.GlobalConfig.PubNubSettings.publishKey,
             subscribe_key: this.GlobalConfig.PubNubSettings.subscribeKey,
             uuid: currentUser.uuid,
-            ssl: true
+            ssl: true,
+            heartbeat: 40,
+            heartbeat_interval: 60
         });
 
     }
@@ -35,47 +36,41 @@
         chennal.messagesAllFetched = chennal.messagesAllFetched || false;
         return chennal;
     }
-    public InitChannel(channelUUID: string, callback: (msg:any) => void): void {
+    public InitChannel(channelUUID: string, callback: (msg: any) => void): void {
         if (this.ChannelsData[channelUUID]) {
+            this.ChannelsData[channelUUID].newMessages = callback;
             return;
         }
         var chennal = this.GetChennal(channelUUID);
         chennal.newMessages = callback;
         this.Pubnub.subscribe({
-            channel: channelUUID, noheresync: true,
-            disconnect: function () { console.log('dis') }.bind(this),
-            reconnect: function () { console.log('rec') }.bind(this),
-            message: function (channelUUID, message, envelope, channelOrGroup, time, channel) {
+            channel: channelUUID, 
+            message: function (channelUUID, message, envelope, channelOrGroup, time) {
                 var chennal = this.GetChennal(channelUUID);
                 var user: any = _.find(this.rootScope.Contacts, { uuid: message.sender_uuid });
                 message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
                 chennal.messages.push(message);
                 chennal.newMessages(chennal.messages);
             }.bind(this, channelUUID),
-            presence: function (m) {
-                console.log("AAA!!!");
+            
+            presence: function (presenceEvent) {
+                this.rootScope.RefreshUserStatus(presenceEvent);
             }.bind(this)
+            
         });
-        
+
         this.Pubnub.time(function (time) {
             chennal.firstMessageTimeToken = time;
         });
-        this.rootScope.$on(this.Pubnub.getPresenceEventNameFor(channelUUID), function (ngEvent, presenceEvent) {
-            console.log("AAA!!!");
-            console.log(presenceEvent);
-            this.rootScope.RefreshUserStatus(presenceEvent);
-        });
-        
     }
     public SendMessage(channelUUID: string, message: any) {
         if (!message) {
             return;
         }
-        this.numMessage++;
         this.Pubnub.publish({
             channel: channelUUID,
             message: {
-                uuid: (this.numMessage + this.CurrentUser.uuid + Date.now()),
+                uuid: (this.CurrentUser.uuid + Date.now()),
                 content: { text:message , files:[], images:[]},
                 sender_uuid: this.CurrentUser.uuid,
                 date: Date.now()
@@ -114,13 +109,6 @@
         }
         var chennal = this.GetChennal(channelUUID);
         var defaultMessagesNumber = 10;
-        //this.Pubnub.here_now({
-        //    channel: channelUUID,
-        //    callback: function (m) {
-        //        console.log("user");
-        //        console.log(m);
-        //    }
-        //});
         this.Pubnub.history({
             channel: channelUUID,
             callback: function (m) {
@@ -146,7 +134,7 @@
     };
 
 
-    FetchPreviousMessages(channelUUID) {
+    public FetchPreviousMessages(channelUUID) {
 
     var chennal = this.GetChennal(channelUUID);
     var defaultMessagesNumber = 10;
@@ -180,8 +168,15 @@
     });
 
     return deferred.promise
-};
-
+    }
+    public CloseAllChannels(): void{
+        for (var channelUUID in this.ChannelsData) {
+            this.Pubnub.unsubscribe({
+                channel: channelUUID
+            });
+        }
+        this.ChannelsData();
+    }
 }
 
 angular
