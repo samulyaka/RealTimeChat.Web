@@ -13,10 +13,10 @@
         <link rel="stylesheet" href="~/css/style.css"/>
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="~/js/ng-notify.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/jquery.ui.theme.min.css"/>
+        <link rel="stylesheet" href="~/css/style.min.css"/>
     </environment>
     @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
 </head>
@@ -65,13 +65,37 @@
         <script type="text/javascript" src="~/app/directives/user-avatar.js"></script>
     </environment>
     <environment names="Staging,Production">
-        <script type="text/javascript" src="~/lib/angular/angular.min.js"></script>
-        <script type="text/javascript" src="~/lib/ngstorage/ngStorage.min.js"></script>
-        <script type="text/javascript" src="~/app/app.min.js"></script>
-        <script type="text/javascript" src="~/app/mainController.min.js"></script>
-        @*<script type="text/javascript" src="~/js/pubnub-angular.min.js"></script>*@
-        <script type="text/javascript" src="~/js/angular-route/angular-route.min.js"></script>
-        <script type="text/javascript" src="~/app/controllers/loginController.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="~/js/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="~/js/jquery.ui.position.js"></script>
+        <script type="text/javascript" src="~/js/jquery.ui.selectmenu.js"></script>
+        <script type="text/javascript" src="~/js/lodash.js"></script>
+        <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="~/js/pubnub-3.15.2.js"></script>
+        <script type="text/javascript" src="~/js/moment.min.js"></script>
+        <script type="text/javascript" src="~/lib/angular/angular.js"></script>
+        <script type="text/javascript" src="~/js/ng-notify.min.js"></script>
+        <script type="text/javascript" src="~/js/ng-file-upload/ng-file-upload-shim.min.js"></script>
+        <script type="text/javascript" src="~/js/ng-file-upload/ng-file-upload.js"></script>
+        <script type="text/javascript" src="~/app/app.js"></script>
+        <script type="text/javascript" src="~/app/controllers/base.js"></script>
+        <script type="text/javascript" src="~/app/controllers/file-views.js"></script>
+        <script type="text/javascript" src="~/app/directives/contact-list.js"></script>
+        <script type="text/javascript" src="~/app/directives/files-views.js"></script>
+        <script type="text/javascript" src="~/app/directives/logout.js"></script>
+        <script type="text/javascript" src="~/app/controllers/contacts.js"></script>
+        <script type="text/javascript" src="~/lib/ngstorage/ngStorage.js"></script>
+        <script type="text/javascript" src="~/js/pubnub-angular.js"></script>
+        <script type="text/javascript" src="~/app/services/http-interceptor.js"></script>
+        <script type="text/javascript" src="~/app/services/pubnub-service.js"></script>
+        <script type="text/javascript" src="~/app/root.js"></script>
+        <script type="text/javascript" src="~/app/controllers/home.js"></script>
+        <script type="text/javascript" src="~/js/angular-route/angular-route.js"></script>
+        <script type="text/javascript" src="~/app/controllers/login.js"></script>
+        <script type="text/javascript" src="~/app/controllers/logout.js"></script>
+        <script type="text/javascript" src="~/app/directives/message-list.js"></script>
+        <script type="text/javascript" src="~/app/directives/user-avatar.js"></script>
     </environment>
 
 </body>

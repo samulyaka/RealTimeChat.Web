@@ -92,7 +92,6 @@ var MessageListController = (function (_super) {
         var _this = this;
         if (file) {
             file.upload = this.Upload.upload({
-                //url: this.BuidUrl('Files', 'FileUpload') + '?chatid=' + this.$scope.channel,
                 url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.$scope.channel,
                 data: { file: file }
             });
@@ -122,7 +121,6 @@ var MessageListController = (function (_super) {
         var currentMessage = null;
         this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0] ? msgs[0].uuid : null; }.bind(this));
         this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
-            // Scroll to the previous message 
             this.$anchorScroll(currentMessage);
         }.bind(this));
     };
