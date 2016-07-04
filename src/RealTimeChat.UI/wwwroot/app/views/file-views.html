@@ -1,5 +1,5 @@
 ﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper" ng-show="isBlockVisible" >
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav full-height" >
         <li class="sidebar-brand"><a href="#">Shared Files</a></li>
         <li>
             <select name="files-list" id="files-list" ng-change="SelectFile()" ng-model="filesChatSelected">
@@ -7,7 +7,7 @@
             </select>
         </li>
         <li class="sidebar-brand"><a href="#">Comments</a></li>
-        <li>
+        <li class="full-height">
             <message-list channel="{{activeFileChannelUUID}}"></message-list>
         </li>
     </ul>
