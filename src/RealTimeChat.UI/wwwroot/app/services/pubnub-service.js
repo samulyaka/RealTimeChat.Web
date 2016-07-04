@@ -9,7 +9,6 @@ var pubnubService = (function () {
     }
     pubnubService.prototype.Init = function (currentUser) {
         this.CurrentUser = currentUser;
-        console.log("init: -" + currentUser.uuid);
         this.Pubnub.init({
             publish_key: this.GlobalConfig.PubNubSettings.publishKey,
             subscribe_key: this.GlobalConfig.PubNubSettings.subscribeKey,
@@ -29,6 +28,9 @@ var pubnubService = (function () {
     pubnubService.prototype.InitChannel = function (channelUUID, callback) {
         if (this.ChannelsData[channelUUID]) {
             this.ChannelsData[channelUUID].newMessages = callback;
+            this.Pubnub.time(function (time) {
+                this.ChannelsData[channelUUID].firstMessageTimeToken = time;
+            }.bind(this));
             return;
         }
         var chennal = this.GetChennal(channelUUID);
@@ -41,13 +43,11 @@ var pubnubService = (function () {
                 message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
                 chennal.messages.push(message);
                 chennal.newMessages(chennal.messages);
+                chennal.timeTokenFirstMessage = envelope[1];
             }.bind(this, channelUUID),
             presence: function (presenceEvent) {
                 this.rootScope.RefreshUserStatus(presenceEvent);
             }.bind(this)
-        });
-        this.Pubnub.time(function (time) {
-            chennal.firstMessageTimeToken = time;
         });
     };
     pubnubService.prototype.SendMessage = function (channelUUID, message) {
@@ -117,7 +117,7 @@ var pubnubService = (function () {
     ;
     pubnubService.prototype.FetchPreviousMessages = function (channelUUID) {
         var chennal = this.GetChennal(channelUUID);
-        var defaultMessagesNumber = 10;
+        var defaultMessagesNumber = 5;
         var deferred = this.q.defer();
         this.Pubnub.history({
             channel: channelUUID,

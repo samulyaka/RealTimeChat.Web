@@ -13,14 +13,7 @@ var MessageList = (function () {
         };
         this.controller = MessageListController;
         this.$rootScope = $rootScope;
-        //   this.link = this.LinkInit.bind(this);
-        //    this.elements = {};
     }
-    MessageList.prototype.LinkInit = function (scope, element, attrs, ctrl, $rootScope) {
-        //    this.elements[this.$scope.channel] = $('.messages-list',element);//angular.element(element);
-        // Watch the scroll and trigger actions
-        //    this.elements[this.$scope.channel].on("scroll", _.debounce(this.watchScroll.bind(this), 250));
-    };
     return MessageList;
 }());
 angular
@@ -37,8 +30,7 @@ var MessageListController = (function (_super) {
         this.ngNotify = ngNotify;
         this.Upload = Upload;
         this.timeout = $timeout;
-        this.element = $('.messages-list', $element); //angular.element(element);
-        // Watch the scroll and trigger actions
+        this.element = $('.messages-list', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
@@ -135,9 +127,7 @@ var MessageListController = (function (_super) {
     };
     MessageListController.prototype.watchScroll = function () {
         if (this.hasScrollReachedTop()) {
-            if (this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
-            }
-            else {
+            if (!this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
                 this.fetchPreviousMessages();
             }
         }

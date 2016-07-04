@@ -18,16 +18,6 @@
     
     constructor($scope, $rootScope: any) {
         this.$rootScope = $rootScope;
-     //   this.link = this.LinkInit.bind(this);
-    //    this.elements = {};
-    }
-    
-
-
-    public LinkInit(scope: any, element: any, attrs: any, ctrl: any,$rootScope: any)  {
-    //    this.elements[this.$scope.channel] = $('.messages-list',element);//angular.element(element);
-        // Watch the scroll and trigger actions
-    //    this.elements[this.$scope.channel].on("scroll", _.debounce(this.watchScroll.bind(this), 250));
     }
 }
 angular
@@ -54,8 +44,7 @@ class MessageListController extends baseController {
         this.Upload = Upload;
         this.timeout = $timeout;
 
-        this.element = $('.messages-list', $element);//angular.element(element);
-        // Watch the scroll and trigger actions
+        this.element = $('.messages-list', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
@@ -162,10 +151,7 @@ class MessageListController extends baseController {
     public watchScroll() {
         if (this.hasScrollReachedTop()) {
 
-            if (this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
-                //  this.ngNotify.set('All the messages have been loaded', 'grimace');
-            }
-            else {
+            if (!this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
                 this.fetchPreviousMessages();
             }
         }

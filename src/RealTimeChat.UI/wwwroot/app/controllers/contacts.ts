@@ -15,6 +15,7 @@
         this.Send("Users", "LoadContacts", null, function (res) {
             for (var i = 0; i < res.data.length; i++) {
                 res.data[i].uuid = res.data[i].mail + res.data[i].id;
+                this.pubnubService.InitChannel(res.data[i].chatUID, function () { });
             }
             this.scope.$root.Contacts = res.data;
             if (this.scope.$root.Contacts.length > 0) {

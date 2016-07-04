@@ -17,7 +17,6 @@
     }
     public Init(currentUser: LoginUserModel): void {
         this.CurrentUser = currentUser;
-        console.log("init: -"+currentUser.uuid);
         this.Pubnub.init({
             publish_key: this.GlobalConfig.PubNubSettings.publishKey,
             subscribe_key: this.GlobalConfig.PubNubSettings.subscribeKey,
@@ -39,6 +38,9 @@
     public InitChannel(channelUUID: string, callback: (msg: any) => void): void {
         if (this.ChannelsData[channelUUID]) {
             this.ChannelsData[channelUUID].newMessages = callback;
+            this.Pubnub.time(function (time) {
+                this.ChannelsData[channelUUID].firstMessageTimeToken = time;
+            }.bind(this));
             return;
         }
         var chennal = this.GetChennal(channelUUID);
@@ -51,6 +53,7 @@
                 message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
                 chennal.messages.push(message);
                 chennal.newMessages(chennal.messages);
+                chennal.timeTokenFirstMessage = envelope[1];
             }.bind(this, channelUUID),
             
             presence: function (presenceEvent) {
@@ -59,9 +62,6 @@
             
         });
 
-        this.Pubnub.time(function (time) {
-            chennal.firstMessageTimeToken = time;
-        });
     }
     public SendMessage(channelUUID: string, message: any) {
         if (!message) {
@@ -137,7 +137,7 @@
     public FetchPreviousMessages(channelUUID) {
 
     var chennal = this.GetChennal(channelUUID);
-    var defaultMessagesNumber = 10;
+    var defaultMessagesNumber = 5;
 
     var deferred = this.q.defer()
 
