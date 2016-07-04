@@ -78,7 +78,7 @@ class MessageListController extends baseController {
     }
     SendMessage(): void {
         if (this.$scope.channel) {
-            this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
+            this.pubnubService.SendMessage(this.$scope.channel, { text: this.$scope.message });
         }
         this.$scope.message = "";
         this.$scope.messageInputFocus = true;
@@ -106,6 +106,7 @@ class MessageListController extends baseController {
 
     UploadFiles(file, errFiles): void {
         if (file) {
+
             file.upload = this.Upload.upload({
                 //url: this.BuidUrl('Files', 'FileUpload') + '?chatid=' + this.$scope.channel,
                 url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.$scope.channel,
@@ -114,13 +115,14 @@ class MessageListController extends baseController {
 
             file.upload.then((response) => {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
-
                 this.$rootScope.$emit("FileUploaded", {});
-                var fileMessage = '<span class="uploaded-text">uploaded a file</span> <a class="uploaded-link" href="' + fileUrl + '">' + file.name + '</a>';
+
                 if (~file.type.indexOf('image')) {
-                    fileMessage += '<div class="image-preview"><img src="' + fileUrl + '"></div>';
+                    this.pubnubService.SendMessage(this.$scope.channel, { image: { fileUrl, fileName: file.name } });
+                } else {
+                    this.pubnubService.SendMessage(this.$scope.channel, { file: { fileUrl, fileName: file.name } });
                 }
-                this.pubnubService.SendMessage(this.$scope.channel, fileMessage);
+
             }, (response) => {
                 if (response.status > 0)
                     this.$scope.errorMsg = response.status + ': ' + response.data;

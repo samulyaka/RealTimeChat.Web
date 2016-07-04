@@ -64,7 +64,7 @@ var MessageListController = (function (_super) {
     }
     MessageListController.prototype.SendMessage = function () {
         if (this.$scope.channel) {
-            this.pubnubService.SendMessage(this.$scope.channel, this.$scope.message);
+            this.pubnubService.SendMessage(this.$scope.channel, { text: this.$scope.message });
         }
         this.$scope.message = "";
         this.$scope.messageInputFocus = true;
@@ -99,11 +99,12 @@ var MessageListController = (function (_super) {
             file.upload.then(function (response) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
                 _this.$rootScope.$emit("FileUploaded", {});
-                var fileMessage = '<span class="uploaded-text">uploaded a file</span> <a class="uploaded-link" href="' + fileUrl + '">' + file.name + '</a>';
                 if (~file.type.indexOf('image')) {
-                    fileMessage += '<div class="image-preview"><img src="' + fileUrl + '"></div>';
+                    _this.pubnubService.SendMessage(_this.$scope.channel, { image: { fileUrl: fileUrl, fileName: file.name } });
                 }
-                _this.pubnubService.SendMessage(_this.$scope.channel, fileMessage);
+                else {
+                    _this.pubnubService.SendMessage(_this.$scope.channel, { file: { fileUrl: fileUrl, fileName: file.name } });
+                }
             }, function (response) {
                 if (response.status > 0)
                     _this.$scope.errorMsg = response.status + ': ' + response.data;
