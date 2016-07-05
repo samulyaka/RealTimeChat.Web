@@ -4117,29 +4117,29 @@ hr {
 	border-color: transparent transparent #333 transparent;
 }
 
-#main {
+.main {
 	margin: 56px 0 0 218px;
 	-webkit-transition: margin .3s ease;
 	transition: margin .3s ease;
 }
 
-.home #main {
+.home .main {
 	margin: 0;
 }
 
-#main > .jcf-scrollable-wrapper {
+.main > .jcf-scrollable-wrapper {
 	width: auto !important;
 }
 
-#main > .jcf-scrollable-wrapper .jcf-scrollable {
+.main > .jcf-scrollable-wrapper .jcf-scrollable {
 	width: auto !important;
 }
 
-.inner #main {
+.inner .main {
 	background: #f8f8f8;
 }
 
-.panel-showing #main {
+.panel-showing .main {
 	margin: 56px 466px 0 218px;
 }
 
@@ -4363,7 +4363,7 @@ hr {
 	color: #a5a7a7;
 }
 
-.day-msgs .message-sender {
+.message-sender {
 	font-weight: 700;
 	display: inline-block;
 	margin: 0 15px 0 0;
@@ -6995,7 +6995,7 @@ input[type="submit"].btn-submit:hover {
 	margin: 0 auto;
 }
 
-.home #main {
+.home .main {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -7008,7 +7008,7 @@ input[type="submit"].btn-submit:hover {
 	min-height: 510px;
 }
 
-.home #main:after {
+.home .main:after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -7619,7 +7619,7 @@ input[type="submit"].btn-submit:hover {
 		width: 55%;
 	}
 
-	.panel-showing #main {
+	.panel-showing .main {
 		margin: 50px 350px 0 218px;
 	}
 
@@ -7827,11 +7827,11 @@ input[type="submit"].btn-submit:hover {
 		padding: 0;
 	}
 
-	#main {
+	.main {
 		margin: 50px 0 0;
 	}
 
-	.panel-showing #main {
+	.panel-showing .main {
 		margin: 50px 350px 0 0;
 	}
 
@@ -7869,7 +7869,7 @@ input[type="submit"].btn-submit:hover {
 		width: 200px;
 	}
 
-	.home #main {
+	.home .main {
 		height: auto;
 	}
 }
@@ -8398,11 +8398,11 @@ input[type="submit"].btn-submit:hover {
 		width: 210px;
 	}
 
-	#main {
+	.main {
 		margin: 68px 0 0;
 	}
 
-	.panel-showing #main {
+	.panel-showing .main {
 		margin: 68px 0 0;
 	}
 
@@ -8951,7 +8951,7 @@ input[type="submit"].btn-submit:hover {
 }
 
 @media (max-width: 500px) {
-	.home #main {
+	.home .main {
 		height: calc(100vh - 96px);
 	}
 
@@ -9049,5 +9049,105 @@ input[type="submit"].btn-submit:hover {
 	.select-wrap input[type="text"] {
 		width: 75%;
 	}
+}
+
+/* Selectmenu
+----------------------------------*/
+.ui-selectmenu {
+    height: 50px;
+    font-size: 12px;
+    display: block;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    text-decoration: none;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.ui-selectmenu-icon {
+    position: absolute;
+    right: 6px;
+    margin-top: -8px;
+    top: 50%;
+}
+
+.ui-selectmenu-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    display: none;
+    z-index: 1005;
+}
+
+/* z-index: 1005 to make selectmenu work with dialog */
+
+.ui-selectmenu-menu ul {
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ui-selectmenu-open {
+    display: block;
+}
+
+ul.ui-selectmenu-menu-popup {
+    margin-top: -1px;
+}
+
+.ui-selectmenu-menu li {
+    padding: 0;
+    margin: 0;
+    display: block;
+    border-top: 1px dotted transparent;
+    border-bottom: 1px dotted transparent;
+    border-right-width: 0 !important;
+    border-left-width: 0 !important;
+}
+
+.ui-selectmenu-menu li a, .ui-selectmenu-status {
+    line-height: 1.4em;
+    display: block;
+    padding: .405em 2.1em .405em 1em;
+    outline: none;
+    text-decoration: none;
+}
+
+.ui-selectmenu-menu li.ui-state-disabled a, .ui-state-disabled {
+    cursor: default;
+}
+
+.ui-selectmenu-menu li.ui-selectmenu-hasIcon a,
+.ui-selectmenu-hasIcon .ui-selectmenu-status {
+    padding-left: 20px;
+    position: relative;
+    margin-left: 5px;
+}
+
+.ui-selectmenu-menu li .ui-icon, .ui-selectmenu-status .ui-icon {
+    position: absolute;
+    top: 1em;
+    margin-top: -8px;
+    left: 0;
+}
+
+.ui-state-default {
+    background-color: #fff;
+}
+
+.ui-selectmenu-menu .message-sender {
+    font-size: 14px;
+}
+
+.ui-selectmenu-menu .text {
+    font-size: 12px;
 }
 

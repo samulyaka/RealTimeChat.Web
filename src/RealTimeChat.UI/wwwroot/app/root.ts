@@ -1,5 +1,5 @@
 ﻿class rootController extends baseController {
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any) {
+    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any, $timeout: ng.ITimeoutService) {
         super($scope, $rootScope, $http, $location, ngNotify);
         $rootScope.currentUser = new LoginUserModel();
         $rootScope.Contacts = [];
@@ -19,6 +19,11 @@
                 $scope.$apply();
             }
         };
+
+        $scope.$on('$viewContentLoaded', function () {
+            $timeout(initThirdPartLibs, 1000);
+        });
+
     }
 }
 angular.module("app").controller('rootController', rootController);
