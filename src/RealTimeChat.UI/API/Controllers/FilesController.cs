@@ -49,7 +49,7 @@ namespace RealTimeChat.UI.API.Controllers
 
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var hashedFileName = Guid.NewGuid();
-            var realFileName = hostingEnv.WebRootPath + $@"\images\uploads\{hashedFileName}";
+            var realFileName = $@"{hostingEnv.WebRootPath}\images\uploads\{hashedFileName}";
             var user = this.userProvider.FindByName(User.Identity.Name);
 
             using (FileStream fs = System.IO.File.Create(realFileName))
@@ -77,7 +77,7 @@ namespace RealTimeChat.UI.API.Controllers
         {
             //var id = 35;
             var file = this.fileProvider.GetFileById(id);
-            return File(new FileStream(hostingEnv.WebRootPath + $@"\images\uploads\{file.Url}", FileMode.Open), file.ContentType, file.Name);
+            return File(new FileStream($@"{hostingEnv.WebRootPath}\images\uploads\{file.Url}", FileMode.Open), "application/octet-stream", file.Name);
         }
 
         [Authorize]
