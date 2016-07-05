@@ -65,6 +65,7 @@ var MessageListController = (function (_super) {
     MessageListController.prototype.SendMessage = function () {
         if (this.$scope.channel) {
             this.pubnubService.SendMessage(this.$scope.channel, { text: this.$scope.message });
+            this.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: this.$scope.message }, function () { });
         }
         this.$scope.message = "";
         this.$scope.messageInputFocus = true;
@@ -98,6 +99,7 @@ var MessageListController = (function (_super) {
             file.upload.then(function (response) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
                 _this.$rootScope.$emit("FileUploaded", {});
+                _this.Send("Discussion", "SendMessage", { PubnubUUID: _this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
                 if (~file.type.indexOf('image')) {
                     _this.pubnubService.SendMessage(_this.$scope.channel, { image: { fileUrl: fileUrl, fileName: file.name } });
                 }
