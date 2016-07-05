@@ -1,21 +1,86 @@
-﻿<div id="sidebar-wrapper-right" class="sidebar-wrapper">
-    <ul class="sidebar-nav full-height" ng-show="isBlockVisible">
-        <li class="sidebar-brand"><a>Shared Files</a></li>
-        <li>
-            <select name="files-list" id="files-list" ng-model="filesChatSelected">
-                <option value="">Select File</option>
-                <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
-            </select>
-        </li>
-        <li class="sidebar-brand"><a>Comments</a></li>
-        <li class="full-height">
-            <message-list channel="{{activeFileChannelUUID}}"></message-list>
-        </li>
-    </ul>
-    <ul class="sidebar-nav full-height" ng-hide="isBlockVisible">
-        <li class="sidebar-brand"><a href="#">Shared Files</a></li>
-        <li>
-            <a>There are no files shared for this conversation.</a>
-        </li>
-    </ul>
-</div>
+﻿<aside class="right-panel">
+    <div class="hold">
+        <div class="panel jcf-scrollable">
+            <div class="hold-right-panel">
+                <div class="heading"><span class="details-header">About <span>#creativeteam</span></span><a href="#" class="close-panel icon-close open-bar"></a></div>
+                <ul class="accordion">
+                    <li class="open-close active">
+                        <a href="#" class="opener">Group Details<i class="icon-pinned"></i></a>
+                        <div class="slide">
+                            <div class="content-details">
+                                <span class="title">Purpose</span>
+                                <p>The creative team is responsible for generating attention-grabbing ideas that will entice the consumer or target audience. Members of the team work together to develop conceptual campaigns designed to stand apart from competitors.</p><span class="title">Current Topic</span>
+                                <p>Total revamp / UI Re-design of the Incubator Portal</p><span class="by">Created by <a href="#">Ayana Palisuc</a> on <time datetime="2016-01-20">January 20th, 2016</time></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="open-close">
+                        <a href="#" class="opener">Pinned Items<i class="icon-pinned"></i></a>
+                        <div class="slide">
+                            <div class="content-pinned">
+                                <p>No items have been pinned yet! Open the context menu on important messages or files and choose <span>Pin to this conversation</span> … to stick them here.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="open-close active">
+                        <a href="#" class="opener">2/4 Members<i class="icon-users"></i></a>
+                        <div class="slide">
+                            <ul class="users-list">
+                                <li class="online-active">
+                                    <a href="#">
+                                        <div class="avatar"><img src="images/avatar4.png" alt="avatar"></div><span class="name">ayanapalisuc</span>
+                                    </a>
+                                </li>
+                                <li class="online-active">
+                                    <a href="#">
+                                        <div class="avatar"><img src="images/avatar5.png" alt="avatar"></div><span class="name">danielavnon</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="avatar"><img src="images/avatar6.png" alt="avatar"></div><span class="name">geo.rge</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="avatar"><img src="images/avatar7.png" alt="avatar"></div><span class="name">hannah</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="open-close">
+                        <a href="#" class="opener">Shared Files<i class="icon-file"></i></a>
+                        <div class="slide" >
+                            <!--<ul class="sidebar-nav full-height" ng-show="isBlockVisible">
+                                <li class="sidebar-brand"><a>Shared Files</a></li>
+                                <li>
+                                    <select name="files-list" id="files-list" ng-model="filesChatSelected">
+                                        <option value="">Select File</option>
+                                        <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
+                                    </select>
+                                </li>
+                                <li class="sidebar-brand"><a>Comments</a></li>
+                                <li class="full-height">
+                                    <message-list channel="{{activeFileChannelUUID}}"></message-list>
+                                </li>
+                            </ul>
+                            <ul class="sidebar-nav full-height" ng-hide="isBlockVisible">
+                                <li class="sidebar-brand"><a href="#">Shared Files</a></li>
+                                <li>
+                                    <a>There are no files shared for this conversation.</a>
+                                </li>
+                            </ul>-->
+                        </div>
+                    </li>
+                    <li class="open-close">
+                        <a href="#" class="opener">Notification Preferences<i class="icon-bell"></i></a>
+                        <div class="slide">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus corporis expedita dolore. Iure, repellendus placeat voluptatibus dolores eveniet possimus sint neque aperiam deserunt harum pariatur consequatur similique incidunt error laborum.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
