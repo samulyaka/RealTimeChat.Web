@@ -44,7 +44,7 @@ class MessageListController extends baseController {
         this.Upload = Upload;
         this.timeout = $timeout;
 
-        this.element = $('.messages-list', $element);
+        this.element = $('.jcf-scrollable', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
