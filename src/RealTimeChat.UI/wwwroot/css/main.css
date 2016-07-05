@@ -9150,4 +9150,39 @@ ul.ui-selectmenu-menu-popup {
 .ui-selectmenu-menu .text {
     font-size: 12px;
 }
-
+/* login form */
+
+.login-form {
+    background-color: #2E3D54;
+    height: 270px;
+    position: fixed;
+    width: 100%;
+}
+
+.login-form input, .login-form button {
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.login-form h1,
+.login-form label {
+    color: #fff;
+}
+
+.login-form > div {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.login-form button {
+    width: 100px;
+    background: #fff;
+    color: #2E3D54;
+    float: right;
+}
+.login-form input {
+    width: 100%;
+    background: #fff;
+}
+
+/* ---------------- */
