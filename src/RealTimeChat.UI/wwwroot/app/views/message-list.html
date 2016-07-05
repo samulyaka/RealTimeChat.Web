@@ -1,5 +1,4 @@
-<main id="main">
-    <div class="chat-container" id="{{channel}}">
+<main  id="{{channel}}" class="main">
         <div class="content-box jcf-scrollable">
             <div class="user-section">
                 <div class="avatar-holder mobile-hidden">
@@ -64,7 +63,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <form class="message-form" ng-submit="SendMessage()">
         <div class="input-file">
             <input type="file" ngf-select="UploadFiles($file, $invalidFiles)">

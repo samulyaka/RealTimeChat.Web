@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var rootController = (function (_super) {
     __extends(rootController, _super);
-    function rootController($scope, $rootScope, $http, $location, ngNotify) {
+    function rootController($scope, $rootScope, $http, $location, ngNotify, $timeout) {
         _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
         $rootScope.currentUser = new LoginUserModel();
         $rootScope.Contacts = [];
@@ -22,6 +22,9 @@ var rootController = (function (_super) {
                 $scope.$apply();
             }
         };
+        $scope.$on('$viewContentLoaded', function () {
+            $timeout(initThirdPartLibs, 1000);
+        });
     }
     return rootController;
 }(baseController));

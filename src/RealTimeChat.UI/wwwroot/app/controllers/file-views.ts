@@ -31,8 +31,8 @@
         var newText = text;
         //array of find replaces
         var findreps = [
-            { find: /^([^\|]+) \| /g, rep: '<div class="text-muted">$1</div>' },
-            { find: /([^\|><\(\)]+)$/g, rep: '<div class="text-primary">$1</div>' }
+            { find: /^([^\|]+) \| /g, rep: '<div class="message-sender">$1</div>' },
+            { find: /([^\|><\(\)]+)$/g, rep: '<div class="text">$1</div>' }
         ];
         for (var i in findreps) {
             newText = newText.replace(findreps[i].find, findreps[i].rep);
