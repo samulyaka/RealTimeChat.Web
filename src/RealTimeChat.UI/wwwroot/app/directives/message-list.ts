@@ -1,7 +1,7 @@
 ﻿class MessageList implements ng.IDirective {
 
     restrict: string = 'E';
-    templateUrl: string = window["GlobalConfig"].baseUrl + 'app/views/message-list.html';
+    templateUrl: string = 'app/views/message-list.html';
     replace: boolean = true;
     Upload: any;
     timeout: any;

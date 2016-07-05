@@ -5,11 +5,11 @@
 
         $routeProvider.when('/login',
         {
-            templateUrl: window["GlobalConfig"].baseUrl + 'app/views/login.html'
+            templateUrl: 'app/views/login.html'
         });
         $routeProvider.when('/home',
         {
-            templateUrl: window["GlobalConfig"].baseUrl + 'app/views/main-layout.html'
+            templateUrl: 'app/views/main-layout.html'
         });
        
         $routeProvider.otherwise({ redirectTo: '/home' });

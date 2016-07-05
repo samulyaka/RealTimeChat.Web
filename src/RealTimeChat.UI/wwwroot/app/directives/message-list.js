@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var MessageList = (function () {
     function MessageList($scope, $rootScope) {
         this.restrict = 'E';
-        this.templateUrl = window["GlobalConfig"].baseUrl + 'app/views/message-list.html';
+        this.templateUrl = 'app/views/message-list.html';
         this.replace = true;
         this.scope = {
             channel: "@",
