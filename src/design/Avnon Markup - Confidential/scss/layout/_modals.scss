@@ -1,0 +1,64 @@
+.popup-holder {
+	position: relative;
+	overflow: hidden;
+	height: 0;
+}
+.lightbox {
+	width: 600px;
+
+	@include media('<tablet') {
+		width: 100%;
+	}
+
+	&.upload {
+		width: 1124px;
+
+		@include media('<widescreen') {
+			width: 700px;
+		}
+
+		@include media('<tablet') {
+			width: 300px;
+		}
+	}
+}
+.lightbox h2 {
+	margin: 0 0 10px;
+}
+.lightbox p {
+	margin: 0;
+}
+
+.modal {
+	background: $white;
+	border-radius: 10px;
+	overflow: hidden;
+
+	.heading {
+		background: #fafbfb;
+		padding: 26px 24px;
+
+		@include media('<tablet') {
+			padding: 10px 15px;
+		}
+
+		h2 {
+			font-size: 18px;
+			color: #1e252c;
+			font-weight: 500;
+			margin: 0;
+		}
+	}
+
+	.icon-close {
+		position: absolute;
+		top: 26px;
+		right: 28px;
+		font-size: 12px;
+
+		@include media('<tablet') {
+			top: 15px;
+			right: 10px;
+		}
+	}
+}

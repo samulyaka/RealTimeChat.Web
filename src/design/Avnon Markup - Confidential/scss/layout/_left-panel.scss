@@ -1,0 +1,314 @@
+.left-panel {
+	width: 218px;
+	background: $blue;
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	//height: 100vh;
+	z-index: 1008;
+
+	@include media('<desktop') {
+		left: -218px;
+		transition: left .3s ease;
+	}
+
+	@include media('<tablet') {
+		width: 270px;
+		left: -270px;
+	}
+
+	.panel {
+		height: 100vh !important;
+	}
+
+	.mobile-menu & {
+		left: 0;
+	}
+
+	.head {
+		padding: 18px 0 28px 15px;
+		display: flex;
+		justify-content: space-between;
+
+		@include media('<tablet') {
+			display: none;
+		}
+	}
+
+	.drop-holder {
+		position: relative;
+	}
+
+	.team-holder {
+		width: 88%;
+
+		.team-name {
+			color: $white;
+			display: flex;
+			flex-wrap: wrap;
+
+			i {
+				font-size: 3px;
+				line-height: 3px;
+				margin: 0 0 0 5px;
+				position: absolute;
+				top: 12px;
+				right: 2px;
+			}
+		}
+
+		.user {
+			font-size: 14px;
+			position: relative;
+			padding: 0 0 0 15px;
+
+			&:after {
+				content: '';
+				position: absolute;
+				background: $green;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				left: 0;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+
+		span {
+			display: block;
+		}
+
+		.name {
+			font-size: 20px;
+			line-height: 23px;
+			display: block;
+			padding: 0 10px 3px 0;
+			position: relative;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			font-weight: 800;
+			width: 100%;
+		}
+	}
+
+	.notification-box {
+		//float: left;
+		margin: 4px 4px 0;
+
+		.notification-menu {
+			font-size: 14px;
+		}
+
+		.drop {
+			@include media('<tablet') {
+				left: auto;
+				right: -20px;
+			}
+		}
+	}
+
+	.list {
+		font-size: 15px;
+		padding: 0 10px 22px 0;
+		line-height:1.125;
+
+		@include media('<tablet') {
+			font-size: 13px;
+			padding: 0 10px 16px 0;
+		}
+
+		li {
+			float:none;
+			margin:0;
+		}
+
+		.dot {
+			position:relative;
+
+			&:after {
+				content:'';
+				position:absolute;
+				top:50%;
+				right:8px;
+				margin-top:-1px;
+				width:4px;
+				height:4px;
+				border-radius:50%;
+				background:$red;
+			}
+		}
+
+		a {
+			padding: 5px 4px 5px 42px;
+			border-radius: 0 4px 4px 0;
+			color:$light-blue;
+
+			@include media('<tablet') {
+				padding: 4px 4px 4px 42px;
+			}
+			&:hover {
+				color: $white;
+				background: #4c5d78;
+			}
+			.icon {
+				width: 20px;
+				text-align: center;
+				left: 12px;
+
+				@include media('<tablet') {
+					left: 19px;
+				}
+			}
+		}
+	}
+
+	ul {
+		@extend %listreset;
+		font-size: 14px;
+		font-weight: 500;
+
+		@include media('<tablet') {
+			font-size: 12px;
+		}
+
+		a {
+			position: relative;
+			padding: 4px 4px 4px 30px;
+			display: block;
+
+			@include media('<tablet') {
+				padding: 4px 4px 4px 34px;
+			}
+
+			.icon {
+				position: absolute;
+				top: 6px;
+				left: 10px;
+
+				@include media('<tablet') {
+					left: 14px;
+				}
+			}
+
+			&.opener {
+				text-transform: uppercase;
+				font-weight: 700;
+				padding: 4px 4px 4px 18px;
+				display: inline-block;
+
+				@include media('<tablet') {
+					padding: 4px 4px 4px 24px;
+				}
+
+				&:hover {
+					color: $white;
+				}
+			}
+		}
+	}
+
+	.accordion {
+		>li {
+			padding: 0 0 29px;
+
+			@include media('<tablet') {
+				padding: 0 0 18px;
+			}
+		}
+	}
+
+	.slide {
+		ul {
+			padding: 10px 10px 0 0;
+
+			@include media('<tablet') {
+				padding: 6px 10px 0 0;
+			}
+
+			a {
+				display: block;
+				padding: 3px 4px 5px 44px;
+				border-radius: 0 4px 4px 0;
+
+				&:hover {
+					color: $white;
+					background: #4c5d78;
+				}
+
+				.icon {
+					left: 20px;
+
+					@include media('<tablet') {
+						left: 26px;
+					}
+				}
+			}
+		}
+	}
+
+	.channels-btn {
+		float: right;
+		padding: 0;
+		margin: 6px 8px 0 0;
+
+		&:hover {
+			color: $white;
+		}
+	}
+
+	.started {
+		font-weight: 600;
+	}
+
+	.direct-list {
+		font-style: italic;
+		li {
+			&.online-active {
+				font-style: normal;
+				a {
+					color: $white;
+					&:after {
+						background: $green;
+						border-color: $green;
+					}
+				}
+			}
+		}
+
+		.new-message {
+			position: absolute;
+			top: 2px;
+			right: 4px;
+			text-align: center;
+			background: $red;
+			padding: 2px;
+			color: $white;
+			border-radius: 4px;
+			min-width: 26px;
+			font-style: normal;
+		}
+		a {
+			color:$light-blue;
+
+			&:after {
+				content: '';
+				position: absolute;
+				top: 6px;
+				left: 17px;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				border: 1px solid #667c88;
+
+				@include media('<tablet') {
+					width: 5px;
+					left: 24px;
+					height: 5px;
+				}
+			}
+		}
+	}
+}

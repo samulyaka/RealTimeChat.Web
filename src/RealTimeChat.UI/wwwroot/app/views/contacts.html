@@ -1,8 +1,90 @@
-﻿<div ng-controller="contactsController" id="sidebar-wrapper-left" class="sidebar-wrapper">
-    <ul class="sidebar-nav">
-        <li class="sidebar-brand title"><a>MESSAGES</a></li>
-        <li class="{{item.online ? 'online' : 'offline'}}" ng-repeat="item in $root.Contacts">
-            <a ng-click="SelectContact(item)"> {{item.userName}}</a>
-        </li>
-    </ul>
-</div>
+﻿<aside class="left-panel">
+    <div class="hold">
+        <div class="panel jcf-scrollable">
+            <header class="head">
+                <div class="team-holder drop-holder">
+                    <a href="#" class="team-name drop-open"><span class="name">Avnon Consulting<i class="icon-arrow-down"></i></span><span class="user">@ayanapalisuc</span></a>
+                    <div class="drop">
+                        <div class="section-header"><span class="header-label">You</span></div>
+                        <ul>
+                            <li><a href="#">Preferences</a></li>
+                            <li><a href="#">View Profile & Account</a></li>
+                            <li><a href="#">Help / Feedback</a></li>
+                            <li><a href="#">Set yourself away</a></li>
+                        </ul>
+                        <div class="section-header"><span class="header-label">Avnon Consulting</span></div>
+                        <ul>
+                            <li><a href="#">Apps and Custom Integrations</a></li>
+                            <li><a href="#">Customize Incubator Portal</a></li>
+                            <li><a href="#">Team Directory</a></li>
+                        </ul>
+                        <div class="section-header"><span class="header-label">Your Teams</span></div>
+                        <ul>
+                            <li><a href="#">Sign out of Avnon Consulting</a></li>
+                            <li><a href="#">Sign in to another team...</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="notification-box drop-holder">
+                    <a href="#" class="notification-menu drop-open"><i class="icon-bell"></i></a>
+                    <div class="drop">
+                        <div class="section-header"><span class="header-label">Snooze Notifications:</span></div>
+                        <ul>
+                            <li><a href="#">20 minutes</a></li>
+                            <li><a href="#">1 hour</a></li>
+                            <li><a href="#">2 hour</a></li>
+                            <li><a href="#">4 hour</a></li>
+                            <li><a href="#">8 hour</a></li>
+                            <li><a href="#">24 hour</a></li>
+                        </ul><a href="#" class="link">Do not disturb schedule...</a><a href="#" class="link">Notification Preferences</a>
+                    </div>
+                </div>
+            </header>
+            <form class="mobile-search desktop-hidden">
+                <div class="input-holder">
+                    <input type="search" placeholder="Jump To">
+                    <button type="submit" class="icon-search"></button>
+                </div>
+            </form>
+            <ul class="list">
+                <li><a href="#">Activities<i class="icon icon-chats"></i></a></li>
+                <li><a href="#">Calendar<i class="icon icon-calendar2"></i></a></li>
+                <li><a href="#">Clients<i class="icon icon-clients"></i></a></li>
+                <li><a href="#">Contacts<i class="icon icon-contacts"></i></a></li>
+                <li><a href="#">Applicants<i class="icon icon-applicants"></i></a></li>
+                <li><a href="#">Documents<i class="icon icon-document"></i></a></li>
+            </ul>
+            <ul class="accordion">
+                <li class="open-close active">
+                    <a href="#" class="channels-btn"><i class="icon-close2"></i></a><a href="#" class="opener">STARRED</a>
+                    <div class="slide">
+                        <ul class="started">
+                            <li><a href="#">greatwork<i class="icon">#</i></a></li>
+                            <li><a href="#">uiredesign<i class="icon">#</i></a></li>
+                            <li><a href="#">frontend<i class="icon">#</i></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="open-close active">
+                    <a href="#" class="opener">GOALS</a>
+                    <div class="slide">
+                        <ul>
+                            <li><a href="#">M&E Best Practices<i class="icon icon-hash"></i></a></li>
+                            <li><a href="#">How to establish effective mentoring ...<i class="icon icon-hash"></i></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="open-close active">
+                    <a href="#" class="channels-btn"><i class="icon-close2"></i></a><a href="#" class="opener">DIRECT MESSAGES (17)</a>
+                    <div class="slide" ng-controller="contactsController" id="sidebar-wrapper-left">
+                        <ul class="direct-list">
+                            <li class="{{item.online && 'online-active'}}" ng-repeat="item in $root.Contacts">
+                                <a ng-click="SelectContact(item)"> {{item.userName}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</aside>

@@ -1,28 +1,80 @@
-<div class="chat-container" id="{{channel}}">
-    <div class="messages-list">
-        <div class="message container-fluid" ng-repeat="message in messages track by message.uuid">
-            <div class="chat-avatar" id="msg{{message.uuid}}">
-                <user-image imageUrl="{{message.user.imageUrl}}" />
-            </div>
-            <div class="message-body">
-                <span class="chat-name">{{message.user.userName}}</span><span class="chat-time text-muted">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span>
-                <div ng-show="{{message.content.text != null }}">{{message.content.text}}</div>
-                <div ng-show="{{message.content.file != null }}">
-                    <span class="uploaded-text">uploaded a file</span> <a href="{{message.content.file.fileUrl}}">{{message.content.file.fileName}}</a>
+<main id="main">
+    <div class="chat-container" id="{{channel}}">
+        <div class="content-box jcf-scrollable">
+            <div class="user-section">
+                <div class="avatar-holder mobile-hidden">
+                    <div class="avatar"><img src="{{$root.ActiveContact.imageUrl}}" alt="image description"></div>
+                    <div class="text-holder">
+                        <a href="#" class="user-name">{{$root.ActiveContact.userName}}</a><a href="#" class="login-name">@danielavnon</a>
+                        <p>{{$root.ActiveContact.info}}</p>
+                    </div>
                 </div>
-                <div ng-show="{{message.content.image != null }}">
-                    <span class="uploaded-text">uploaded an image</span> <a class="uploaded-link" href="{{message.content.image.fileUrl}}">{{message.content.image.fileName}}</a>
-                    <div class="image-preview"><img src="{{message.content.image.fileUrl}} "></div>
+                <h2 class="desktop-hidden">Welcome!</h2>
+                <p>This is the very beginning of your direct message history with danielavnon.</p>
+                <p>Direct messages are private between the two of you. Sharing a private file here will not make it public, but it will allow danielavnon to see and share it.</p>
+            </div>
+            <div class="time-holder">
+                <time datetime="2016-01-19">January 19, 2016</time>
+            </div>
+            <div class="day-msgs" ng-repeat="message in messages track by message.uuid">
+                <ul class="action-container">
+                    <li><a href="#" class="icon-smile"></a></li>
+                    <li><a href="#" class="icon-list"></a></li>
+                    <li class="drop-holder">
+                        <a href="#" class="icon-more drop-open"></a>
+                        <div class="drop menu">
+                            <ul>
+                                <li><a href="#">Mark unread</a></li>
+                                <li><a href="#">Edit message</a></li>
+                                <li><a href="#">Pin to this conversation</a></li>
+                                <li><a href="#">Add reaction</a></li>
+                                <li><a href="#">Copy link</a></li>
+                            </ul><a href="#" class="link">Delete Message ...</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="avatar-icon" id="msg{{message.uuid}}"><img src="{{message.user.imageUrl}}" alt="image description"></div>
+                <div class="message-content">
+                    <a href="#" class="message-sender">{{message.user.userName}}</a><a href="#" class="timestamp">{{ message.date | date:"h:mma"}}</a>
+
+                    <div class="message-body" ng-show="message.content.file != null">
+                        <span class="text">uploaded a file:<a href="{{message.content.file.fileUrl}}" class="upload-file">{{message.content.file.fileName}}</a></span>
+                        <ul class="smile-list">
+                            <li><a href="#"><img src="images/smile1.png" alt="smile"><span>1</span></a></li>
+                            <li><a href="#"><img src="images/smile2.png" alt="smile"><span>2</span></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="message-body" ng-show="message.content.image != null">
+                        <span class="text">uploaded an image:<a href="{{message.content.image.fileUrl}}" class="upload-file">{{message.content.image.fileName}}</a></span>
+                        <div class="img">
+                            <img src="{{message.content.image.fileUrl}}" alt="image description">
+                            <ul class="btn-list">
+                                <li><a href="#"><i class="icon-cloud"></i></a></li>
+                                <li><a href="#"><i class="icon-more"></i></a></li>
+                                <li><a href="#"><span>10 comments</span></a></li>
+                            </ul>
+                        </div>
+                        <div class="final-icon" ng-show="message.content.text != null"><span><i class="icon-quote"></i>{{message.content.text}}</span></div>
+                    </div>
+
+                    <div class="message-body" ng-show="message.content.image == null && message.content.file == null">
+                        <p class="text">{{message.content.text}}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="chat-form">
-        <form ng-submit="SendMessage()">
-            <textarea class="form-control" ng-model="message" ng-keypress="ChangeMessage($event)" input-focus="messageInputFocus" />
-            <button type="submit" class="btn btn-primary pull-right">Send Message</button>
-            <button class="btn btn-primary pull-right attach-button" type="file" ngf-select="UploadFiles($file, $invalidFiles)">Add Attachment</button>
-        </form>
-    </div>
-</div>
+    <form class="message-form" ng-submit="SendMessage()">
+        <div class="input-file">
+            <input type="file" ngf-select="UploadFiles($file, $invalidFiles)">
+        </div>
+        <div class="message-input">
+            <textarea cols="30" rows="10" placeholder="Type your message..." class="flexible" ng-model="message" ng-keypress="ChangeMessage($event)" input-focus="messageInputFocus"></textarea>
+        </div>
+        <div class="btn-box">
+            <a class="icon-smile"></a>
+            <button type="submit" class="icon-send"></button>
+        </div>
+    </form>
+</main>
