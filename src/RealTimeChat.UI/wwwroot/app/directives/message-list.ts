@@ -44,7 +44,7 @@ class MessageListController extends baseController {
         this.Upload = Upload;
         this.timeout = $timeout;
 
-        this.element = $('.messages-list', $element);
+        this.element = $('.jcf-scrollable', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
@@ -79,6 +79,7 @@ class MessageListController extends baseController {
     SendMessage(): void {
         if (this.$scope.channel) {
             this.pubnubService.SendMessage(this.$scope.channel, { text: this.$scope.message });
+            this.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: this.$scope.message }, function () { });
         }
         this.$scope.message = "";
         this.$scope.messageInputFocus = true;
@@ -116,6 +117,7 @@ class MessageListController extends baseController {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
                 this.$rootScope.$emit("FileUploaded", {});
 
+                this.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
                 if (~file.type.indexOf('image')) {
                     this.pubnubService.SendMessage(this.$scope.channel, { image: { fileUrl, fileName: file.name } });
                 } else {

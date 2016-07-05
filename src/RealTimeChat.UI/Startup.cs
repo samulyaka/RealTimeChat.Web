@@ -40,6 +40,7 @@ namespace RealTimeChat.UI
             services.AddTransient<UserProvider>();
             services.AddTransient<ContactProvider>();
             services.AddTransient<FileProvider>();
+            services.AddTransient<DiscussionProvider>();
             var defaultPolicy = new AuthorizationPolicyBuilder()
                               .RequireAuthenticatedUser()
                               .Build();
