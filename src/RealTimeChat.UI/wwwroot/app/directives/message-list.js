@@ -30,7 +30,8 @@ var MessageListController = (function (_super) {
         this.ngNotify = ngNotify;
         this.Upload = Upload;
         this.timeout = $timeout;
-        this.element = $('.jcf-scrollable', $element);
+        this.element = $('.content-box', $element);
+        // $(this.element).css("overfolw","auto");
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
@@ -100,7 +101,7 @@ var MessageListController = (function (_super) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
                 _this.$rootScope.$emit("FileUploaded", {});
                 _this.Send("Discussion", "SendMessage", { PubnubUUID: _this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
-                if (~file.type.indexOf('image')) {
+                if (file.IsImage) {
                     _this.pubnubService.SendMessage(_this.$scope.channel, { image: { fileUrl: fileUrl, fileName: file.name } });
                 }
                 else {

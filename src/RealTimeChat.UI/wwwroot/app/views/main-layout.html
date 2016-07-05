@@ -5,6 +5,7 @@
     <top-header></top-header>
 
     <file-views></file-views>
+
     <message-list channel="{{$root.activeChannelUUID}}"></message-list>
 
     <div id="loader"></div>
@@ -12,16 +13,4 @@
 
     <popups></popups>
 
-    <script type="text/javascript">
-        $(function () {
-            $("#left-menu-toggle").click(function (e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("left-toggled");
-            });
-            $("#right-menu-toggle").click(function (e) {
-                e.preventDefault();
-                $("#wrapper").toggleClass("right-toggled");
-            });
-        });
-    </script>
 </div>

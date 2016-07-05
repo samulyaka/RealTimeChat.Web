@@ -34,12 +34,11 @@ namespace RealTimeChat.Core.DbProviders
                 Id = r.GetValueOrDefault<int>("Id"),
                 Name = r.GetValueOrDefault<string>("Name"),
                 Url = r.GetValueOrDefault<string>("Url"),
-                ChatUID = r.GetValueOrDefault<string>("ChatUID"),
-                FilesChatUID = r.GetValueOrDefault<string>("FilesChatUID"),
+                ChatUID = r.GetValueOrDefault<string>("ChatPubnubUUID"),
+                FilesChatUID = r.GetValueOrDefault<string>("PubnubUUID"),
                 IsImage = r.GetValueOrDefault<bool>("IsImage"),
-                ContentType = r.GetValueOrDefault<string>("ContentType"),
-                CreatedAt = r.GetValueOrDefault<DateTime>("CreatedAt"),
-                CreatedBy = r.GetValueOrDefault<int>("CreatedBy"),
+                CreatedAt = r.GetValueOrDefault<DateTime>("CreatedDate"),
+                CreatedBy = r.GetValueOrDefault<int>("IdUser"),
                 CreatedByName = r.GetValueOrDefault<string>("CreatedByName"),
             });
         }
@@ -55,8 +54,8 @@ namespace RealTimeChat.Core.DbProviders
                 ChatUID = r.GetValueOrDefault<string>("ChatPubnubUUID"),
                 FilesChatUID = r.GetValueOrDefault<string>("PubnubUUID"),
                 IsImage = r.GetValueOrDefault<bool>("IsImage"),
-                CreatedAt = r.GetValueOrDefault<DateTime>("CreatedAt"),
-                CreatedBy = r.GetValueOrDefault<int>("CreatedBy"),
+                CreatedAt = r.GetValueOrDefault<DateTime>("CreatedDate"),
+                CreatedBy = r.GetValueOrDefault<int>("IdUser"),
                 CreatedByName = r.GetValueOrDefault<string>("CreatedByName"),
             });
         }

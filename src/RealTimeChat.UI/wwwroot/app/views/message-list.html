@@ -1,5 +1,5 @@
 <main  id="{{channel}}" class="main">
-        <div class="content-box jcf-scrollable">
+        <div class="content-box">
             <div class="user-section">
                 <div class="avatar-holder mobile-hidden">
                     <div class="avatar"><img src="{{$root.ActiveContact.imageUrl}}" alt="image description"></div>
@@ -12,9 +12,9 @@
                 <p>This is the very beginning of your direct message history with danielavnon.</p>
                 <p>Direct messages are private between the two of you. Sharing a private file here will not make it public, but it will allow danielavnon to see and share it.</p>
             </div>
-            <div class="time-holder">
+            <!--<div class="time-holder">
                 <time datetime="2016-01-19">January 19, 2016</time>
-            </div>
+            </div>-->
             <div class="day-msgs" ng-repeat="message in messages track by message.uuid">
                 <ul class="action-container">
                     <li><a href="#" class="icon-smile"></a></li>

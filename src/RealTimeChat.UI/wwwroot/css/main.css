@@ -9150,4 +9150,6 @@ ul.ui-selectmenu-menu-popup {
 .ui-selectmenu-menu .text {
     font-size: 12px;
 }
-
+.content-box{
+    overflow: auto !important;
+}

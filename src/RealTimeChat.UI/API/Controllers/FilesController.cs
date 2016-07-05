@@ -63,7 +63,6 @@ namespace RealTimeChat.UI.API.Controllers
                 Name = originalFileName,
                 Url = hashedFileName.ToString(),
                 IsImage = file.ContentType.Contains("image"),
-                ContentType = file.ContentType,
                 ChatUID = chatUID,
                 FilesChatUID = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.Now,
