@@ -175,7 +175,7 @@
                 channel: channelUUID
             });
         }
-        this.ChannelsData();
+        this.ChannelsData = {};
     }
 }
 

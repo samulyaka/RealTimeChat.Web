@@ -1,7 +1,7 @@
 ﻿class Logout implements ng.IDirective {
 
     restrict: string = 'EA';
-    templateUrl:string = 'app/views/logout.html';
+    templateUrl: string = window["GlobalConfig"].baseUrl + 'app/views/logout.html';
     replace: boolean = true;
     constructor() {
     }

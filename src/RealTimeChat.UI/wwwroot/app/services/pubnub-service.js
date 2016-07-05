@@ -148,7 +148,7 @@ var pubnubService = (function () {
                 channel: channelUUID
             });
         }
-        this.ChannelsData();
+        this.ChannelsData = {};
     };
     return pubnubService;
 }());

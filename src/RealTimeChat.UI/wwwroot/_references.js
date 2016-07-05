@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../app/app.min.js" />
 /// <reference path="app/app.js" />
 /// <reference path="app/controllers/base.js" />
 /// <reference path="app/controllers/contacts.js" />
