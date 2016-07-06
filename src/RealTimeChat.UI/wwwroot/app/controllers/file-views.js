@@ -1,27 +1,32 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var fileViewsController = (function (_super) {
-    __extends(fileViewsController, _super);
-    function fileViewsController($scope, $rootScope, $http, $location, pubnubService, ngNotify, $timeout, $window) {
+var fileViewsController = (function () {
+    function fileViewsController($scope, $rootScope, contextService, $timeout, $window) {
         var _this = this;
-        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
-        this.pubnubService = pubnubService;
+        this.scope = $scope;
+        this.rootScope = $rootScope;
+        this.contextService = contextService;
+        this.scope.Context = contextService;
         this.timeout = $timeout;
         this.scope.moment = $window.moment;
-        this.scope.isBlockVisible = false;
+        this.scope.isBlockVisible = true;
         this.scope.SelectFile = this.SelectFile.bind(this);
         this.scope.filesChatSelected = "";
-        $rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
+        if ($scope.channel) {
+            this.activeChannelUUID = $scope.channel; //JSON.parse($scope.channel).uuid;
+        }
+        $scope.$watch("channel", function (newValue, oldValue, scope) {
+            if (newValue) {
+                this.activeChannelUUID = $scope.channel; //JSON.parse($scope.channel).uuid; 
+            }
+            this.UpdateFiles();
+        }.bind(this));
         $scope.$watch('filesChatSelected', this.SelectFile.bind(this));
+        this.UpdateFiles();
         $rootScope.$on("FileUploaded", function () {
             _this.LoadFiles();
         });
         $('select#files-list').selectmenu({
             style: 'popup',
-            width: 450,
+            width: 410,
             height: 50,
             format: this.AddressFormatting
         });
@@ -40,28 +45,34 @@ var fileViewsController = (function (_super) {
     };
     fileViewsController.prototype.SelectFile = function () {
         var _this = this;
+        var newUUID = new UUIDPupNubModel();
         if (this.scope.filesChatSelected) {
             this.scope.Files.map(function (file) {
                 _this.scope.filesChatSelected = $('select#files-list').val();
-                if (file.id == _this.scope.filesChatSelected)
-                    _this.scope.activeFileChannelUUID = file.filesChatUID;
+                if (file.id == _this.scope.filesChatSelected) {
+                    newUUID.uuid = file.filesChatUID;
+                    _this.scope.activeFileChannelUUID = newUUID;
+                }
             });
         }
         else {
-            this.scope.activeFileChannelUUID = "";
+            this.scope.activeFileChannelUUID = newUUID;
         }
     };
     fileViewsController.prototype.UpdateFiles = function () {
-        if (!this.rootScope.activeChannelUUID) {
+        if (!this.activeChannelUUID) {
             this.scope.isBlockVisible = false;
             return;
         }
-        this.activeChannelUUID = this.rootScope.activeChannelUUID;
         this.LoadFiles();
     };
     fileViewsController.prototype.LoadFiles = function () {
         var _this = this;
-        this.Send("Files", "LoadFiles", { ChatUID: this.activeChannelUUID }, function (res) {
+        if (!this.activeChannelUUID) {
+            return;
+        }
+        var chatUUID = JSON.parse(this.activeChannelUUID).uuid;
+        this.contextService.Send("Files", "LoadFiles", { ChatUID: chatUUID }, function (res) {
             _this.scope.filesChatSelected = "";
             _this.scope.activeFileChannelUUID = "";
             if (res.data.length) {
@@ -77,6 +88,7 @@ var fileViewsController = (function (_super) {
             }
         });
     };
+    fileViewsController.$inject = ['$scope', '$rootScope', 'contextService', '$timeout', '$window'];
     return fileViewsController;
-}(baseController));
+}());
 angular.module("app").controller('fileViewsController', fileViewsController);

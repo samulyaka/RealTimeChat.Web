@@ -3,6 +3,9 @@ var FileViews = (function () {
         this.restrict = 'E';
         this.templateUrl = 'app/views/file-views.html';
         this.replace = true;
+        this.scope = {
+            channel: "@"
+        };
         this.controller = fileViewsController;
         this.link = function () {
         };

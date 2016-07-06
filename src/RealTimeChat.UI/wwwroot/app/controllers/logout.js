@@ -1,26 +1,15 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var logoutController = (function (_super) {
-    __extends(logoutController, _super);
-    function logoutController($scope, $rootScope, $http, $location, ngNotify) {
-        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
-        $rootScope.$watch("currentUser", function (newValue, oldValue) {
-            $scope.UserName = $rootScope.currentUser.name;
-        }.bind(this));
+var logoutController = (function () {
+    function logoutController($scope, contextService) {
+        $scope.Context = contextService;
+        this.scope = $scope;
+        this.contextService = contextService;
     }
     logoutController.prototype.UserLogout = function () {
-        this.Send("Account", "logout", {}, function (res) {
-            if (res.success) {
-                this.rootScope.currentUser = null;
-                this.location.path("/login");
-                return false;
-            }
-            return false;
-        }, false);
+        this.contextService.LogOut(function (success) {
+            this.location.path("/login");
+        });
     };
+    logoutController.$inject = ['$scope', 'contextService'];
     return logoutController;
-}(baseController));
+}());
 angular.module("app").controller('logoutController', logoutController);

@@ -6,14 +6,18 @@
     protected CurrentUser: LoginUserModel;
     protected ChannelsData: any;
     protected rootScope: any;
+    protected contextService: any;
+    protected Initialized: boolean;
+    static $inject = ['$rootScope', '$q', 'Pubnub', 'contextService'];
 
-    constructor($rootScope : any, $q: any, $location: ng.ILocationService, Pubnub:any) {
+    constructor($rootScope: any, $q: any, Pubnub: any, contextService: ContextService) {
         this.q = $q;
         this.rootScope = $rootScope;
-        this.location = $location;
         this.Pubnub = Pubnub;
+        this.contextService = contextService;
         this.GlobalConfig = window['GlobalConfig'];
         this.ChannelsData = {};
+        this.Initialized = false;
     }
     public Init(currentUser: LoginUserModel): void {
         this.CurrentUser = currentUser;
@@ -25,6 +29,7 @@
             heartbeat: 40,
             heartbeat_interval: 60
         });
+        this.Initialized = true;
 
     }
     private GetChennal(channelUUID: string): any {
@@ -36,6 +41,9 @@
         return chennal;
     }
     public InitChannel(channelUUID: string, callback: (msg: any) => void): void {
+        if (!channelUUID) {
+            return;
+        }
         if (this.ChannelsData[channelUUID]) {
             this.ChannelsData[channelUUID].newMessages = callback;
             this.Pubnub.time(function (time) {
@@ -49,15 +57,15 @@
             channel: channelUUID, 
             message: function (channelUUID, message, envelope, channelOrGroup, time) {
                 var chennal = this.GetChennal(channelUUID);
-                var user: any = _.find(this.rootScope.Contacts, { uuid: message.sender_uuid });
-                message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                var user: any = _.find(this.contextService.Contacts, { uuid: message.sender_uuid });
+                message.user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 chennal.messages.push(message);
                 chennal.newMessages(chennal.messages);
                 chennal.timeTokenFirstMessage = envelope[1];
             }.bind(this, channelUUID),
             
             presence: function (presenceEvent) {
-                this.rootScope.RefreshUserStatus(presenceEvent);
+                this.contextService.RefreshUserStatus(presenceEvent);
             }.bind(this)
             
         });
@@ -80,7 +88,6 @@
     public GetMessages(channelUUID: string, callback: () => void, callbackResult: (msgs) => void) : void {
         if (!channelUUID) {
             callbackResult([]);
-            chennal.populatedCallbeck();
             return;
         }
         var chennal = this.GetChennal(channelUUID);
@@ -115,8 +122,8 @@
                 chennal.timeTokenFirstMessage = m[1];
                 for (var i = 0; i < m[0].length; i++) {
                     
-                    var user: any = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
-                    m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                    var user: any = _.find(this.contextService.Contacts, { uuid: m[0][i].sender_uuid });
+                    m[0][i].user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 }
                 angular.extend(chennal.messages, m[0]);
 
@@ -147,8 +154,8 @@
             chennal.timeTokenFirstMessage = m[1];
             for (var i = 0; i < m[0].length; i++) {
 
-                var user: any = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
-                m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                var user: any = _.find(this.contextService.Contacts, { uuid: m[0][i].sender_uuid });
+                m[0][i].user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
             }
             Array.prototype.unshift.apply(chennal.messages, m[0]);
 

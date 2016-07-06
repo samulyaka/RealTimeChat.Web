@@ -4,9 +4,9 @@
 
     <top-header></top-header>
 
-    <file-views></file-views>
+    <file-views channel="{{context.activeChannelUUID}}"></file-views>
 
-    <message-list channel="{{$root.activeChannelUUID}}"></message-list>
+    <message-list channel="{{context.activeChannelUUID}}" ></message-list>
 
     <div id="loader"></div>
     <logout class="logout-form"></logout>

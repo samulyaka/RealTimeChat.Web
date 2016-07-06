@@ -1,36 +1,30 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var MessageList = (function () {
-    function MessageList($scope, $rootScope) {
+    function MessageList() {
         this.restrict = 'E';
         this.templateUrl = 'app/views/message-list.html';
         this.replace = true;
+        this.link = function ($scope, $element, $attrs) {
+        };
         this.scope = {
             channel: "@",
         };
         this.controller = MessageListController;
-        this.$rootScope = $rootScope;
     }
     return MessageList;
 }());
 angular
     .module('app')
-    .directive('messageList', [function ($scope, $rootScope) {
-        return new MessageList($scope, $rootScope);
+    .directive('messageList', [function () {
+        return new MessageList();
     }]);
-var MessageListController = (function (_super) {
-    __extends(MessageListController, _super);
-    function MessageListController($scope, $element, $attrs, pubnubService, $anchorScroll, $http, $location, $rootScope, ngNotify, Upload, $timeout, $sce) {
-        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
+var MessageListController = (function () {
+    function MessageListController($scope, $element, $attrs, contextService, pubnubService, $anchorScroll, ngNotify, Upload, $timeout, $sce) {
         this.$scope = $scope;
-        this.$rootScope = $rootScope;
         this.ngNotify = ngNotify;
+        this.contextService = contextService;
         this.Upload = Upload;
         this.timeout = $timeout;
-        this.element = $('.content-box', $element);
+        this.element = $('.messages-list', $element);
         // $(this.element).css("overfolw","auto");
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
@@ -38,11 +32,13 @@ var MessageListController = (function (_super) {
         $scope.UploadFiles = this.UploadFiles.bind(this);
         $scope.autoScrollDown = true;
         $scope.trust = $sce.trustAsHtml;
+        $scope.context = contextService;
         this.pubnubService = pubnubService;
         this.$anchorScroll = $anchorScroll;
         if ($scope.channel) {
-            this.pubnubService.InitChannel($scope.channel, this.NewMessage.bind(this));
-            this.pubnubService.GetMessages($scope.channel, this.unregister.bind(this), function (msgs) {
+            this.ChannelUUID = JSON.parse($scope.channel).uuid;
+            this.pubnubService.InitChannel(this.ChannelUUID, this.NewMessage.bind(this));
+            this.pubnubService.GetMessages(this.ChannelUUID, this.unregister.bind(this), function (msgs) {
                 $scope.messages = msgs;
                 if (this.$scope.$root.$$phase != '$apply' && this.$scope.$root.$$phase != '$digest') {
                     this.$scope.$apply();
@@ -51,10 +47,14 @@ var MessageListController = (function (_super) {
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
             $scope.messages = [];
+            console.log("change:" + newValue);
             if (newValue) {
-                this.pubnubService.InitChannel(newValue, this.NewMessage.bind(this));
-                this.pubnubService.GetMessages(newValue, this.unregister.bind(this), function (msgs) {
+                this.$scope.message = "hello world!";
+                this.ChannelUUID = JSON.parse(newValue).uuid;
+                this.pubnubService.InitChannel(this.ChannelUUID, this.NewMessage.bind(this));
+                this.pubnubService.GetMessages(this.ChannelUUID, this.unregister.bind(this), function (msgs) {
                     $scope.messages = msgs;
+                    console.log(msgs);
                     if (this.$scope.$root.$$phase != '$apply' && this.$scope.$root.$$phase != '$digest') {
                         this.$scope.$apply();
                     }
@@ -65,8 +65,8 @@ var MessageListController = (function (_super) {
     }
     MessageListController.prototype.SendMessage = function () {
         if (this.$scope.channel) {
-            this.pubnubService.SendMessage(this.$scope.channel, { text: this.$scope.message });
-            this.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: this.$scope.message }, function () { });
+            this.pubnubService.SendMessage(this.ChannelUUID, { text: this.$scope.message });
+            this.contextService.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: this.$scope.message }, function () { });
         }
         this.$scope.message = "";
         this.$scope.messageInputFocus = true;
@@ -79,6 +79,7 @@ var MessageListController = (function (_super) {
         }
     };
     MessageListController.prototype.ChangeMessage = function (event) {
+        console.log("enter text!");
         if (event.which === 13) {
             event.preventDefault();
             this.SendMessage();
@@ -88,7 +89,7 @@ var MessageListController = (function (_super) {
         _.defer(this.scrollToBottom.bind(this));
     };
     MessageListController.prototype.scrollToBottom = function () {
-        this.element.scrollTop($(this.element).prop('scrollHeight'));
+        $(this.element).scrollTop($(this.element).prop('scrollHeight'));
     };
     MessageListController.prototype.UploadFiles = function (file, errFiles) {
         var _this = this;
@@ -99,13 +100,13 @@ var MessageListController = (function (_super) {
             });
             file.upload.then(function (response) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
-                _this.$rootScope.$emit("FileUploaded", {});
-                _this.Send("Discussion", "SendMessage", { PubnubUUID: _this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
+                //this.$rootScope.$emit("FileUploaded", {});
+                _this.contextService.Send("Discussion", "SendMessage", { PubnubUUID: _this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
                 if (file.IsImage) {
-                    _this.pubnubService.SendMessage(_this.$scope.channel, { image: { fileUrl: fileUrl, fileName: file.name } });
+                    _this.pubnubService.SendMessage(_this.ChannelUUID, { image: { fileUrl: fileUrl, fileName: file.name } });
                 }
                 else {
-                    _this.pubnubService.SendMessage(_this.$scope.channel, { file: { fileUrl: fileUrl, fileName: file.name } });
+                    _this.pubnubService.SendMessage(_this.ChannelUUID, { file: { fileUrl: fileUrl, fileName: file.name } });
                 }
             }, function (response) {
                 if (response.status > 0)
@@ -122,19 +123,20 @@ var MessageListController = (function (_super) {
     MessageListController.prototype.fetchPreviousMessages = function () {
         this.ngNotify.set('Loading previous messages...', 'success');
         var currentMessage = null;
-        this.pubnubService.GetMessages(this.$scope.channel, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0] ? msgs[0].uuid : null; }.bind(this));
-        this.pubnubService.FetchPreviousMessages(this.$scope.channel).then(function (m) {
+        this.pubnubService.GetMessages(this.ChannelUUID, this.unregister.bind(this), function (msgs) { currentMessage = msgs[0] ? "msg" + msgs[0].uuid : null; }.bind(this));
+        this.pubnubService.FetchPreviousMessages(this.ChannelUUID).then(function (m) {
             this.$anchorScroll(currentMessage);
         }.bind(this));
     };
     MessageListController.prototype.watchScroll = function () {
         if (this.hasScrollReachedTop()) {
-            if (!this.pubnubService.MessagesAllFetched(this.$scope.channel)) {
+            if (!this.pubnubService.MessagesAllFetched(this.ChannelUUID)) {
                 this.fetchPreviousMessages();
             }
         }
         this.$scope.autoScrollDown = this.hasScrollReachedBottom();
     };
+    MessageListController.$inject = ['$scope', '$element', '$attrs', 'contextService', 'pubnubService', '$anchorScroll', 'ngNotify', 'Upload', '$timeout', '$sce'];
     return MessageListController;
-}(baseController));
+}());
 angular.module("app").controller('messageListController', MessageListController);

@@ -2,9 +2,17 @@
     <div class="hold">
         <div class="panel jcf-scrollable">
             <div class="hold-right-panel">
-                <div class="heading"><span class="details-header">About <span>#creativeteam</span></span><a href="#" class="close-panel icon-close open-bar"></a></div>
-                <ul class="accordion">
-                    <li class="open-close active">
+                <div class="heading"><span class="details-header">Shared Files <i class="icon-file"></i></span><a href="#" class="close-panel icon-close open-bar"></a></div>
+                <div class="sidebar-nav full-height" ng-show="isBlockVisible">
+                    <select name="files-list" id="files-list" ng-model="filesChatSelected">
+                        <option value="">Select File</option>
+                        <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
+                    </select>
+                    <h4>Comments</h4>
+                    <message-list channel="{{activeFileChannelUUID}}"></message-list>
+                </div>
+                <!--<ul class="accordion">-->
+                    <!--<li class="open-close active">
                         <a href="#" class="opener">Group Details<i class="icon-pinned"></i></a>
                         <div class="slide">
                             <div class="content-details">
@@ -48,18 +56,11 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
-                    <li class="open-close">
+                    </li>-->
+                    <!--<li class="open-close">
                         <a href="#" class="opener">Shared Files<i class="icon-file"></i></a>
                         <div class="slide" >
-                            <div class="sidebar-nav full-height" ng-show="isBlockVisible">
-                                <select name="files-list" id="files-list" ng-model="filesChatSelected">
-                                    <option value="">Select File</option>
-                                    <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
-                                </select>
-                                <h4>Comments</h4>
-                                <message-list channel="{{activeFileChannelUUID}}"></message-list>
-                            </div>
+                            
                             <ul class="sidebar-nav full-height" ng-hide="isBlockVisible">
                                 <li class="sidebar-brand"><a href="#">Shared Files</a></li>
                                 <li>
@@ -67,14 +68,14 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
-                    <li class="open-close">
+                    </li>-->
+                    <!--<li class="open-close">
                         <a href="#" class="opener">Notification Preferences<i class="icon-bell"></i></a>
                         <div class="slide">
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus corporis expedita dolore. Iure, repellendus placeat voluptatibus dolores eveniet possimus sint neque aperiam deserunt harum pariatur consequatur similique incidunt error laborum.</p>
                         </div>
-                    </li>
-                </ul>
+                    </li>-->
+                <!--</ul>-->
             </div>
         </div>
     </div>

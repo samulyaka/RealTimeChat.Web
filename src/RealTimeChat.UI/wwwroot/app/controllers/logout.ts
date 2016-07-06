@@ -1,20 +1,17 @@
-﻿class logoutController extends baseController {
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any) {
-        super($scope, $rootScope, $http, $location, ngNotify);
-        $rootScope.$watch("currentUser", function (newValue, oldValue) {
-            $scope.UserName = $rootScope.currentUser.name;
-        }.bind(this));
+﻿class logoutController {
+    private scope: any;
+    private contextService: ContextService;
+    static $inject = ['$scope', 'contextService'];
+    constructor($scope: any, contextService: ContextService) {
+        $scope.Context = contextService;
+        this.scope = $scope;
+        this.contextService = contextService;
     }
 
     public UserLogout() {
-        this.Send("Account", "logout", { }, function (res) {
-            if (res.success) {
-                this.rootScope.currentUser = null;
-                this.location.path("/login");
-                return false;
-            }
-            return false;
-        }, false);
+        this.contextService.LogOut(function (success) {
+            this.location.path("/login");
+        });
     }
 }
 angular.module("app").controller('logoutController', logoutController);

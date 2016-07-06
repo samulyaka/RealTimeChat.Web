@@ -3,6 +3,9 @@
     restrict: string = 'E';
     templateUrl: string = 'app/views/file-views.html';
     replace: boolean = true;
+    scope: any = {
+        channel:"@"
+    };
     controller: any = fileViewsController; 
     constructor() {
     }

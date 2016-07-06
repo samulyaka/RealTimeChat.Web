@@ -1,10 +1,10 @@
 var UserImage = (function () {
     function UserImage() {
         this.restrict = 'E';
-        this.template = '<img src="{{imageUrl}}" class="img-thumbnail">';
+        this.template = '<img src="{{imageUrl}}"/>';
         this.replace = true;
         this.scope = {
-            imageUrl: "@",
+            imageUrl: "@"
         };
         this.controller = function ($scope) {
             var GlobalConfig = window['GlobalConfig'];

@@ -1,4 +1,4 @@
-﻿<aside class="left-panel">
+﻿<aside class="left-panel" ng-controller="contactsController">
     <div class="hold">
         <div class="panel jcf-scrollable">
             <header class="head">
@@ -76,9 +76,9 @@
                 </li>
                 <li class="open-close active">
                     <a href="#" class="channels-btn"><i class="icon-close2"></i></a><a href="#" class="opener">DIRECT MESSAGES (17)</a>
-                    <div class="slide" ng-controller="contactsController" id="sidebar-wrapper-left">
+                    <div class="slide" id="sidebar-wrapper-left">
                         <ul class="direct-list">
-                            <li class="{{item.online && 'online-active'}}" ng-repeat="item in $root.Contacts">
+                            <li class="{{item.online && 'online-active'}}" ng-repeat="item in Contacts">
                                 <a ng-click="SelectContact(item)"> {{item.userName}}</a>
                             </li>
                         </ul>

@@ -1,13 +1,15 @@
 <main  id="{{channel}}" class="main">
-        <div class="content-box">
+        <div class="content-box messages-list">
             <div class="user-section">
                 <div class="avatar-holder mobile-hidden">
-                    <div class="avatar"><img src="{{$root.ActiveContact.imageUrl}}" alt="image description"></div>
-                    <div class="text-holder">
-                        <a href="#" class="user-name">{{$root.ActiveContact.userName}}</a><a href="#" class="login-name">@danielavnon</a>
-                        <p>{{$root.ActiveContact.info}}</p>
+                    <div class="avatar">
+                        <user-image imageUrl="{{context.ActiveContact.imageUrl}}" />
                     </div>
-                </div>
+                        <div class="text-holder">
+                            <a class="{{context.ActiveContact.online ? 'user-name' : 'user-name offline'}}">{{context.ActiveContact.userName}}</a><a class="login-name">{{context.ActiveContact.mail}}</a>
+                            <p>{{context.ActiveContact.info}}</p>
+                        </div>
+                    </div>
                 <h2 class="desktop-hidden">Welcome!</h2>
                 <p>This is the very beginning of your direct message history with danielavnon.</p>
                 <p>Direct messages are private between the two of you. Sharing a private file here will not make it public, but it will allow danielavnon to see and share it.</p>
@@ -17,10 +19,10 @@
             </div>-->
             <div class="day-msgs" ng-repeat="message in messages track by message.uuid">
                 <ul class="action-container">
-                    <li><a href="#" class="icon-smile"></a></li>
-                    <li><a href="#" class="icon-list"></a></li>
+                    <li><a class="icon-smile"></a></li>
+                    <li><a class="icon-list"></a></li>
                     <li class="drop-holder">
-                        <a href="#" class="icon-more drop-open"></a>
+                        <a class="icon-more drop-open"></a>
                         <div class="drop menu">
                             <ul>
                                 <li><a href="#">Mark unread</a></li>
@@ -32,16 +34,17 @@
                         </div>
                     </li>
                 </ul>
-                <div class="avatar-icon" id="msg{{message.uuid}}"><img src="{{message.user.imageUrl}}" alt="image description"></div>
+                <div class="avatar-icon" id="msg{{message.uuid}}"><user-image imageUrl="{{message.user.imageUrl}}" /></div>
+                
                 <div class="message-content">
                     <a href="#" class="message-sender">{{message.user.userName}}</a><a href="#" class="timestamp">{{ message.date | date:"h:mma"}}</a>
 
                     <div class="message-body" ng-show="message.content.file != null">
                         <span class="text">uploaded a file:<a href="{{message.content.file.fileUrl}}" class="upload-file">{{message.content.file.fileName}}</a></span>
-                        <ul class="smile-list">
+                        <!--<ul class="smile-list">
                             <li><a href="#"><img src="images/smile1.png" alt="smile"><span>1</span></a></li>
                             <li><a href="#"><img src="images/smile2.png" alt="smile"><span>2</span></a></li>
-                        </ul>
+                        </ul>-->
                     </div>
 
                     <div class="message-body" ng-show="message.content.image != null">
@@ -75,4 +78,8 @@
             <button type="submit" class="icon-send"></button>
         </div>
     </form>
+    <script type="text/javascript">
+        setTimeout(initThirdPartLibs,10000);
+        
+    </script>
 </main>

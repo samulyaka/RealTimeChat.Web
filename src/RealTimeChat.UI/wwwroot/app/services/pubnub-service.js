@@ -1,11 +1,12 @@
 var pubnubService = (function () {
-    function pubnubService($rootScope, $q, $location, Pubnub) {
+    function pubnubService($rootScope, $q, Pubnub, contextService) {
         this.q = $q;
         this.rootScope = $rootScope;
-        this.location = $location;
         this.Pubnub = Pubnub;
+        this.contextService = contextService;
         this.GlobalConfig = window['GlobalConfig'];
         this.ChannelsData = {};
+        this.Initialized = false;
     }
     pubnubService.prototype.Init = function (currentUser) {
         this.CurrentUser = currentUser;
@@ -17,6 +18,7 @@ var pubnubService = (function () {
             heartbeat: 40,
             heartbeat_interval: 60
         });
+        this.Initialized = true;
     };
     pubnubService.prototype.GetChennal = function (channelUUID) {
         this.ChannelsData[channelUUID] = this.ChannelsData[channelUUID] || {};
@@ -26,6 +28,9 @@ var pubnubService = (function () {
         return chennal;
     };
     pubnubService.prototype.InitChannel = function (channelUUID, callback) {
+        if (!channelUUID) {
+            return;
+        }
         if (this.ChannelsData[channelUUID]) {
             this.ChannelsData[channelUUID].newMessages = callback;
             this.Pubnub.time(function (time) {
@@ -39,14 +44,14 @@ var pubnubService = (function () {
             channel: channelUUID,
             message: function (channelUUID, message, envelope, channelOrGroup, time) {
                 var chennal = this.GetChennal(channelUUID);
-                var user = _.find(this.rootScope.Contacts, { uuid: message.sender_uuid });
-                message.user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                var user = _.find(this.contextService.Contacts, { uuid: message.sender_uuid });
+                message.user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 chennal.messages.push(message);
                 chennal.newMessages(chennal.messages);
                 chennal.timeTokenFirstMessage = envelope[1];
             }.bind(this, channelUUID),
             presence: function (presenceEvent) {
-                this.rootScope.RefreshUserStatus(presenceEvent);
+                this.contextService.RefreshUserStatus(presenceEvent);
             }.bind(this)
         });
     };
@@ -67,7 +72,6 @@ var pubnubService = (function () {
     pubnubService.prototype.GetMessages = function (channelUUID, callback, callbackResult) {
         if (!channelUUID) {
             callbackResult([]);
-            chennal.populatedCallbeck();
             return;
         }
         var chennal = this.GetChennal(channelUUID);
@@ -100,8 +104,8 @@ var pubnubService = (function () {
             callback: function (m) {
                 chennal.timeTokenFirstMessage = m[1];
                 for (var i = 0; i < m[0].length; i++) {
-                    var user = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
-                    m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                    var user = _.find(this.contextService.Contacts, { uuid: m[0][i].sender_uuid });
+                    m[0][i].user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 }
                 angular.extend(chennal.messages, m[0]);
                 if (m[0].length < defaultMessagesNumber) {
@@ -124,8 +128,8 @@ var pubnubService = (function () {
             callback: function (m) {
                 chennal.timeTokenFirstMessage = m[1];
                 for (var i = 0; i < m[0].length; i++) {
-                    var user = _.find(this.rootScope.Contacts, { uuid: m[0][i].sender_uuid });
-                    m[0][i].user = user || { userName: this.rootScope.currentUser.name, imageUrl: this.rootScope.imageUrl };
+                    var user = _.find(this.contextService.Contacts, { uuid: m[0][i].sender_uuid });
+                    m[0][i].user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 }
                 Array.prototype.unshift.apply(chennal.messages, m[0]);
                 if (m[0].length < defaultMessagesNumber) {
@@ -150,6 +154,7 @@ var pubnubService = (function () {
         }
         this.ChannelsData = {};
     };
+    pubnubService.$inject = ['$rootScope', '$q', 'Pubnub', 'contextService'];
     return pubnubService;
 }());
 angular

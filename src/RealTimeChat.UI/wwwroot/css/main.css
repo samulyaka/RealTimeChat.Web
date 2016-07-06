@@ -836,6 +836,7 @@ body {
 	min-width: 320px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
 }
 
 img {
@@ -4195,6 +4196,9 @@ hr {
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 }
+.user-section .user-name.offline:after {
+	background: white;
+}
 
 .user-section .login-name {
 	display: inline-block;
@@ -4282,7 +4286,10 @@ hr {
 	margin: 4px 0 0;
 	width: 50px;
 	height: 50px;
-	overflow: hidden;
+	overflow: hidden;    
+}
+.avatar-icon {  
+    border-radius: 50%;
 }
 
 .day-msgs .avatar-icon img {
@@ -9188,4 +9195,23 @@ ul.ui-selectmenu-menu-popup {
 /* ---------------- */
 .content-box{
     overflow: auto !important;
+}
+.main{
+    overflow:hidden;
+}
+.right-panel .main{
+    margin:0px;
+    
+}
+.right-panel .main .content-box{
+    height: calc(52vh - 137px);
+}
+.right-panel .user-section{
+    display:none;
+}
+.right-panel .input-file{
+    display:none;
+}
+.right-panel .message-form {
+	right: 0px;
 }

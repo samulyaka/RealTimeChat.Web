@@ -1,28 +1,40 @@
-﻿class fileViewsController extends baseController {
-    private pubnubService: pubnubService;
-    public Contacts: any;
+﻿class fileViewsController {
+    public scope: any;
+    public rootScope: any;
+    public contextService: ContextService;
     public timeout: ng.ITimeoutService;
-    public activeChannelUUID: String;
-    public activeFileChannelUUID: String;
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, pubnubService: pubnubService, ngNotify: any, $timeout: ng.ITimeoutService, $window: ng.IWindowService) {
-        super($scope, $rootScope, $http, $location, ngNotify);
-        this.pubnubService = pubnubService;
+    public activeChannelUUID: string;
+    public activeFileChannelUUID: string;
+    static $inject = ['$scope', '$rootScope', 'contextService', '$timeout', '$window'];
+    constructor($scope: any, $rootScope: any, contextService: ContextService, $timeout: ng.ITimeoutService, $window: any) {
+        this.scope = $scope;
+        this.rootScope = $rootScope;
+        this.contextService = contextService;
+        this.scope.Context = contextService;
         this.timeout = $timeout;
         this.scope.moment = $window.moment;
-        this.scope.isBlockVisible = false;
+        this.scope.isBlockVisible = true;
         this.scope.SelectFile = this.SelectFile.bind(this);
         this.scope.filesChatSelected = "";
-
-        $rootScope.$watch('activeChannelUUID', this.UpdateFiles.bind(this));
+        if ($scope.channel) {
+            this.activeChannelUUID = $scope.channel;//JSON.parse($scope.channel).uuid;
+        }
+        $scope.$watch("channel", function (newValue, oldValue, scope) {
+            if (newValue) {
+                this.activeChannelUUID = $scope.channel;//JSON.parse($scope.channel).uuid; 
+            }
+            this.UpdateFiles();
+        }.bind(this));
         $scope.$watch('filesChatSelected', this.SelectFile.bind(this));
 
+        this.UpdateFiles();
         $rootScope.$on("FileUploaded", () => {
             this.LoadFiles();
         });
 
-        $('select#files-list').selectmenu({
+        (<any>$('select#files-list')).selectmenu({
             style: 'popup',
-            width: 450,
+            width: 410,
             height: 50,
             format: this.AddressFormatting
         });
@@ -41,35 +53,42 @@
     }
 
     SelectFile(): void {
+        var newUUID = new UUIDPupNubModel();
+        
         if (this.scope.filesChatSelected) {
             this.scope.Files.map((file) => {
                 this.scope.filesChatSelected = $('select#files-list').val();
-                if (file.id == this.scope.filesChatSelected)
-                    this.scope.activeFileChannelUUID = file.filesChatUID;
+                if (file.id == this.scope.filesChatSelected) {
+                    newUUID.uuid = file.filesChatUID;
+                    this.scope.activeFileChannelUUID = newUUID;
+                }
             });
         } else {
-            this.scope.activeFileChannelUUID = ""
+            this.scope.activeFileChannelUUID = newUUID;
         }
     }
 
     UpdateFiles(): void {
-        if (!this.rootScope.activeChannelUUID) {
+        if (!this.activeChannelUUID) {
             this.scope.isBlockVisible = false;
             return;
         }
-        this.activeChannelUUID = this.rootScope.activeChannelUUID
         this.LoadFiles();
     }
 
     LoadFiles(): void {
-        this.Send("Files", "LoadFiles", { ChatUID: this.activeChannelUUID }, (res) => {
+        if (!this.activeChannelUUID) {
+            return;
+        }
+        var chatUUID = JSON.parse(this.activeChannelUUID).uuid;
+        this.contextService.Send("Files", "LoadFiles", { ChatUID: chatUUID }, (res) => {
             this.scope.filesChatSelected = "";
             this.scope.activeFileChannelUUID = ""
             if (res.data.length) {
                 this.scope.isBlockVisible = true;
                 this.scope.Files = res.data;
                 this.timeout(() => {
-                    $('select#files-list').selectmenu();
+                    (<any>$('select#files-list')).selectmenu();
                 }, 1000);
             } else {
                 this.scope.isBlockVisible = false;

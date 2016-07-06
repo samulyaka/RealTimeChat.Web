@@ -1,24 +1,27 @@
-﻿class loginController extends baseController {
-    pubnubService: any;
-    constructor($scope: any, $rootScope: any, $http: ng.IHttpService, $location: ng.ILocationService, ngNotify: any, pubnubService: pubnubService) {
-        super($scope, $rootScope, $http, $location, ngNotify);
+﻿class loginController {
+    private scope: any;
+    private location: ng.ILocationService;
+    private contextService: ContextService;
+    private pubnubService: pubnubService;
+    static $inject = ['$scope', 'contextService', '$location', 'pubnubService'];
+    constructor($scope: any, contextService: ContextService, $location: ng.ILocationService, pubnubService: pubnubService) {
         $scope.loginFailed = false;
+        this.contextService = contextService;
+        this.location = $location;
         this.pubnubService = pubnubService;
+        this.scope = $scope;
         //testing
         this.pubnubService.CloseAllChannels();
     }
 
     public UserLogin() {
-        this.Send("Account", "login", { Email: this.scope.UserName, Password: this.scope.Password }, function (res) {
-            if (res.success) {
-                res.data.loginned = true;
-                this.SetCurrentUser(res.data);
+        this.contextService.UserLogin(this.scope.UserName, this.scope.Password, function (success) {
+            if (success){
                 this.location.path("/home");
-                return false;
+            } else {
+                this.scope.loginFailed = true;
             }
-            this.scope.loginFailed = true;
-            return false;
-        }, false);
+        }.bind(this)); 
     }
 }
 angular.module("app").controller('loginController', loginController);

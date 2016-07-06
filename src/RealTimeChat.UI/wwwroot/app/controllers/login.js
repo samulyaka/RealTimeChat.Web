@@ -1,29 +1,24 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var loginController = (function (_super) {
-    __extends(loginController, _super);
-    function loginController($scope, $rootScope, $http, $location, ngNotify, pubnubService) {
-        _super.call(this, $scope, $rootScope, $http, $location, ngNotify);
+var loginController = (function () {
+    function loginController($scope, contextService, $location, pubnubService) {
         $scope.loginFailed = false;
+        this.contextService = contextService;
+        this.location = $location;
         this.pubnubService = pubnubService;
+        this.scope = $scope;
         //testing
         this.pubnubService.CloseAllChannels();
     }
     loginController.prototype.UserLogin = function () {
-        this.Send("Account", "login", { Email: this.scope.UserName, Password: this.scope.Password }, function (res) {
-            if (res.success) {
-                res.data.loginned = true;
-                this.SetCurrentUser(res.data);
+        this.contextService.UserLogin(this.scope.UserName, this.scope.Password, function (success) {
+            if (success) {
                 this.location.path("/home");
-                return false;
             }
-            this.scope.loginFailed = true;
-            return false;
-        }, false);
+            else {
+                this.scope.loginFailed = true;
+            }
+        }.bind(this));
     };
+    loginController.$inject = ['$scope', 'contextService', '$location', 'pubnubService'];
     return loginController;
-}(baseController));
+}());
 angular.module("app").controller('loginController', loginController);

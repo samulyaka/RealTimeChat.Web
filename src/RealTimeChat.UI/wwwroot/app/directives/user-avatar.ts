@@ -1,10 +1,10 @@
 ﻿class UserImage implements ng.IDirective {
 
     restrict: string = 'E';
-    template: string = '<img src="{{imageUrl}}" class="img-thumbnail">';
+    template: string = '<img src="{{imageUrl}}"/>';
     replace: boolean = true;
     scope: Object = {
-        imageUrl: "@",
+        imageUrl: "@"
     };
     constructor() {
     }
