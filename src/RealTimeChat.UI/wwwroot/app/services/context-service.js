@@ -64,7 +64,7 @@ var ContextService = (function () {
                 this.ngNotify.set(res.data.message, {
                     type: 'error',
                     sticky: true,
-                    button: true,
+                    button: true
                 });
                 return;
             }

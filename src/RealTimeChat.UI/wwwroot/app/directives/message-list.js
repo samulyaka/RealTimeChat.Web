@@ -2,7 +2,6 @@ var MessageList = (function () {
     function MessageList() {
         this.restrict = 'E';
         this.templateUrl = 'app/views/message-list.html';
-        this.replace = true;
         this.link = function ($scope, $element, $attrs) {
             window['initThirdPartLibs']();
         };
@@ -10,6 +9,7 @@ var MessageList = (function () {
             channel: "@"
         };
         this.controller = MessageListController;
+        this.controllerAs = "vm";
     }
     return MessageList;
 }());
@@ -27,9 +27,6 @@ var MessageListController = (function () {
         this.timeout = $timeout;
         this.element = $('.messages-list', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
-        $scope.SendMessage = this.SendMessage.bind(this);
-        $scope.ChangeMessage = this.ChangeMessage.bind(this);
-        $scope.UploadFiles = this.UploadFiles.bind(this);
         $scope.autoScrollDown = true;
         $scope.trust = $sce.trustAsHtml;
         $scope.context = contextService;
@@ -47,7 +44,6 @@ var MessageListController = (function () {
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
             $scope.messages = [];
-            console.log("change:" + newValue);
             if (newValue) {
                 this.ChannelUUID = JSON.parse(newValue).uuid;
                 this.pubnubService.InitChannel(this.ChannelUUID, this.NewMessage.bind(this));
@@ -77,7 +73,6 @@ var MessageListController = (function () {
         }
     };
     MessageListController.prototype.ChangeMessage = function (event) {
-        console.log("enter text!");
         if (event.which === 13) {
             event.preventDefault();
             this.SendMessage();
@@ -90,26 +85,25 @@ var MessageListController = (function () {
         $(this.element).scrollTop($(this.element).prop('scrollHeight'));
     };
     MessageListController.prototype.UploadFiles = function (file, errFiles) {
-        var _this = this;
         if (file) {
             file.upload = this.Upload.upload({
-                url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.$scope.channel,
+                url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.ChannelUUID,
                 data: { file: file }
             });
             file.upload.then(function (response) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
-                //this.$rootScope.$emit("FileUploaded", {});
-                _this.contextService.Send("Discussion", "SendMessage", { PubnubUUID: _this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
-                if (file.IsImage) {
-                    _this.pubnubService.SendMessage(_this.ChannelUUID, { image: { fileUrl: fileUrl, fileName: file.name } });
+                this.$scope.$root.$emit("FileUploaded", {});
+                this.contextService.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
+                if (response.data.data.isImage) {
+                    this.pubnubService.SendMessage(this.ChannelUUID, { image: { fileUrl: fileUrl, fileName: file.name } });
                 }
                 else {
-                    _this.pubnubService.SendMessage(_this.ChannelUUID, { file: { fileUrl: fileUrl, fileName: file.name } });
+                    this.pubnubService.SendMessage(this.ChannelUUID, { file: { fileUrl: fileUrl, fileName: file.name } });
                 }
-            }, function (response) {
+            }.bind(this), function (response) {
                 if (response.status > 0)
-                    _this.$scope.errorMsg = response.status + ': ' + response.data;
-            });
+                    this.$scope.errorMsg = response.status + ': ' + response.data;
+            }.bind(this));
         }
     };
     MessageListController.prototype.hasScrollReachedBottom = function () {

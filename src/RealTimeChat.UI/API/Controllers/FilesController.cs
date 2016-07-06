@@ -57,19 +57,19 @@ namespace RealTimeChat.UI.API.Controllers
                 file.CopyTo(fs);
                 fs.Flush();
             }
-
+            var isImage = file.ContentType.Contains("image");
             var fileId = this.fileProvider.CreateFile(new FileModel
             {
                 Name = originalFileName,
                 Url = hashedFileName.ToString(),
-                IsImage = file.ContentType.Contains("image"),
+                IsImage = isImage,
                 ChatUID = chatUID,
                 FilesChatUID = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.Now,
                 CreatedBy = user.Id
             });
 
-            return new JsonResultModel<object>() { Success = true, Data = new { fileId = fileId } };
+            return new JsonResultModel<object>() { Success = true, Data = new { fileId = fileId, isImage = isImage } };
         }
 
         [HttpGet("GetFile/{id}")]

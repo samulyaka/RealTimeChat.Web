@@ -2,11 +2,11 @@
 
     restrict: string = 'E';
     templateUrl: string = 'app/views/file-views.html';
-    replace: boolean = true;
     scope: any = {
         channel: "@",
     };
-    controller: any = fileViewsController; 
+    controller: any = fileViewsController;
+    public controllerAs: any = "fvm";
     constructor() {
     }
     public link = () => {

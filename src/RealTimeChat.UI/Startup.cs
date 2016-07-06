@@ -66,11 +66,8 @@ namespace RealTimeChat.UI
             });
             app.UseApplicationInsightsRequestTelemetry();
 
-            if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
-            }
 
             app.UseApplicationInsightsExceptionTelemetry();
 

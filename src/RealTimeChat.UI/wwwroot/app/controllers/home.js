@@ -24,6 +24,11 @@ var homeController = (function () {
             return;
         }
         this.pubnubService.Init(user);
+        this.scope.$on('$viewContentLoaded', function (event) {
+            setTimeout(function () {
+                window['initThirdPartLibs']();
+            }, 1000);
+        });
     };
     homeController.$inject = ['$scope', 'contextService', '$location', 'pubnubService'];
     return homeController;

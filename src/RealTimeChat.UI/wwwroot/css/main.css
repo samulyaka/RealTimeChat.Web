@@ -1193,7 +1193,7 @@ input[type="submit"] {
 	background: linear-gradient(to bottom, white 1%, #f9f9f9 100%);
 	min-width: 150px;
 	height: 47px;
-	width: 100%;
+	width: 98%;
 }
 
 .jcf-select select {
@@ -1234,7 +1234,6 @@ input[type="submit"] {
 	position: absolute;
 	width: 6px;
 	height: 6px;
-	background: #38978d;
 	border-radius: 50%;
 	right: 0;
 	top: 50%;
@@ -9217,4 +9216,13 @@ ul.ui-selectmenu-menu-popup {
 }
 .right-panel .action-container{
     display:none;
+}
+.message-body .img img{
+    max-height:200px;
+    max-width:300px;
+    width:auto;
+    height:auto;
+}
+.message-body .img{
+    height:200px;
 }

@@ -126,7 +126,6 @@
                     m[0][i].user = user || { userName: this.contextService.currentUser.name, imageUrl: this.contextService.currentUser.imageUrl };
                 }
                 angular.extend(chennal.messages, m[0]);
-
                 if (m[0].length < defaultMessagesNumber) {
                     chennal.messagesAllFetched = true;
                 }

@@ -9,6 +9,7 @@
 }
 class UUIDPupNubModel {
     uuid: string;
+    id: string;
 }
 
 class UserModel {

@@ -2,18 +2,14 @@
 
     restrict: string = 'E';
     templateUrl: string = 'app/views/message-list.html';
-    replace: boolean = true;
     link: any = function ($scope, $element, $attrs) {
         window['initThirdPartLibs']();
     };
     scope: any = {
         channel: "@"
     };
-    $scope: any;
     public controller: any = MessageListController;
-    
-    constructor() {
-    }
+    public controllerAs: any = "vm";
 }
 angular
     .module('app')
@@ -42,9 +38,6 @@ class MessageListController {
         this.timeout = $timeout;
         this.element = $('.messages-list', $element);
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
-        $scope.SendMessage = this.SendMessage.bind(this);
-        $scope.ChangeMessage = this.ChangeMessage.bind(this);
-        $scope.UploadFiles = this.UploadFiles.bind(this);
         $scope.autoScrollDown = true;
         $scope.trust = $sce.trustAsHtml;
         $scope.context = contextService;
@@ -62,7 +55,6 @@ class MessageListController {
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
             $scope.messages = [];
-            console.log("change:" + newValue);
             if (newValue) {
                 this.ChannelUUID = JSON.parse(newValue).uuid;
                 this.pubnubService.InitChannel(this.ChannelUUID, this.NewMessage.bind(this));
@@ -93,7 +85,6 @@ class MessageListController {
     }
 
     ChangeMessage(event): void {
-        console.log("enter text!");
         if (event.which === 13) {// press enter key
             event.preventDefault();
             this.SendMessage();
@@ -110,25 +101,25 @@ class MessageListController {
         if (file) {
 
             file.upload = this.Upload.upload({
-                url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.$scope.channel,
+                url: window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'FileUpload' + '?chatid=' + this.ChannelUUID,
                 data: { file: file }
             });
 
-            file.upload.then((response) => {
+            file.upload.then(function (response) {
                 var fileUrl = window['GlobalConfig'].baseApiUlr + 'Files' + "/" + 'GetFile' + '/' + response.data.data.fileId;
-                //this.$rootScope.$emit("FileUploaded", {});
+                this.$scope.$root.$emit("FileUploaded", {});
 
                 this.contextService.Send("Discussion", "SendMessage", { PubnubUUID: this.$scope.channel, Message: "", IdDocument: response.data.data.fileId }, function () { });
-                if (file.IsImage) {
+                if (response.data.data.isImage) {
                     this.pubnubService.SendMessage(this.ChannelUUID, { image: { fileUrl, fileName: file.name } });
                 } else {
                     this.pubnubService.SendMessage(this.ChannelUUID, { file: { fileUrl, fileName: file.name } });
                 }
 
-            }, (response) => {
+            }.bind(this), function (response) {
                 if (response.status > 0)
                     this.$scope.errorMsg = response.status + ': ' + response.data;
-            });
+            }.bind(this));
         }
     }
     public hasScrollReachedBottom() {

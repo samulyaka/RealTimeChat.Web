@@ -8,27 +8,20 @@ var fileViewsController = (function () {
         this.timeout = $timeout;
         this.scope.moment = $window.moment;
         this.scope.isBlockVisible = true;
-        this.scope.SelectFile = this.SelectFile.bind(this);
-        this.scope.filesChatSelected = "";
+        this.filesChatSelected = "";
+        this.scope.activeFileChannelUUID = null;
         if ($scope.channel) {
-            this.activeChannelUUID = $scope.channel; //JSON.parse($scope.channel).uuid;
+            this.activeChannelUUID = $scope.channel;
         }
         $scope.$watch("channel", function (newValue, oldValue, scope) {
             if (newValue) {
-                this.activeChannelUUID = $scope.channel; //JSON.parse($scope.channel).uuid; 
+                this.activeChannelUUID = $scope.channel;
             }
             this.UpdateFiles();
         }.bind(this));
-        $scope.$watch('filesChatSelected', this.SelectFile.bind(this));
         this.UpdateFiles();
-        $rootScope.$on("FileUploaded", function () {
+        $scope.$root.$on("FileUploaded", function () {
             _this.LoadFiles();
-        });
-        $('select#files-list').selectmenu({
-            style: 'popup',
-            width: 410,
-            height: 50,
-            format: this.AddressFormatting
         });
     }
     fileViewsController.prototype.AddressFormatting = function (text) {
@@ -46,10 +39,9 @@ var fileViewsController = (function () {
     fileViewsController.prototype.SelectFile = function () {
         var _this = this;
         var newUUID = new UUIDPupNubModel();
-        if (this.scope.filesChatSelected) {
+        if (this.filesChatSelected) {
             this.scope.Files.map(function (file) {
-                _this.scope.filesChatSelected = $('select#files-list').val();
-                if (file.id == _this.scope.filesChatSelected) {
+                if (file.id == _this.filesChatSelected) {
                     newUUID.uuid = file.filesChatUID;
                     _this.scope.activeFileChannelUUID = newUUID;
                 }
@@ -73,19 +65,24 @@ var fileViewsController = (function () {
         }
         var chatUUID = JSON.parse(this.activeChannelUUID).uuid;
         this.contextService.Send("Files", "LoadFiles", { ChatUID: chatUUID }, function (res) {
-            _this.scope.filesChatSelected = "";
-            _this.scope.activeFileChannelUUID = "";
-            if (res.data.length) {
+            _this.filesChatSelected = "";
+            var newUUID = new UUIDPupNubModel();
+            if (res.data.length > 0) {
                 _this.scope.isBlockVisible = true;
                 _this.scope.Files = res.data;
-                _this.timeout(function () {
-                    $('select#files-list').selectmenu();
-                }, 1000);
+                newUUID.uuid = res.data[res.data.length - 1].filesChatUID;
+                _this.filesChatSelected = res.data[res.data.length - 1].id + "";
             }
             else {
                 _this.scope.isBlockVisible = false;
                 _this.scope.Files = [];
             }
+            _this.scope.activeFileChannelUUID = newUUID;
+            setTimeout(function () {
+                if (this.scope.$root.$$phase != '$apply' && this.scope.$root.$$phase != '$digest') {
+                    this.scope.$apply();
+                }
+            }.bind(_this), 5000);
         });
     };
     fileViewsController.$inject = ['$scope', '$rootScope', 'contextService', '$timeout', '$window'];

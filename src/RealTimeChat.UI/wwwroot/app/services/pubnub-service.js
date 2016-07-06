@@ -66,7 +66,7 @@ var pubnubService = (function () {
                 content: { text: message.text, file: message.file, image: message.image },
                 sender_uuid: this.CurrentUser.uuid,
                 date: Date.now()
-            },
+            }
         });
     };
     pubnubService.prototype.GetMessages = function (channelUUID, callback, callbackResult) {

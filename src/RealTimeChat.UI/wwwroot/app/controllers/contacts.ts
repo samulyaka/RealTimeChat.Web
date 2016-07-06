@@ -36,13 +36,23 @@
                 this.contextService.ActiveContact = this.contextService.Contacts[0];
             }
             this.scope.Contacts = this.contextService.Contacts;
+            if (this.scope.$root.$$phase != '$apply' && this.scope.$root.$$phase != '$digest') {
+                this.scope.$root.$apply();
+            }
         }.bind(this));
     }
     SelectContact(item: UserModel): void {
         var newUUID = new UUIDPupNubModel();
         newUUID.uuid = item.chatUID;
         this.contextService.activeChannelUUID = newUUID;
-        this.contextService.ActiveContact = item; 
+        this.contextService.ActiveContact = item;
+                window['initThirdPartLibs']();
+        if (this.scope.$root.$$phase != '$apply' && this.scope.$root.$$phase != '$digest') {
+            this.scope.$root.$apply();
+                }
+                setTimeout(function () {
+                    window['initThirdPartLibs']();
+                }, 500);
     }
 }
 angular.module("app").controller('contactsController', contactsController);

@@ -2,11 +2,10 @@
     <div class="hold">
         <div class="panel jcf-scrollable">
             <div class="hold-right-panel">
-                <div class="heading"><span class="details-header">Shared Files <i class="icon-file"></i></span><a href="#" class="close-panel icon-close open-bar"></a></div>
-                <div class="sidebar-nav full-height" ng-show="isBlockVisible">
-                    <select name="files-list" id="files-list" ng-model="filesChatSelected">
-                        <option value="">Select File</option>
-                        <option ng-repeat="file in Files" value="{{ file.id }}">{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
+                <div class="heading"><span class="details-header">Shared Files <i class="icon-file"></i></span></div>
+                <div class="sidebar-nav full-height" ng-if="isBlockVisible">
+                    <select name="files-list" id="files-list" ng-model="fvm.filesChatSelected" ng-change="fvm.SelectFile()">
+                        <option ng-repeat="file in Files" value="{{ file.id }}" >{{file.createdByName + ' ' + moment(file.createdAt).format('LLL')  + ' | ' + file.name}}</option>
                     </select>
                     <h4>Comments</h4>
                     <message-list channel="{{activeFileChannelUUID}}"></message-list>

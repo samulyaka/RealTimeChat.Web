@@ -33,6 +33,9 @@ var contactsController = (function () {
                 this.contextService.ActiveContact = this.contextService.Contacts[0];
             }
             this.scope.Contacts = this.contextService.Contacts;
+            if (this.scope.$root.$$phase != '$apply' && this.scope.$root.$$phase != '$digest') {
+                this.scope.$root.$apply();
+            }
         }.bind(this));
     };
     contactsController.prototype.SelectContact = function (item) {
@@ -40,6 +43,13 @@ var contactsController = (function () {
         newUUID.uuid = item.chatUID;
         this.contextService.activeChannelUUID = newUUID;
         this.contextService.ActiveContact = item;
+        window['initThirdPartLibs']();
+        if (this.scope.$root.$$phase != '$apply' && this.scope.$root.$$phase != '$digest') {
+            this.scope.$root.$apply();
+        }
+        setTimeout(function () {
+            window['initThirdPartLibs']();
+        }, 500);
     };
     contactsController.$inject = ['$scope', 'contextService', 'pubnubService'];
     return contactsController;

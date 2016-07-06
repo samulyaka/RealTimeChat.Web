@@ -2,11 +2,11 @@ var FileViews = (function () {
     function FileViews() {
         this.restrict = 'E';
         this.templateUrl = 'app/views/file-views.html';
-        this.replace = true;
         this.scope = {
-            channel: "@",
+            channel: "@"
         };
         this.controller = fileViewsController;
+        this.controllerAs = "fvm";
         this.link = function () {
             window['initThirdPartLibs']();
         };

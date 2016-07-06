@@ -28,6 +28,11 @@
             return;
         }
         this.pubnubService.Init(user);
+        this.scope.$on('$viewContentLoaded', function (event) {
+            setTimeout(function () {
+                window['initThirdPartLibs']();
+            }, 1000);
+        });
     }
     
 }

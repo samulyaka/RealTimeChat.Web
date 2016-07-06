@@ -60,12 +60,12 @@
                 </div>
             </div>
         </div>
-    <form class="message-form" ng-submit="SendMessage()">
+    <form class="message-form" ng-submit="vm.SendMessage()">
         <div class="input-file">
-            <input type="file" ngf-select="UploadFiles($file, $invalidFiles)">
+            <input type="file" ngf-select="vm.UploadFiles($file, $invalidFiles)">
         </div>
         <div class="message-input">
-            <textarea cols="30" rows="10" placeholder="Type your message..." class="flexible" ng-model="message" ng-keypress="ChangeMessage($event)" input-focus="messageInputFocus"></textarea>
+            <textarea cols="30" rows="10" placeholder="Type your message..." class="flexible" ng-model="message" ng-keypress="vm.ChangeMessage($event)"></textarea>
         </div>
         <div class="btn-box">
             <a class="icon-smile"></a>
