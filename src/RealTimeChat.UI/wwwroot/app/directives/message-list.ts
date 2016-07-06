@@ -4,10 +4,10 @@
     templateUrl: string = 'app/views/message-list.html';
     replace: boolean = true;
     link: any = function ($scope, $element, $attrs) {
-
+        window['initThirdPartLibs']();
     };
     scope: any = {
-        channel: "@",
+        channel: "@"
     };
     $scope: any;
     public controller: any = MessageListController;
@@ -40,9 +40,7 @@ class MessageListController {
         this.contextService = contextService;
         this.Upload = Upload;
         this.timeout = $timeout;
-
         this.element = $('.messages-list', $element);
-       // $(this.element).css("overfolw","auto");
         this.element.on("scroll", _.debounce(this.watchScroll.bind(this), 250));
         $scope.SendMessage = this.SendMessage.bind(this);
         $scope.ChangeMessage = this.ChangeMessage.bind(this);
@@ -66,12 +64,10 @@ class MessageListController {
             $scope.messages = [];
             console.log("change:" + newValue);
             if (newValue) {
-                this.$scope.message = "hello world!";
                 this.ChannelUUID = JSON.parse(newValue).uuid;
                 this.pubnubService.InitChannel(this.ChannelUUID, this.NewMessage.bind(this));
                 this.pubnubService.GetMessages(this.ChannelUUID, this.unregister.bind(this), function (msgs) {
                     $scope.messages = msgs;
-                    console.log(msgs);
                     if (this.$scope.$root.$$phase != '$apply' && this.$scope.$root.$$phase != '$digest') {
                         this.$scope.$apply();
                     }

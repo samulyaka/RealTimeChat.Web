@@ -1,4 +1,4 @@
-<main  id="{{channel}}" class="main">
+<main  id="{{channel}}" class="main" >
         <div class="content-box messages-list">
             <div class="user-section">
                 <div class="avatar-holder mobile-hidden">
@@ -14,9 +14,6 @@
                 <p>This is the very beginning of your direct message history with danielavnon.</p>
                 <p>Direct messages are private between the two of you. Sharing a private file here will not make it public, but it will allow danielavnon to see and share it.</p>
             </div>
-            <!--<div class="time-holder">
-                <time datetime="2016-01-19">January 19, 2016</time>
-            </div>-->
             <div class="day-msgs" ng-repeat="message in messages track by message.uuid">
                 <ul class="action-container">
                     <li><a class="icon-smile"></a></li>
@@ -41,10 +38,7 @@
 
                     <div class="message-body" ng-show="message.content.file != null">
                         <span class="text">uploaded a file:<a href="{{message.content.file.fileUrl}}" class="upload-file">{{message.content.file.fileName}}</a></span>
-                        <!--<ul class="smile-list">
-                            <li><a href="#"><img src="images/smile1.png" alt="smile"><span>1</span></a></li>
-                            <li><a href="#"><img src="images/smile2.png" alt="smile"><span>2</span></a></li>
-                        </ul>-->
+                       
                     </div>
 
                     <div class="message-body" ng-show="message.content.image != null">
@@ -78,8 +72,8 @@
             <button type="submit" class="icon-send"></button>
         </div>
     </form>
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
         setTimeout(initThirdPartLibs,10000);
         
-    </script>
+    </script>-->
 </main>

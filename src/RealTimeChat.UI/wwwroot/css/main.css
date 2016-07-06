@@ -9215,3 +9215,6 @@ ul.ui-selectmenu-menu-popup {
 .right-panel .message-form {
 	right: 0px;
 }
+.right-panel .action-container{
+    display:none;
+}

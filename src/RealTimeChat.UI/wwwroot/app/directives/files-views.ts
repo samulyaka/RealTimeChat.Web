@@ -4,12 +4,13 @@
     templateUrl: string = 'app/views/file-views.html';
     replace: boolean = true;
     scope: any = {
-        channel:"@"
+        channel: "@",
     };
     controller: any = fileViewsController; 
     constructor() {
     }
     public link = () => {
+        window['initThirdPartLibs']();
     }
 }
 angular

@@ -4,10 +4,11 @@ var FileViews = (function () {
         this.templateUrl = 'app/views/file-views.html';
         this.replace = true;
         this.scope = {
-            channel: "@"
+            channel: "@",
         };
         this.controller = fileViewsController;
         this.link = function () {
+            window['initThirdPartLibs']();
         };
     }
     return FileViews;
